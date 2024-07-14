@@ -1,5 +1,28 @@
 @import './base.css';
+@import 'primeicons/primeicons.css';
 
+/* Import custom fonts */
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"), url(./fonts/Poppins/Poppins-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Bold";
+  src: local("Poppins-Bold"), url(./fonts/Poppins/Poppins-Bold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Italic";
+  src: local("Poppins-Italic"), url(./fonts/Poppins/Poppins-Italic.ttf) format("truetype");
+}
+
+/* Global element styling */
+
+a {
+  /* Remove default hyperlink styling */
+  text-decoration: none;
+}
+
+/*
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -33,3 +56,4 @@ a,
     padding: 0 2rem;
   }
 }
+*/

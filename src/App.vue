@@ -1,26 +1,79 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import Menubar from 'primevue/menubar'
+import { routes } from '@/router'
+import { generic } from '@/assets/strings'
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+  <header class="menu-bar">
+    <nav>
+      <Menubar :model="routes">
+        <template #item="{ item }">
+          <RouterLink :to="item.path" class="menu-item">{{ item.name }}</RouterLink>
+        </template>
+        <template #end>
+          <template v-for="social in generic.socials">
+            <a :href="social.url" target="_blank">
+              <i :class="social.icon" class="social-item"></i>
+            </a>
+          </template>
+<!--          <a :href="generic.socials.instagram.link" target="_blank">-->
+<!--            <i :class="generic.socials.instagram.icon" class="social-item"></i>-->
+<!--          </a>-->
+<!--          <a :href="generic.socials.facebook.link" target="_blank">-->
+<!--            <i :class="generic.socials.facebook.icon" class="social-item"></i>-->
+<!--          </a>-->
+<!--          <a :href="generic.socials.linkedin.link" target="_blank">-->
+<!--            <i :class="generic.socials.linkedin.icon" class="social-item"></i>-->
+<!--          </a>-->
+        </template>
+      </Menubar>
+    </nav>
   </header>
-
   <RouterView />
+
+<!--  <header>-->
+<!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
+
+<!--    <div class="wrapper">-->
+<!--      <HelloWorld msg="You did it!" />-->
+
+<!--      <nav>-->
+<!--        <RouterLink to="/">Home</RouterLink>-->
+<!--        <RouterLink to="/about">About</RouterLink>-->
+<!--      </nav>-->
+<!--    </div>-->
+<!--  </header>-->
 </template>
 
 <style scoped>
+header {
+  margin-bottom: 6px;
+}
+
+
+nav, .social-item {
+  line-height: 2;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+nav a {
+  display: inline-block;
+  color: var(--color-text);
+}
+
+.menu-item {
+  padding: 0 1rem;
+}
+
+.social-item {
+  margin: auto 0.5rem;
+}
+
+/*
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -82,4 +135,5 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+*/
 </style>

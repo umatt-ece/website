@@ -29,19 +29,25 @@ export const generic = {
       title: 'Treasurer',
       name: 'Nicole Choi',
     },
-    mechanical_lead: {
+    mechanicalLead: {
       title: 'Mechanical Lead',
       name: 'Arik Mesongnik',
     },
-    electrical_lead: {
+    electricalLead: {
       title: 'Electrical Lead',
       name: 'Zachary DeGraeves',
     },
   },
   form: {
     submit: 'Submit Form',
+    name: 'Name',
     email: 'Email',
+    emailUniversity: 'University Email',
     emailExample: 'email@exampe.com',
+    degree: 'What program are you currently enrolled in?',
+    year: 'What year are you within your degree?',
+    referral: 'How did you hear about the team?',
+    subscribe: 'Yes, I would like to opt-in for UMATT newsletters & updates.'
   }
 }
 
@@ -55,13 +61,14 @@ export const home = {
       'provide students with valuable technical and soft skills that complement classroom ' +
       'education. It is our hope that through practical, real-world application, UMATT will ' +
       'better equip students for their future careers.'
-  }
+  },
+  learnMore: 'Learn More'
 }
 
 // About view string resources
 export const about = {
   team: {
-    title: 'Team',
+    title: 'Who Are We?',
     content1:
       'The University of Manitoba Association of Tiny Tractors (UMATT) is a dynamic student ' +
       'design group composed of engineering, agriculture, computer science and business ' +
@@ -74,7 +81,8 @@ export const about = {
       'complement the theoretical concepts taught in classrooms with practical, real-world ' +
       'application. Members of UMATT are provided invaluable opportunities to acquire both ' +
       'technical expertise and gain firsthand experience not attainable within the traditional ' +
-      'University setting, preparing them for success after graduation.'
+      'University setting, preparing them for success after graduation.',
+    content3: 'Check out the sections below to learn more about our team!'
   },
   competition: {
     title: 'Competition',

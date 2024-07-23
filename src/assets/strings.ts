@@ -18,25 +18,25 @@ export const generic = {
       name: 'linkedin',
       icon: 'pi pi-linkedin',
       url: 'https://www.linkedin.com/company/umatt/'
-    },
+    }
   ],
   councilMembers: {
     captain: {
       title: 'Captain',
-      name: 'Kameron Ronald',
+      name: 'Kameron Ronald'
     },
     treasurer: {
       title: 'Treasurer',
-      name: 'Nicole Choi',
+      name: 'Nicole Choi'
     },
     mechanicalLead: {
       title: 'Mechanical Lead',
-      name: 'Arik Mesongnik',
+      name: 'Arik Mesongnik'
     },
     electricalLead: {
       title: 'Electrical Lead',
-      name: 'Zachary DeGraeves',
-    },
+      name: 'Zachary DeGraeves'
+    }
   },
   form: {
     submit: 'Submit Form',
@@ -48,6 +48,17 @@ export const generic = {
     year: 'What year are you within your degree?',
     referral: 'How did you hear about the team?',
     subscribe: 'Yes, I would like to opt-in for UMATT newsletters & updates.'
+  },
+  credits: {
+    content: 'This site is developed and maintained in-house by our members. If you notice a bug ' +
+      'or issue, please let us know! A special thanks to all our contributors:',
+    contributors: [{
+      name: 'Kameron Ronald',
+      link: 'https://github.com/Kameroni33'
+    }, {
+      name: 'Jashan Gill',
+      link: 'https://github.com/Jashann'
+    }]
   }
 }
 
@@ -113,7 +124,7 @@ export const about = {
     },
     website: {
       label: 'ASABE Quarter Scale Competition Website',
-      url: 'https://www.asabe.org/IQS',
+      url: 'https://www.asabe.org/IQS'
     }
   },
   members: {
@@ -156,5 +167,5 @@ export const contact = {
   other: {
     title: 'Other',
     content: 'Use the following form to contact our team regarding any and all other inquires.'
-  },
+  }
 }

@@ -40,13 +40,8 @@ export const generic = {
   },
   form: {
     submit: 'Submit Form',
-    name: 'Name',
     email: 'Email',
-    emailUniversity: 'University Email',
     emailExample: 'email@exampe.com',
-    degree: 'What program are you currently enrolled in?',
-    year: 'What year are you within your degree?',
-    referral: 'How did you hear about the team?',
     subscribe: 'Yes, I would like to opt-in for UMATT newsletters & updates.'
   },
   credits: {
@@ -130,7 +125,7 @@ export const about = {
     }
   },
   members: {
-    title: 'Members',
+    title: 'Our Team',
     content: 'With an approximate a dozen core students, UMATT is a small yet growing group. ' +
       'Our small size allows us to provide our members a very diverse and involved experience on ' +
       'the team, enabling a larger variety in opportunities not possible on some of the larger, ' +
@@ -144,6 +139,27 @@ export const about = {
       'the backbone of the team and are the reason we can continue what we do. Every year, ' +
       'generous donations of time, money, and services provide our team the foundation to and ' +
       'resources necessary to strive for excellence.'
+  },
+  sponsorship: {
+    title: 'Sponsorship',
+    content: '...',
+    form: {
+      company: 'Company',
+      address: 'Address',
+      contact: 'Contact',
+      email: 'Email',
+      sponsorshipType: '___ is interested is sponsoring the team with the following contribution'
+    }
+  },
+  membership: {
+    title: 'Membership',
+    content: '...',
+    form: {
+      name: 'Name',
+      email: 'University Email',
+      degree: 'What program are you currently enrolled in?',
+      year: 'What year are you within your degree?',
+    }
   }
 }
 

@@ -13,8 +13,9 @@ const email = ref(null)
 const editor = ref(null)
 const subscribe = ref(null)
 
-function submitOther() {
-  console.log('other form submitted...')
+function submitForm() {
+  console.log('submitting form...')
+  // todo: send email to 'umattinfo@gmail.com'
 }
 
 </script>
@@ -29,8 +30,8 @@ function submitOther() {
         <br>
 
         <FloatLabel>
-          <InputText id="m-email" v-model="email" />
-          <label for="m-email">{{ generic.form.email }}</label>
+          <InputText id="email" v-model="email" />
+          <label for="email">{{ generic.form.email }}</label>
         </FloatLabel>
         <br>
 
@@ -38,9 +39,9 @@ function submitOther() {
         <br>
 
         <div class="inline">
-          <Button :label="generic.form.submit" class="offset" @click="submitOther" />
-          <Checkbox v-model="subscribe" id="membership-subscribe" class="offset" binary />
-          <label for="membership-subscribe" class="offset">{{ generic.form.subscribe }}</label>
+          <Button :label="generic.form.submit" class="offset" @click="submitForm" />
+          <Checkbox v-model="subscribe" id="subscribe" class="offset" binary />
+          <label for="subscribe" class="offset">{{ generic.form.subscribe }}</label>
         </div>
 
       </template>

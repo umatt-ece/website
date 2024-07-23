@@ -64,6 +64,7 @@ export const generic = {
 
 // Home view string resources
 export const home = {
+  title: 'University of Manitoba Association of Tiny Tractors',
   vision: {
     title: 'Vision Statement',
     content: 'Our vision is to provide university students with practical, hands-on learning ' +
@@ -73,7 +74,8 @@ export const home = {
       'education. It is our hope that through practical, real-world application, UMATT will ' +
       'better equip students for their future careers.'
   },
-  learnMore: 'Learn More'
+  learnMore: 'Learn More',
+  sponsors: 'Thanks to all our sponsors!'
 }
 
 // About view string resources

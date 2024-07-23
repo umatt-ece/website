@@ -1,51 +1,57 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Menubar from 'primevue/menubar'
 import { routes } from '@/router'
 import { generic } from '@/assets/strings'
+import Menubar from 'primevue/menubar'
+import Card from 'primevue/card'
+import Tag from 'primevue/tag'
+
+/* =================================================================================================
+ * App.vue
+ * =================================================================================================
+ * This is the entry point to our Single Page Application (SPA) that gets rendered by VueJs.
+ * Components declared here (i.e. HTML within the <template> tag) will always be visible in
+ * the 'app' (ex. the menu bar and footer). The <RouterView> is a special element that renders
+ * a particular 'view' based on the current URL path (ex. http://website/displayed-view). The
+ * mappings between URLs/views is located in `/src/router/index.ts`.
+ */
 
 </script>
 
 <template>
-  <header class="menu-bar">
+  <header>
     <nav>
       <Menubar :model="routes">
         <template #item="{ item }">
-          <RouterLink :to="item.path" class="menu-item">{{ item.name }}</RouterLink>
+          <RouterLink :to="item.path" class="router-link">{{ item.name }}</RouterLink>
         </template>
         <template #end>
           <template v-for="social in generic.socials">
             <a :href="social.url" target="_blank">
-              <i :class="social.icon" class="social-item"></i>
+              <i :class="social.icon" class="social-icon"></i>
             </a>
           </template>
-<!--          <a :href="generic.socials.instagram.link" target="_blank">-->
-<!--            <i :class="generic.socials.instagram.icon" class="social-item"></i>-->
-<!--          </a>-->
-<!--          <a :href="generic.socials.facebook.link" target="_blank">-->
-<!--            <i :class="generic.socials.facebook.icon" class="social-item"></i>-->
-<!--          </a>-->
-<!--          <a :href="generic.socials.linkedin.link" target="_blank">-->
-<!--            <i :class="generic.socials.linkedin.icon" class="social-item"></i>-->
-<!--          </a>-->
         </template>
       </Menubar>
     </nav>
   </header>
-  <RouterView />
-
-<!--  <header>-->
-<!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-
-<!--    <div class="wrapper">-->
-<!--      <HelloWorld msg="You did it!" />-->
-
-<!--      <nav>-->
-<!--        <RouterLink to="/">Home</RouterLink>-->
-<!--        <RouterLink to="/about">About</RouterLink>-->
-<!--      </nav>-->
-<!--    </div>-->
-<!--  </header>-->
+  <RouterView class="router-view"/> <!-- renders 'views' based on current path url/path -->
+  <footer>
+    <div style="margin-top: 0.5em">
+      <Card>
+        <template #content>
+          <p>
+            {{ generic.credits.content }}
+          </p>
+          <template v-for="contributor in generic.credits.contributors">
+            <a :href="contributor.link" target="_blank">
+              <Tag severity="secondary" class="credit-tag" :value="contributor.name" />
+            </a>
+          </template>
+        </template>
+      </Card>
+    </div>
+  </footer>
 </template>
 
 <style scoped>
@@ -53,8 +59,7 @@ header {
   margin-bottom: 6px;
 }
 
-
-nav, .social-item {
+nav, .social-icon {
   line-height: 2;
   font-size: 1.5rem;
   text-align: center;
@@ -65,75 +70,15 @@ nav a {
   color: var(--color-text);
 }
 
-.menu-item {
+.router-link {
   padding: 0 1rem;
 }
 
-.social-item {
+.social-icon {
   margin: auto 0.5rem;
 }
 
-/*
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.credit-tag {
+  margin: 0 0.2rem;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-*/
 </style>

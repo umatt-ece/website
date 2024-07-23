@@ -16,55 +16,56 @@ export const sponsors = [
   {
     company: 'ASABE',
     image: 'sponsor-asabe.jpg',
+    link: '',
     alt: '',
   }, {
     company: 'Elmer\'s Manufacturing',
     image: 'sponsor-elmers.webp',
+    link: '',
     alt: '',
   }, {
     company: 'Engineering Endowment Fund',
     image: 'sponsor-eng-endowment.png',
+    link: '',
     alt: '',
   }, {
     company: 'Extreme Machine Corp',
     image: 'sponsor-extreme-machine-corp.jpg',
+    link: '',
     alt: '',
   }, {
     company: 'Friends of Engineering',
     image: 'sponsor-friends-fo-engineering.png',
+    link: '',
     alt: '',
   }, {
     company: 'MacDon',
     image: 'sponsor-macdon.png',
+    link: '',
     alt: '',
   }, {
     company: 'Vehicle Technology Centre',
     image: 'sponsor-vehicle-technology-centre.png',
+    link: '',
     alt: '',
   },
 ]
 
 export const gallery = [
   {
-    image: 'gallery-1.jpg',
+    image: '',
     alt: '',
   }, {
-    image: 'gallery-2.HEIC',
+    image: '',
     alt: '',
   }, {
-    image: 'gallery-3.HEIC',
+    image: '',
     alt: '',
   }, {
-    image: 'gallery-4.JPG',
+    image: '',
     alt: '',
   }, {
-    image: 'gallery-5.HEIC',
+    image: '',
     alt: '',
-  }, {
-    image: 'gallery-6.HEIC',
-    alt: '',
-  }, {
-    image: 'gallery-7.HEIC',
-    alt: '',
-  }
+  },
 ]

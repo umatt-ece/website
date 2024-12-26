@@ -27,8 +27,8 @@ jobs:
     # Step 3: Build and push Docker image
     - name: Build and push Docker image
       run: |
-        docker build -t your-dockerhub-username/your-image-name .
-        docker push your-dockerhub-username/your-image-name
+        docker build -t ramatjyotsingh/umatt-website .
+        docker push  ramatjyotsingh/umatt-website
 
     # Step 4: SSH into EC2 and deploy
     - name: Deploy to EC2
@@ -38,7 +38,7 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          docker pull your-dockerhub-username/your-image-name
-          docker stop your-container-name || true
-          docker rm your-container-name || true
-          docker run -d --name your-container-name -p 80:80 your-dockerhub-username/your-image-name
+          docker pull ramatjyotsingh/umatt-website
+          docker stop website || true
+          docker rm website || true
+          docker run -d --name website -p 80:80 ramatjyotsingh/umatt-website

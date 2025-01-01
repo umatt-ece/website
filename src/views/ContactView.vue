@@ -9,9 +9,10 @@ import Editor from 'primevue/editor'
 import Checkbox from 'primevue/checkbox'
 
 
-const email = ref(null)
-const editor = ref(null)
-const subscribe = ref(null)
+const email = ref<string>('')
+const editor = ref<string>('')
+const subscribe = ref<string>('')
+
 
 function submitForm() {
   console.log('submitting form...')

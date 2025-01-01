@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 /* Custom color pallet */
 :root {
   --umatt-c-white: #f9f9f6;
@@ -5,6 +10,7 @@
   --umatt-c-gold: #e4ba00;
   --umatt-c-blue: #c63130;
   --umatt-c-red: #60afff;
+
 }
 
 /* Semantic color variables */
@@ -21,8 +27,11 @@ body {
   color: var(--color-text);
   min-height: 100vh;
   font-family:
-    Poppins,
-    Roboto,
+    "Poppins",
+    "Roboto",
     sans-serif;
   font-size: 15px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

@@ -7,11 +7,13 @@ import Fieldset from 'primevue/fieldset'
 import Button from 'primevue/button'
 import Carousel from 'primevue/carousel'
 import Tag from 'primevue/tag'
+import HeroSection from '@/Components/HeroSection.vue'
 
 
 </script>
 
 <template>
+  <HeroSection />
   <div class="card">
     <Card class="card-view">
       <template #content>
@@ -43,7 +45,7 @@ import Tag from 'primevue/tag'
 
         <Carousel :value="gallery" :numVisible="1" :numScroll="1" circular :autoplayInterval="3000">
           <template #item="item">
-            <img src="/images/competition-group-photo-2024.jpg" :alt="item.alt" class="gallery"/>
+            <img src="@/assets/images/competition-group-photo-2024.jpg" :alt="item.data.alt" class="gallery"/>
           </template>
         </Carousel>
         <br>
@@ -61,25 +63,25 @@ import Tag from 'primevue/tag'
 
         <div class="sponsor-list">
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-asabe.jpg" alt="ASABE" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-asabe.jpg" alt="ASABE" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-elmers.webp" alt="Elmers Manufacturing" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-elmers.webp" alt="Elmers Manufacturing" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-eng-endowment.png" alt="Eng Endowment" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-eng-endowment.png" alt="Eng Endowment" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-extreme-machine-corp.jpg" alt="Extreme Machine Corp" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-extreme-machine-corp.jpg" alt="Extreme Machine Corp" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-friends-of-engineering.png" alt="Friends of Engineering" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-friends-of-engineering.png" alt="Friends of Engineering" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-macdon.png" alt="MacDon" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-macdon.png" alt="MacDon" class="sponsor-logo"/>
           </a>
           <a href="" class="sponsor-item" target="_blank">
-            <img src="/images/sponsor-vehicle-technology-centre.png" alt="Vehicle Technology Centre" class="sponsor-logo"/>
+            <img src="@/assets/images/sponsor-vehicle-technology-centre.png" alt="Vehicle Technology Centre" class="sponsor-logo"/>
           </a>
         </div>
 

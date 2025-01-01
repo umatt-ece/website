@@ -6,6 +6,7 @@ import Menubar from 'primevue/menubar'
 import Card from 'primevue/card'
 import Tag from 'primevue/tag'
 
+
 /* =================================================================================================
  * App.vue
  * =================================================================================================
@@ -26,7 +27,7 @@ import Tag from 'primevue/tag'
           <RouterLink :to="item.path" class="router-link">{{ item.name }}</RouterLink>
         </template>
         <template #end>
-          <template v-for="social in generic.socials">
+          <template v-for="social in generic.socials" :key="social.url">
             <a :href="social.url" target="_blank">
               <i :class="social.icon" class="social-icon"></i>
             </a>
@@ -43,7 +44,7 @@ import Tag from 'primevue/tag'
           <p>
             {{ generic.credits.content }}
           </p>
-          <template v-for="contributor in generic.credits.contributors">
+          <template v-for="contributor in generic.credits.contributors" :key="contributor.link">
             <a :href="contributor.link" target="_blank">
               <Tag severity="secondary" class="credit-tag" :value="contributor.name" />
             </a>

@@ -71,6 +71,7 @@ const items = [
   gap: 1rem;
   background-color: rgba(0, 0, 0, 0.7); /* Add background color for better readability */
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .speed-dial-item span {

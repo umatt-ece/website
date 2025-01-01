@@ -8,12 +8,13 @@ import Button from 'primevue/button'
 import Carousel from 'primevue/carousel'
 import Tag from 'primevue/tag'
 import HeroSection from '@/Components/HeroSection.vue'
-
+import SponsorBanner from '@/Components/SponsorBanner.vue'
 
 </script>
 
 <template>
   <HeroSection />
+  <SponsorBanner />
   <div class="card">
     <Card class="card-view">
       <template #content>
@@ -61,7 +62,7 @@ import HeroSection from '@/Components/HeroSection.vue'
         <h1 style="text-align: center">{{ home.sponsors }}</h1>
         <br>
 
-        <div class="sponsor-list">
+        <!-- <div class="sponsor-list">
           <a href="" class="sponsor-item" target="_blank">
             <img src="@/assets/images/sponsor-asabe.jpg" alt="ASABE" class="sponsor-logo"/>
           </a>
@@ -83,7 +84,7 @@ import HeroSection from '@/Components/HeroSection.vue'
           <a href="" class="sponsor-item" target="_blank">
             <img src="@/assets/images/sponsor-vehicle-technology-centre.png" alt="Vehicle Technology Centre" class="sponsor-logo"/>
           </a>
-        </div>
+        </div> -->
 
         <div>
         </div>

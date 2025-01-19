@@ -1,175 +1,110 @@
 <template>
-    <div class="sponsors-container">
-      <div class="sponsors-title">
-        <h2>Our Sponsors</h2>
+  <section class="banner-section">
+    <div class="banner-container">
+      <div class="title">
+        <h1>{{title}}</h1>
       </div>
-      <div class="sponsors-carousel">
-        <div class="carousel-track" :style="{ animationDuration: animationDuration + 's' }">
-          <div
-            v-for="(sponsor, index) in SponsorList"
-            :key="index"
-            class="carousel-item"
-          >
-            <a :href="sponsor.url" target="_blank" rel="noopener noreferrer" class="sponsor-link">
-              <img :src="sponsor.logo" :alt="sponsor.name" class="sponsor-logo" />
-              <span class="sponsor-name">{{ sponsor.name }}</span>
+      <div class="slider" >
+        <ul :style="ulStyle">
+          <li v-for="(sponsor, index) in Sponsors" :key="sponsor.name" :style="{ animationDelay: `calc(var(--time) / var(--quantity) * -${index})` }">
+            <a :href="sponsor.url" target="_blank" rel="noopener noreferrer" :title="sponsor.name">
+              <img :src="sponsor.logo" :alt="sponsor.name" />
             </a>
-          </div>
-          <!-- Duplicate items for seamless looping -->
-          <div
-            v-for="(sponsor, index) in SponsorList"
-            :key="'duplicate-' + index"
-            class="carousel-item"
-          >
-            <a :href="sponsor.url" target="_blank" rel="noopener noreferrer" class="sponsor-link">
-              <img :src="sponsor.logo" :alt="sponsor.name" class="sponsor-logo" />
-              <span class="sponsor-name">{{ sponsor.name }}</span>
-            </a>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
     </div>
-  </template>
+  </section>
+</template>
+
+<script setup>
+
+import { ref, computed } from 'vue';
+
+const title = ref('Our Sponsors');
+const Sponsors = ref([
+  { name: 'Elmers', logo: '/src/assets/images/sponsor-elmers.webp', url: 'https://elmersmfg.com/' },
+  { name: 'ASABE', logo: '/src/assets/images/sponsor-asabe.jpg', url: 'https://www.asabe.org/' },
+  { name: 'Engineering Endowment Fund', logo: '/src/assets/images/sponsor-eng-endowment.png', url: 'https://endowment.eng.umanitoba.ca/' },
+  { name: 'Extreme Machine Corp.', logo: '/src/assets/images/sponsor-extreme-machine-corp.jpg', url: 'https://extrememachinecorp.com/' },
+  { name: 'Friends of Engineering', logo: '/src/assets/images/sponsor-friends-of-engineering.png', url: 'https://friendsofengineering.ca/' },
+  { name: 'Macdon Industries Ltd.', logo: '/src/assets/images/sponsor-macdon.png', url: 'https://www.macdon.com/' },
+  { name: 'Vehicle Technology Centre', logo: '/src/assets/images/sponsor-vehicle-technology-centre.png', url: 'https://vtci.ca/' },
+]);
+
+const ulStyle = computed(() => ({
   
-  <script setup>
-  import { ref } from 'vue';
+  '--time': `${Sponsors.value.length * 3}s`,
+  '--delay': `-${Sponsors.value.length}s`,
+  '--quantity': Sponsors.value.length,
+
+}));
+</script>
+
+<style scoped>
+.banner-section{
+  position: relative;
+  margin: 2rem 0;
+  padding: 2rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.banner-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(1rem, 5vw, 2.5rem);
+  overflow: hidden;
   
-  const SponsorList = ref([
-    {
-      name: 'Elmers',
-      logo: '/src/assets/images/sponsor-elmers.webp',
-      url: 'https://elmersmfg.com/',
-    },
-    {
-      name: 'ASABE',
-      logo: '/src/assets/images/sponsor-asabe.jpg',
-      url: 'https://www.asabe.org/',
-    },
-    {
-      name: 'Engineering Endowment Fund',
-      logo: '/src/assets/images/sponsor-eng-endowment.png',
-      url: 'https://endowment.eng.umanitoba.ca/',
-    },
-    {
-      name: 'Extreme Machine Corp.',
-      logo: '/src/assets/images/sponsor-extreme-machine-corp.jpg',
-      url: 'https://extrememachinecorp.com/',
-    },
-    {
-      name: 'Friends of Engineering',
-      logo: '/src/assets/images/sponsor-friends-of-engineering.png',
-      url: 'https://friendsofengineering.ca/',
-    },
-    {
-      name: 'Macdon Industries Ltd.',
-      logo: '/src/assets/images/sponsor-macdon.png',
-      url: 'https://www.macdon.com/',
-    },
-    {
-      name: 'Vehicle Technology Centre',
-      logo: '/src/assets/images/sponsor-vehicle-technology-centre.png',
-      url: 'https://vtci.ca/',
-    },
-  ]);
-  
-  const animationDuration = 20; // Duration in seconds
-  </script>
-  
-  <style scoped>
-  .sponsors-container {
-    width: 100%;
-    height:18rem;
-    margin: 2rem auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    text-align: center;
-  }
-  
-  .sponsors-title {
-    margin-bottom: 20px;
-  }
-  
-  .sponsors-title h2 {
-    font-size: 2.5rem;
-    color: #333;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .sponsors-carousel {
+}
+.title{
+  text-align: center;
+  margin: 1rem 0;
+  font-size: clamp(1.2rem, 5vw, 2rem);
+}
+.slider{
+    height: clamp(100px, 20vw, 200px);
     overflow: hidden;
-    margin-top:2rem;
-    width: 100%;
-    padding: 1.5rem 0;
-  }
+}
+
+
+ul{
+  --logo-width: clamp(100px, 20vw, 200px);
+  width: 100%;
+  height: 100%;
+  min-width: calc(var(--logo-width) * var(--quantity));
+  display: flex;
+  position: relative;
+}
+li {
   
-  .carousel-track {
-    display: flex;
-    width: calc(200%);
-    animation: scroll infinite linear;
-  }
+  list-style: none;
+  position:absolute;
+  width: var(--logo-width);
+  height: 100%;
+  left:100%;
+  object-fit: contain;
+  object-position:center ;
+  animation: run var(--time) linear infinite;
   
-  .sponsors-carousel:hover .carousel-track {
-    animation-play-state: paused; /* Pause animation on hover */
-  }
-  
-  .carousel-item {
-    position: relative;
-    flex: 0 0 auto;
-    width: 150px;
-    margin: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .sponsor-link {
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-  }
-  
-  .sponsor-logo {
-    max-width: 100%;
-    height: auto;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    transition: transform 0.3s ease;
-  }
-  
-  .sponsor-link:hover .sponsor-logo {
-    transform: scale(1.1);
-  }
-  
-  .sponsor-name {
-    position: absolute;
-    bottom: -1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-  
-  .sponsor-link:hover .sponsor-name {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-  </style>
-  
+}
+ul:hover li {
+  animation-play-state: paused;
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position:center ;
+}
+
+
+
+
+@keyframes run {
+ to{
+  left:calc(var(--logo-width)*-1);
+ }
+}
+</style>

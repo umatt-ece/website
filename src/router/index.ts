@@ -16,7 +16,13 @@ export const routes = [
     path: '/contact',
     name: 'Contact',
     component: () => import('../views/ContactView.vue')
-  }
+  },
+  {
+    path: '/team',
+    name: 'Team',
+    component: () => import('../views/TeamView.vue')
+  },
+ 
 ]
 
 const router = createRouter({

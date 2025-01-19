@@ -7,6 +7,7 @@ import Card from 'primevue/card'
 import Tag from 'primevue/tag'
 
 
+
 /* =================================================================================================
  * App.vue
  * =================================================================================================
@@ -37,28 +38,21 @@ import Tag from 'primevue/tag'
     </nav>
   </header>
   <RouterView class="router-view"/> <!-- renders 'views' based on current path url/path -->
-  <footer>
-    <div style="margin-top: 0.5em">
-      <Card>
-        <template #content>
-          <p>
-            {{ generic.credits.content }}
-          </p>
-          <template v-for="contributor in generic.credits.contributors" :key="contributor.link">
-            <a :href="contributor.link" target="_blank">
-              <Tag severity="secondary" class="credit-tag" :value="contributor.name" />
-            </a>
-          </template>
-        </template>
-      </Card>
-    </div>
-  </footer>
+  
 </template>
+
 
 <style scoped>
 header {
-  margin-bottom: 6px;
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+  border-radius: 10px;
+
 }
+
 
 nav, .social-icon {
   line-height: 2;
@@ -83,3 +77,4 @@ nav a {
   margin: 0 0.2rem;
 }
 </style>
+ 

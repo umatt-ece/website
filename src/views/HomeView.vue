@@ -9,12 +9,18 @@ import Carousel from 'primevue/carousel'
 import Tag from 'primevue/tag'
 import HeroSection from '@/Components/HeroSection.vue'
 import SponsorBanner from '@/Components/SponsorBanner.vue'
-
+import WhoSection from '@/Components/WhoSection.vue'
+import BecomeSponsor from '@/Components/BecomeSponsor.vue'
+// import JoinUs from '@/Components/JoinUs.vue'
 </script>
 
 <template>
   <HeroSection />
   <SponsorBanner />
+  <WhoSection />
+  <BecomeSponsor />
+
+  <!-- <JoinUs /> -->
   <div class="card">
     <Card class="card-view">
       <template #content>
@@ -44,11 +50,11 @@ import SponsorBanner from '@/Components/SponsorBanner.vue'
         </div>
         <br>
 
-        <Carousel :value="gallery" :numVisible="1" :numScroll="1" circular :autoplayInterval="3000">
+        <!-- <Carousel :value="gallery" :numVisible="1" :numScroll="1" circular :autoplayInterval="3000">
           <template #item="item">
             <img src="@/assets/images/competition-group-photo-2024.jpg" :alt="item.data.alt" class="gallery"/>
           </template>
-        </Carousel>
+        </Carousel> -->
         <br>
 
 <!--        <div class="sponsor-list">-->

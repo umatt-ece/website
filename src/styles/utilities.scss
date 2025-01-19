@@ -1,0 +1,30 @@
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%;}
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--primary-color); }
+}
+
+@keyframes backspace {
+  from { width: 100%; }
+  to { width: 0;}
+}
+
+@mixin typewriter-animation($duration: 4s, $steps: 40 ) {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid var(--primary-color);
+  animation: typewriter $duration steps($steps, end), blink-caret 0.75s step-end forwards;
+}
+
+@mixin backspace( $duration: 2s,$steps: 40 ) {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid var(--primary-color);
+  animation:  backspace $duration steps($steps, end), blink-caret 0.75s step-end calc(2 * $duration ) forwards ;
+}

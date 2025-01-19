@@ -74,19 +74,19 @@ function submitSponsorshipForm() {
                 <p>
                   {{ about.competition.design.content }}
                 </p>
-                <img src="/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
+                <img src="/src/assets/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
               </TabPanel>
               <TabPanel value="1">
                 <p>
                   {{ about.competition.manufacturing.content }}
                 </p>
-                <img src="/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
+                <img src="/src/assets/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
               </TabPanel>
               <TabPanel value="2">
                 <p>
                   {{ about.competition.marketing.content }}
                 </p>
-                <img src="/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
+                <img src="/src/assets/images/competition-group-photo-2024.jpg" alt="" class="panel-image" />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -108,7 +108,7 @@ function submitSponsorshipForm() {
             <Card class="vertical-buffer-1 member-card">
               <template #content>
                 <div class="inline">
-                  <img src="/images/headshot-kam.png" alt="..." class="avatar" />
+                  <img src="/src/assets/images/headshot-kam.png" alt="..." class="avatar" />
                   <div>
                     <h2>
                       {{ generic.councilMembers.captain.title }}
@@ -123,7 +123,7 @@ function submitSponsorshipForm() {
             <Card class="vertical-buffer-1 member-card">
               <template #content>
                 <div class="inline">
-                  <img src="/images/logo.png" alt="..." class="avatar" />
+                  <img src="/src/assets/images/logo.png" alt="..." class="avatar" />
                   <div>
                     <h2>
                       {{ generic.councilMembers.treasurer.title }}
@@ -138,7 +138,7 @@ function submitSponsorshipForm() {
             <Card class="vertical-buffer-1 member-card">
               <template #content>
                 <div class="inline">
-                  <img src="/images/headshot-arik.png" alt="..." class="avatar" />
+                  <img src="/src/assets/images/headshot-arik.png" alt="..." class="avatar" />
                   <div>
                     <h2>
                       {{ generic.councilMembers.mechanicalLead.title }}
@@ -153,7 +153,7 @@ function submitSponsorshipForm() {
             <Card class="vertical-buffer-1 member-card">
               <template #content>
                 <div class="inline">
-                  <img src="/images/headshot-zach.png" alt="..." class="avatar" />
+                  <img src="/src/assets/images/headshot-zach.png" alt="..." class="avatar" />
                   <div>
                     <h2>
                       {{ generic.councilMembers.electricalLead.title }}
@@ -172,7 +172,7 @@ function submitSponsorshipForm() {
           <Card class="vertical-buffer-1 member-card">
             <template #content>
               <div class="inline">
-                <img src="/images/headshot-petkau.png" alt="..." class="avatar" />
+                <img src="/src/assets/images/headshot-petkau.png" alt="..." class="avatar" />
                 <div>
                   <h2>
                     Faculty Advisor

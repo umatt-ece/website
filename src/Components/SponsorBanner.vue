@@ -41,12 +41,15 @@ const ulStyle = computed(() => ({
 }));
 </script>
 
-<style scoped>
+<style scoped lang = "scss">
+@use '/src/styles/base.scss' as *;
+
 .banner-section{
   position: relative;
-  margin: 2rem 0;
+  // margin: 2rem 0;
   padding: 2rem 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: $yellow;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .banner-container{
@@ -89,9 +92,7 @@ li {
   animation: run var(--time) linear infinite;
   
 }
-ul:hover li {
-  animation-play-state: paused;
-}
+
 img {
   width: 100%;
   height: 100%;

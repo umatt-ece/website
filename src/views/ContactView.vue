@@ -22,35 +22,38 @@ function submitForm() {
 </script>
 
 <template>
-  <div class="card">
-    <Card class="card-view">
-      <template #content>
-        <p class="m-0">
-          {{ contact.content }}
-        </p>
-        <br>
-
-        <FloatLabel>
-          <InputText id="email" v-model="email" />
-          <label for="email">{{ generic.form.email }}</label>
-        </FloatLabel>
-        <br>
-
-        <Editor v-model="editor" editorStyle="height: 320px" />
-        <br>
-
-        <div class="inline">
-          <Button :label="generic.form.submit" class="offset" @click="submitForm" />
-          <Checkbox v-model="subscribe" id="subscribe" class="offset" binary />
-          <label for="subscribe" class="offset">{{ generic.form.subscribe }}</label>
-        </div>
-
-      </template>
-    </Card>
+  <div class="layout">
+    <div class="card">
+      <Card class="card-view">
+        <template #content>
+          <p class="m-0">
+            {{ contact.content }}
+          </p>
+          <br>
+          <FloatLabel>
+            <InputText id="email" v-model="email" />
+            <label for="email">{{ generic.form.email }}</label>
+          </FloatLabel>
+          <br>
+          <Editor v-model="editor" editorStyle="height: 320px" />
+          <br>
+          <div class="inline">
+            <Button :label="generic.form.submit" class="offset" @click="submitForm" />
+            <Checkbox v-model="subscribe" id="subscribe" class="offset" binary />
+            <label for="subscribe" class="offset">{{ generic.form.subscribe }}</label>
+          </div>
+        </template>
+      </Card>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.layout{
+  position:relative;
+  z-index: 0;
+  top:4rem;
+}
 .offset {
   margin: 0 0.5rem;
   vertical-align: middle;

@@ -6,6 +6,7 @@
   border-width: 0 !important;;
 }
 
+
 /* Custom color palette */
 :root {
   --umatt-c-white: #f9f9f6;
@@ -27,6 +28,7 @@
   --saffron-hsl: hsla(48, 90%, 47%, 1);
   --saffron-2-hsl: hsla(48, 94%, 47%, 1);
   --black-2-hsl: hsla(0, 0%, 0%, 1);
+   scroll-behavior: smooth;
 }
 
 /* SCSS Variables */
@@ -62,9 +64,32 @@ $gradient-bottom-left: linear-gradient(315deg, #000000ff, #C11718ff, #E6BC0Cff, 
 $gradient-radial: radial-gradient(#000000ff, #C11718ff, #E6BC0Cff, #E7BB07ff, #000000ff);
 
 /* Basic styling for the entire application */
+
+// Updated UMATT Color Palette
+$dark-grey: #1f1f1f;
+$blue: #60afff;
+$yellow: #f5c800;
+$red: #c11718; // Updated red
+$beige: #757575; // Lightened beige
+
+
+
+h1 {
+  color: $red;
+}
+
+blockquote {
+  color: $yellow;
+  border-left: 4px solid $yellow;
+}
+
+a {
+  color: $blue;
+}
 body {
   background: var(--umatt-c-white);
-  color: var(--umatt-c-black);
+  background-color: $dark-grey;
+  color: $beige;
   min-height: 100vh;
   font-family: "Poppins", "Roboto", sans-serif;
   font-size: 15px;

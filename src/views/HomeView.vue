@@ -18,7 +18,7 @@ import BecomeSponsor from '@/Components/BecomeSponsor.vue'
   <HeroSection />
   <SponsorBanner />
   <WhoSection />
-  <BecomeSponsor />
+  <!-- <BecomeSponsor /> -->
 
   <!-- <JoinUs /> -->
   <div class="card">

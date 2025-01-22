@@ -4,27 +4,26 @@ import SpeedDial from 'primevue/speeddial';
 import { Button } from 'primevue';
 
 const Description = ref('Engineering the Future of Agriculture');
-const TeamName = ref('University of Manitoba Association of Tiny Tractors');
 const items = [
   {
     label: 'Facebook',
     icon: 'pi pi-facebook',
     command: () => {
-      window.open('https://facebook.com', '_blank');
+      window.open('https://www.facebook.com/profile.php?id=100057560615097', '_blank');
     },
   },
   {
-    label: 'Twitter',
-    icon: 'pi pi-twitter',
+    label: 'Instagram',
+    icon: 'pi pi-instagram',
     command: () => {
-      window.open('https://twitter.com', '_blank');
+      window.open('https://www.instagram.com/umatt_team', '_blank');
     },
   },
   {
     label: 'LinkedIn',
     icon: 'pi pi-linkedin',
     command: () => {
-      window.open('https://linkedin.com', '_blank');
+      window.open('https://www.linkedin.com/company/umatt/', '_blank');
     },
   },
 ];
@@ -147,7 +146,7 @@ const items = [
 }
 
 .hero svg {
-  height: clamp(4.25rem, 20vw, 15.5rem);
+  height: clamp(4.25rem, 12vw, 16.5rem);
   margin-top: 10px;
   overflow: hidden;
 }
@@ -170,11 +169,11 @@ const items = [
 
 svg path {
   fill: transparent;
-  stroke: var(--umatt-c-red); /* Use custom color */
-  stroke-width: 0.3;
+  stroke: white; /* Use custom color */
+  stroke-width: 0.5;
   stroke-dasharray: 251;
   stroke-dashoffset: 251;
-  animation: draw 4.5s ease-in-out forwards, fill 2s ease-in-out 5s forwards;
+  animation: draw 4.5s ease-in-out forwards, fill 2s ease-in-out 3.5s forwards;
 }
 
 .logo {

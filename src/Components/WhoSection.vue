@@ -11,7 +11,7 @@ const Image = ref('/src/assets/images/competition-team-photo-2024.jpg');
     <div class="about-container">
         <section class ='about' >
             <div class="about-content">
-                <div class="content__title">
+                <div class="content__title blockquote">
                     <h2>{{ Title }}</h2>
                 </div>
                 <div class="content__text">
@@ -29,8 +29,8 @@ const Image = ref('/src/assets/images/competition-team-photo-2024.jpg');
     </div>    
 </template>
 
-<style scoped>
-
+<style scoped lang = "scss">
+@use '/src/styles/base.scss' as *;
 .about-container {
 
     padding: 2rem;
@@ -60,13 +60,14 @@ const Image = ref('/src/assets/images/competition-team-photo-2024.jpg');
 }
 .content__title{
     font-size: clamp(1.5rem, 5vw, 2rem);
-    /* color:var(--umatt-c-gold); */
+    color:$yellow;
     margin-bottom: 1rem;
 }
 .content__text{
     font-size: clamp(.75rem, 3vw, 1.3rem);
     text-align: justify;
     margin-bottom: 1rem;
+    color: #f4f4f4
 }
 .about-image{
     position: relative;

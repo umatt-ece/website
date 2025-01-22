@@ -40,10 +40,10 @@ function submitSponsorshipForm() {
 <template>
   <div class="layout">
     <div class="card">
-      <Card>
+      <Card style="padding: 2rem;">
         <template #content>
           <!-- Introduction -->
-          <h1>
+          <h1 style="color:#fff;padding: 1rem 0;">
             {{ about.team.title }}
           </h1>
           <div>

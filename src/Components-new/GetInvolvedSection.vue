@@ -37,7 +37,7 @@
   justify-content: center;
   padding: 5rem 5%;
   background-color: var(--umatt-c-brown); /* dark yellow background color */
-  color: #000;
+  color: #fff;
 }
 
 .get-involved-content {
@@ -50,14 +50,14 @@
   font-size: 2.5rem;
   font-weight: bold;
   text-align: center;
-  color: #000;
+  color: #fff;
 }
 
 .get-involved-description {
   margin-top: 2rem;
   font-size: 1.25rem;
   text-align: center;
-  color: #000;
+  color: #fff;
 }
 
 .get-involved-options {
@@ -65,17 +65,19 @@
   gap: 2rem;
   margin-top: 4rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .get-involved-option {
-  flex: 1;
-  min-width: 250px;
-  max-width: 33%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background-color: rgba(255, 255, 255, 0.1); /* White with slight opacity */
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
-  color: #000;
+  color: #fff;
 }
 
 .get-involved-option h3 {
@@ -93,7 +95,7 @@
   padding: 1rem 2rem;
   background-color: #ffcc00; /* Yellow button color */
   border-radius: 5px;
-  color: #000;
+  color: #fff;
   text-decoration: none;
   font-weight: bold;
 }

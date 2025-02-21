@@ -60,7 +60,7 @@
   justify-content: center;
   padding: 3rem 5%;
   background-color: #1e2a47; /* dark yellow background color */
-  color: #000;
+  color: #fff;
 }
 
 .footer-content {

@@ -6,7 +6,7 @@
     <div class="footer-content">
       <div class="footer-section">
         <div class="footer-logo">
-          <img src="http://b.io/ext_18-" alt="UMATT Logo" class="logo-img" />
+          <img src="@/assets/images/logo.png" alt="UMATT Logo" class="logo-img" />
           <p class="footer-description">
             Building the future of agricultural engineering, one tiny tractor at a time.
           </p>
@@ -54,6 +54,10 @@
   </footer>
 </template>
 <style scoped>
+.logo-img {
+  width: clamp(2rem, 10vw, 7rem);
+  height: clamp(2rem, 10vw, 7rem);
+}
   .footer-container {
   display: flex;
   flex-direction: column;

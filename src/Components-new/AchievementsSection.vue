@@ -39,11 +39,11 @@
           </blockquote>
           <div class="testimonial-author">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/f08835c56c69047fa398118974d6abf23a88477d31d0d99be8d452e4abca6832"
+              src="@/assets/images/headshot-arik.png"
               alt="Sarah Johnson"
             />
             <div class="testimonial-author-info">
-              <span class="author-name">Sarah Johnson</span>
+              <span class="author-name">Arik M.</span>
               <span class="author-title">Mechanical Engineering Student</span>
             </div>
           </div>
@@ -53,12 +53,11 @@
             "The hands-on experience and teamwork at UMATT are unmatched. It's where theory meets practice."
           </blockquote>
           <div class="testimonial-author">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/62c835765211fac8dc2ea7fd9a1566a15fff7c7830dfddbd94ef0798097eabd7"
-              alt="Michael Chang"
-            />
+           <img 
+           src="@/assets/images/headshot-kam.png" 
+           alt="">
             <div class="testimonial-author-info">
-              <span class="author-name">Michael Chang</span>
+              <span class="author-name">Kameron Ronald</span>
               <span class="author-title">Team Lead</span>
             </div>
           </div>
@@ -134,7 +133,7 @@
 }
 .testimonial-container{
   display:grid ;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
   max-width: 1440px;
   margin: 0 auto;
@@ -181,5 +180,7 @@
   font-size: 0.875rem;
   color: gray;
 }
+
+
 
 </style>

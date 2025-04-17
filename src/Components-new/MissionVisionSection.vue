@@ -50,6 +50,8 @@
   width: 100%;
   background-color: hsl(218, 27%, 95%);
   box-sizing: border-box;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .visually-hidden {

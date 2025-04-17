@@ -52,9 +52,12 @@
   padding: 5rem 5%;
   background-color: var(--umatt-c-brown); /* dark yellow background color */
   color: #fff;
+
 }
 
 .get-involved-content {
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

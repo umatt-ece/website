@@ -56,6 +56,8 @@
   background-color: #f7f7f7;
   box-sizing: border-box;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .what-we-do-content {

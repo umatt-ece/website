@@ -29,7 +29,7 @@
 /* Basic styling for the entire application */
 body {
   /* Page Styling */
-  background: var(--color-background);
+  background: #f5f8fd;
   /* Font Styling */
   color: var(--color-text);
   min-height: 100vh;

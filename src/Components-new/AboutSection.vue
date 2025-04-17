@@ -53,12 +53,15 @@
   background: var(--background-white);
   width: 100%;
   box-sizing: border-box;
+ 
 }
 
 .about-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .about-left {

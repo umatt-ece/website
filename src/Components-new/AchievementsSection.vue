@@ -78,6 +78,7 @@
   padding: 20px;
   width: 100%;
   background-color: white;
+ 
 }
 
 #achievements-title {
@@ -88,11 +89,14 @@
 }
 
 .achievements-container {
+  max-width: 1440px;
+  margin: 0 auto;
   margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: clamp(1rem, 2vw, 4rem);
   justify-content: space-around;
+  
 
 }
 

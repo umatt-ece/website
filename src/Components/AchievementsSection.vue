@@ -125,6 +125,7 @@ onUnmounted(() => {
 
 <template>
   <section id="achievements" class="achievements-section" aria-labelledby="achievements-title">
+    <div class="pattern-overlay"></div>
     <div class="container">
       <header class="section-header">
         <h2 id="achievements-title" class="section-heading">
@@ -134,7 +135,7 @@ onUnmounted(() => {
         <p class="section-intro">Recognized excellence in agricultural engineering innovation and design.</p>
       </header>
       
-      <!-- Achievement Cards -->
+      <!-- Achievement Cards with Improved Layout -->
       <div class="achievements-container">
         <div 
           v-for="achievement in achievements" 
@@ -153,7 +154,7 @@ onUnmounted(() => {
         </div>
       </div>
       
-      <!-- Testimonials Section -->
+      <!-- Enhanced Testimonials Section -->
       <div class="testimonials-section">
         <h3 class="testimonials-heading">What Our Members Say</h3>
         
@@ -173,7 +174,9 @@ onUnmounted(() => {
               "{{ testimonial.quote }}"
             </blockquote>
             <div class="testimonial-author">
-              <img :src="testimonial.author.image" :alt="`${testimonial.author.name}, ${testimonial.author.title}`" />
+              <div class="author-image-container">
+                <img :src="testimonial.author.image" :alt="`${testimonial.author.name}, ${testimonial.author.title}`" />
+              </div>
               <div class="testimonial-author-info">
                 <span class="author-name">{{ testimonial.author.name }}</span>
                 <span class="author-title">{{ testimonial.author.title }}</span>
@@ -182,7 +185,7 @@ onUnmounted(() => {
           </div>
         </div>
         
-        <!-- Mobile view: Carousel for smaller screens -->
+        <!-- Improved Mobile Carousel -->
         <div class="testimonials-carousel">
           <div class="carousel-wrapper">
             <div class="carousel-track">
@@ -201,7 +204,9 @@ onUnmounted(() => {
                     "{{ testimonial.quote }}"
                   </blockquote>
                   <div class="testimonial-author">
-                    <img :src="testimonial.author.image" :alt="`${testimonial.author.name}, ${testimonial.author.title}`" />
+                    <div class="author-image-container">
+                      <img :src="testimonial.author.image" :alt="`${testimonial.author.name}, ${testimonial.author.title}`" />
+                    </div>
                     <div class="testimonial-author-info">
                       <span class="author-name">{{ testimonial.author.name }}</span>
                       <span class="author-title">{{ testimonial.author.title }}</span>
@@ -211,7 +216,7 @@ onUnmounted(() => {
               </div>
             </div>
             
-            <!-- Carousel navigation controls -->
+            <!-- Enhanced Carousel Controls -->
             <div class="carousel-controls">
               <button type="button" class="carousel-prev" aria-label="Previous testimonial">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -241,125 +246,189 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* Base styles with improved aesthetics */
 .achievements-section {
-  padding: 5rem 1.5rem;
-  background: var(--background-white, #ffffff);
+  padding: 6rem 1.5rem;
+  background-color: #f8f9fa;
   position: relative;
   overflow: hidden;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Added subtle pattern overlay for visual interest */
+.pattern-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23385E9D' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: 0;
 }
 
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced header styling */
 .section-header {
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: 4rem;
 }
 
 .section-heading {
-  font-size: 2.75rem;
-  font-weight: 700;
-  color: var(--black, #000000);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 800;
+  color: #212529;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
 
 .highlight {
-  color: var(--umatt-c-medium-blue, #385E9D);
+  color: #385E9D;
+  position: relative;
 }
 
+/* Animated underline */
 .heading-underline {
   width: 80px;
   height: 4px;
-  background: var(--umatt-c-gold, #F2A900);
+  background: linear-gradient(90deg, #F2A900, #FFD166);
   border-radius: 2px;
-  margin: 0.75rem auto;
+  margin: 0.75rem auto 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.heading-underline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
 }
 
 .section-intro {
   font-size: 1.125rem;
   line-height: 1.6;
-  color: #555;
+  color: #495057;
   max-width: 700px;
   margin: 0 auto;
 }
 
-/* Achievement cards */
+/* Improved achievement cards container */
 .achievements-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 5rem;
 }
 
+/* Enhanced card styling */
 .achievement-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   background-color: #fff;
-  border-radius: 12px;
-  width:clamp(300px, 30vw, 350px);
-  height: clamp(300px, 30vw, 350px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  min-height: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .achievement-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(242, 169, 0, 0.3);
 }
 
+/* Enhanced icon styling */
 .achievement-icon-wrapper {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  background-color: rgba(242, 169, 0, 0.1);
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, rgba(242, 169, 0, 0.1) 0%, rgba(255, 209, 102, 0.15) 100%);
   border-radius: 50%;
-  padding: 1.25rem;
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
 }
 
+.achievement-card:hover .achievement-icon-wrapper {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(242, 169, 0, 0.15) 0%, rgba(255, 209, 102, 0.25) 100%);
+}
+
+.achievement-icon-wrapper svg {
+  filter: drop-shadow(0 4px 8px rgba(242, 169, 0, 0.25));
+}
+
+/* Content styling */
 .achievement-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .achievement-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: var(--black, #000000);
+  margin-bottom: 1rem;
+  color: #212529;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.achievement-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background-color: #F2A900;
+  border-radius: 1.5px;
 }
 
 .achievement-description {
   font-size: 1rem;
   line-height: 1.6;
-  color: #555;
+  color: #6c757d;
   margin: 0;
 }
 
-/* Testimonials section */
+/* Testimonials section improvements */
 .testimonials-section {
-  padding: 3rem 0 1rem;
+  padding: 2rem 0 3rem;
   position: relative;
 }
 
 .testimonials-heading {
   text-align: center;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
-  margin-bottom: 2.5rem;
-  color: var(--black, #000000);
+  margin-bottom: 3rem;
+  color: #212529;
   position: relative;
 }
 
@@ -368,60 +437,80 @@ onUnmounted(() => {
   position: absolute;
   width: 60px;
   height: 3px;
-  background: var(--umatt-c-gold, #F2A900);
+  background: linear-gradient(90deg, #F2A900, #FFD166);
   left: 50%;
   bottom: -0.75rem;
   transform: translateX(-50%);
   border-radius: 2px;
 }
 
+/* Desktop testimonials grid */
 .testimonials-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2.5rem;
 }
 
+/* Enhanced testimonial card */
 .testimonial-card {
   position: relative;
-  padding: 2rem;
+  padding: 2.5rem;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .testimonial-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(56, 94, 157, 0.2);
 }
 
 .quote-icon {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 2rem;
+  right: 2rem;
 }
 
+/* Quote styling */
 .testimonial-quote {
   font-size: 1.125rem;
   line-height: 1.7;
-  color: #333;
-  margin: 0 0 1.5rem 0;
+  color: #495057;
+  margin: 0 0 2rem 0;
   font-style: italic;
+  flex: 1;
 }
 
+/* Author section improvements */
 .testimonial-author {
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1.5rem;
+  margin-top: auto;
+}
+
+.author-image-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #F2A900;
+  margin-right: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial-author img {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  margin-right: 1rem;
-  border: 2px solid var(--umatt-c-gold, #F2A900);
-  object-fit: cover; /* Ensures proper image proportions */
-  background-color: #f0f0f0; /* Placeholder background if image fails to load */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .testimonial-author-info {
@@ -430,22 +519,20 @@ onUnmounted(() => {
 }
 
 .author-name {
-  display: block;
   font-size: 1.125rem;
   font-weight: 700;
-  color: #333333 !important; /* Force color to ensure visibility */
+  color: #212529;
   margin-bottom: 0.25rem;
 }
 
 .author-title {
-  display: block;
   font-size: 0.875rem;
-  color: #555;
+  color: #6c757d;
 }
 
-/* Testimonial Carousel Styling */
+/* Improved carousel for mobile */
 .testimonials-carousel {
-  display: none; /* Hidden by default, shown on small/medium screens */
+  display: none;
   position: relative;
   max-width: 600px;
   margin: 0 auto;
@@ -458,14 +545,14 @@ onUnmounted(() => {
 
 .carousel-track {
   display: flex;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .carousel-slide {
   flex: 0 0 100%;
   width: 100%;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
   display: none;
 }
 
@@ -474,59 +561,81 @@ onUnmounted(() => {
   display: block;
 }
 
+/* Enhanced carousel controls */
 .carousel-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
 }
 
 .carousel-prev, 
 .carousel-next {
-  background: var(--umatt-c-medium-blue, #385E9D);
+  background: #385E9D;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(56, 94, 157, 0.2);
 }
 
 .carousel-prev:hover, 
 .carousel-next:hover {
-  background: var(--umatt-c-gold, #F2A900);
+  background: #F2A900;
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(242, 169, 0, 0.3);
 }
 
 .carousel-indicators {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .carousel-indicator {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #ccc;
+  background: #dee2e6;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-indicator.active {
-  width: 12px;
-  height: 12px;
-  background: var(--umatt-c-gold, #F2A900);
+  width: 14px;
+  height: 14px;
+  background: #F2A900;
+  box-shadow: 0 2px 5px rgba(242, 169, 0, 0.3);
 }
 
-
+/* Responsive improvements */
+@media (max-width: 1100px) {
+  .achievements-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .testimonials-container {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
 
 @media (max-width: 1024px) {
+  .achievements-section {
+    padding: 5rem 2rem;
+  }
+  
   .section-heading {
     font-size: 2.25rem;
   }
@@ -542,60 +651,73 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .achievements-section {
-    padding: 4rem 1.25rem;
+    padding: 4rem 1.5rem;
   }
   
-  .section-heading {
-    font-size: 2rem;
+  .achievements-container {
+    gap: 1.5rem;
   }
   
   .achievement-card {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
+    min-height: 280px;
   }
   
   .achievement-icon-wrapper {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .testimonials-container {
-    display: none;
-  }
-  
-  .testimonials-carousel {
-    display: block;
+    width: 75px;
+    height: 75px;
+    margin-bottom: 1.5rem;
   }
   
   .testimonial-card {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 }
 
 @media (max-width: 576px) {
   .achievements-section {
-    padding: 3rem 1rem;
+    padding: 3.5rem 1.25rem;
+  }
+  
+  .section-header {
+    margin-bottom: 3rem;
   }
   
   .section-heading {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
   }
   
   .section-intro {
     font-size: 1rem;
   }
   
- 
+  .achievement-card {
+    padding: 1.75rem 1.25rem;
+    min-height: 260px;
+  }
+  
+  .achievement-icon-wrapper {
+    width: 65px;
+    height: 65px;
+    padding: 1.25rem;
+  }
   
   .achievement-title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
   
   .testimonials-heading {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
   }
   
   .testimonial-quote {
     font-size: 1rem;
+  }
+  
+  .author-image-container {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

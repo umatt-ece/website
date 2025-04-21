@@ -69,7 +69,7 @@ const missionVisionData = [
   padding: 4rem 1.5rem;
   background: linear-gradient(135deg, #f0f4fa 0%, #e6eef9 100%);
   width: 100%;
-  margin: 0 auto;
+
   position: relative;
   overflow: hidden;
 }
@@ -254,8 +254,7 @@ const missionVisionData = [
 @media (min-width: 1024px) {
   .mission-vision-section {
     padding: 7rem 2rem;
-    max-width: 1440px;
-    margin: 0 auto;
+   
   }
   
   .section-title {

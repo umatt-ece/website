@@ -1,11 +1,11 @@
 <script setup>
-import HeroSection from '@/Components-new/HeroSection.vue'
-import AboutSection from '@/Components-new/AboutSection.vue'
-import WhatWeDoSection from '@/Components-new/WhatWeDoSection.vue'
-import MissionVisionSection from '@/Components-new/MissionVisionSection.vue'
-import AchievementsSection from '@/Components-new/AchievementsSection.vue'
-import GetInvolvedSection from '@/Components-new/GetInvolvedSection.vue'
-import CustomFooter from '@/Components-new/FooterView.vue'
+import HeroSection from '@/Components/HeroSection.vue'
+import AboutSection from '@/Components/AboutSection.vue'
+import WhatWeDoSection from '@/Components/WhatWeDoSection.vue'
+import MissionVisionSection from '@/Components/MissionVisionSection.vue'
+import AchievementsSection from '@/Components/AchievementsSection.vue'
+import GetInvolvedSection from '@/Components/GetInvolvedSection.vue'
+import Footer from '@/Components/FooterView.vue'
 
 
 </script>
@@ -18,6 +18,6 @@ import CustomFooter from '@/Components-new/FooterView.vue'
         <MissionVisionSection />
         <AchievementsSection />
         <GetInvolvedSection />
-        <CustomFooter />
+        <Footer />
  
 </template>

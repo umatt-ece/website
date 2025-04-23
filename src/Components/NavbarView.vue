@@ -47,11 +47,9 @@ const navItems = [
 ];
 
 
-const actionItems = [
-{ label: 'Join Us', icon: 'pi pi-user-plus', href: '#join' },
-  { label: 'Sponsor', icon: 'pi pi-dollar', href: '#sponsor' },
+
  
-]
+
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;

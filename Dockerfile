@@ -1,5 +1,5 @@
 # Use the official Node.js image from the Docker Hub as a base
-FROM node:20-alpine AS builder
+FROM node:slim AS builder
 
 # Set the working directory in the container
 WORKDIR /app

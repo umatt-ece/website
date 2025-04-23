@@ -1,754 +1,481 @@
 <template>
-  <header class="navbar" :class="{ 'navbar--scrolled': isScrolled, 'navbar--open': isMenuOpen }">
-    <!-- Container with max width -->
+  <nav class="navbar" :class="{ 'navbar--scrolled': isScrolled, 'navbar--open': isOpen }">
     <div class="navbar__container">
-      <!-- Logo area -->
-      <router-link to="/" class="navbar__brand" @click="closeMenu">
+      <!-- Logo and team name -->
+      <div class="navbar__brand">
         <img src="@/assets/images/logo.png" alt="UMATT Logo" class="navbar__logo" />
-        <div class="navbar__titles">
-          <span class="navbar__title">UMATT</span>
-          <span class="navbar__subtitle">University of Manitoba Association of Tiny Tractors</span>
-        </div>
-      </router-link>
-
-      <!-- Mobile toggle button -->
-      <button 
-        class="navbar__toggle" 
-        @click="toggleMenu" 
-        aria-label="Toggle navigation menu"
-        :aria-expanded="isMenuOpen.toString()"
-      >
-        <span class="navbar__toggle-bar"></span>
-        <span class="navbar__toggle-bar"></span>
-        <span class="navbar__toggle-bar"></span>
-      </button>
-
-      <!-- Navigation and actions -->
-      <div class="navbar__content" :class="{ 'navbar__content--visible': isMenuOpen }">
-        <!-- Main navigation -->
-        <nav class="navbar__nav" aria-label="Main navigation">
-          <ul class="navbar__nav-list">
-            <li v-for="(item, index) in navItems" :key="index" class="navbar__nav-item">
-              <router-link 
-                :to="item.to" 
-                class="navbar__nav-link" 
-                :class="{ 'navbar__nav-link--active': isActive(item.to) }"
-                @click="closeMenu"
-              >
-                <i :class="['navbar__nav-icon', item.icon]"></i>
-                <span class="navbar__nav-text">{{ item.label }}</span>
-              </router-link>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Action buttons -->
-        <div class="navbar__actions">
-          <router-link to="/join" class="navbar__button" @click="closeMenu">
-            <i class="pi pi-user-plus navbar__button-icon"></i>
-            <span class="navbar__button-text">Join Us</span>
-          </router-link>
+        <div class="navbar__title">
+          <span class="navbar__name">UMATT</span>
+          <span class="navbar__full-name">University of Manitoba Association of Tiny Tractors</span>
         </div>
       </div>
 
-      <!-- Menu backdrop overlay for mobile -->
-      <div class="navbar__backdrop" @click="closeMenu"></div>
+      <!-- Mobile toggle button -->
+      <button class="navbar__toggle" @click="toggleMenu" aria-label="Toggle navigation menu">
+        <span class="navbar__toggle-icon"></span>
+      </button>
+
+      <!-- Navigation links -->
+      <div class="navbar__menu">
+        <ul class="navbar__list">
+          <li class="navbar__item" v-for="item in navItems" :key="item.label">
+            <a :href="item.href" class="navbar__link" @click="closeMenu">
+              <i :class="item.icon" class="navbar__icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </header>
+  </nav>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute } from 'vue-router';
+import router from '@/router';
+import { ref, onMounted, onUnmounted } from 'vue';
 
-const route = useRoute();
 const isScrolled = ref(false);
-const isMenuOpen = ref(false);
+const isOpen = ref(false);
+const onTopHome = ref(false);
 
-// Navigation items
+
 const navItems = [
-  { 
-    label: 'Home', 
-    icon: 'pi pi-home',
-    to: '/' 
-  },
-  { 
-    label: 'About', 
-    icon: 'pi pi-info-circle',
-    to: '/about'
-  },
-  {
-    label: 'Team', 
-    icon: 'pi pi-users',
-    to: '/team'
-  },
-  {
-    label: 'Sponsor', 
-    icon: 'pi pi-briefcase',
-    to: '/sponsor'
-  },
-  { 
-    label: 'Contact', 
-    icon: 'pi pi-envelope',
-    to: '/contact'
-  }
+  { label: 'Home', icon: 'pi pi-home', href: '/' },
+  { label: 'About', icon: 'pi pi-info', href: '/about' },
+  { label: 'Team', icon: 'pi pi-users', href: '/team' },
+  { label: 'Contact', icon: 'pi pi-envelope', href: '/contact' },
 ];
 
-// Check if route is active
-const isActive = (path: string) => {
-  return route.path === path;
-};
 
-// Toggle mobile menu
+const actionItems = [
+{ label: 'Join Us', icon: 'pi pi-user-plus', href: '#join' },
+  { label: 'Sponsor', icon: 'pi pi-dollar', href: '#sponsor' },
+ 
+]
+
 const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
-  document.body.style.overflow = isMenuOpen.value ? 'hidden' : '';
+  isOpen.value = !isOpen.value;
+  // Prevent scrolling when menu is open
+  document.body.style.overflow = isOpen.value ? 'hidden' : '';
 };
 
-// Close mobile menu 
 const closeMenu = () => {
-  if (isMenuOpen.value) {
-    isMenuOpen.value = false;
-    document.body.style.overflow = '';
-  }
+  isOpen.value = false;
+  document.body.style.overflow = '';
 };
 
-// Handle window scroll for navbar styling
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
 };
 
-// Listen for window resize to close menu on larger screens
-const handleResize = () => {
-  if (window.innerWidth >= 1024 && isMenuOpen.value) {
-    closeMenu();
+
+const onTopHomeView = () => {
+  const onHome = router.currentRoute.value.path === '/home';
+  const onTop = window.scrollY === 0;
+
+  if (onHome && onTop) {
+    isScrolled.value = false;
+  } else {
+    isScrolled.value = true;
   }
+
+  onTopHome.value = onTop && onHome;
+
+  
 };
 
-// Setup and cleanup event listeners
+
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('resize', handleResize);
-  handleScroll(); // Check initial scroll position
+  window.addEventListener('scroll', handleScroll);
+  handleScroll(); // Initial check
+  onTopHomeView(); // Initial check for onTopHome
+
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
-  window.removeEventListener('resize', handleResize);
-  document.body.style.overflow = ''; // Ensure body scroll is restored
+  document.body.style.overflow = ''; // Restore scrolling
 });
 </script>
 
-<style>
-/* 
-  Mobile-first navbar using BEM naming convention
-  Variables are defined inline for component encapsulation
-*/
-
-/* Base navbar */
+<style scoped>
 .navbar {
-  --navbar-height: 4rem;
-  --navbar-height-scrolled: 3.5rem;
-  --navbar-bg: #ffffff;
-  --navbar-border: #F2A900;
-  --navbar-shadow: rgba(0, 0, 0, 0.08);
-  --navbar-shadow-scrolled: rgba(0, 0, 0, 0.15);
-  --text-primary: #4A3114;
-  --text-secondary: #385E9D;
-  --text-active: #385E9D;
-  --accent-color: #F2A900;
-  --transition-speed: 0.3s;
-  
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--navbar-height);
-  background-color: var(--navbar-bg);
-  box-shadow: 0 2px 8px var(--navbar-shadow);
-  border-bottom: 3px solid var(--navbar-border);
   z-index: 1000;
-  transition: height var(--transition-speed) ease, 
-              box-shadow var(--transition-speed) ease;
-  will-change: height, box-shadow;
+  transition: all 0.4s var(--transition-timing, cubic-bezier(0.16, 1, 0.3, 1));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* When scrolled down */
 .navbar--scrolled {
-  --navbar-shadow: var(--navbar-shadow-scrolled);
-  height: var(--navbar-height-scrolled);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid var(--color-gold, #F2A900);
 }
 
-/* Main container */
 .navbar__container {
-  max-width: 1440px;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  padding: 0 clamp(1rem, 5vw, 2.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 4.5rem;
 }
 
-/* Brand/logo section */
 .navbar__brand {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  height: 100%;
-  z-index: 20;
-  padding: 0.25rem 0;
+  gap: 0.85rem;
+  transition: transform 0.3s ease;
 }
 
 .navbar__brand:hover {
-  opacity: 0.9;
-}
-
-.navbar__brand:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 4px;
+  transform: translateY(-2px);
 }
 
 .navbar__logo {
-  height: calc(var(--navbar-height) * 0.6);
+  height: 3.2rem;
   width: auto;
-  margin-right: 0.75rem;
-  transition: height var(--transition-speed) ease;
-  will-change: height;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
 }
 
-.navbar--scrolled .navbar__logo {
-  height: calc(var(--navbar-height-scrolled) * 0.6);
-}
-
-.navbar__titles {
-  display: flex;
-  flex-direction: column;
+.navbar__logo:hover {
+  transform: scale(1.08) rotate(2deg);
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.15));
 }
 
 .navbar__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.1;
-}
-
-.navbar__subtitle {
-  display: none; /* Hidden on mobile */
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-/* Mobile toggle button */
-.navbar__toggle {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 2rem;
-  height: 1.5rem;
+}
+
+.navbar__name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-brown, #4F2C1D);
+  line-height: 1.1;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  letter-spacing: 0.02em;
+}
+
+.navbar__full-name {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--color-gray-600, #4B5563);
+  transition: color 0.3s ease;
+}
+
+.navbar__brand:hover .navbar__full-name {
+  color: var(--color-blue-medium, #385E9D);
+}
+
+.navbar__toggle {
+  display: none; /* Hidden on desktop */
   background: transparent;
   border: none;
   cursor: pointer;
+  width: 2.8rem;
+  height: 2.8rem;
+  position: relative;
+  z-index: 101;
   padding: 0;
-  z-index: 20;
-  transition: transform 0.2s ease;
+  border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
 .navbar__toggle:hover {
-  transform: scale(1.05);
+  background-color: rgba(242, 169, 0, 0.1);
 }
 
-.navbar__toggle:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 4px;
-}
-
-.navbar__toggle-bar {
-  width: 100%;
+.navbar__toggle-icon,
+.navbar__toggle-icon::before,
+.navbar__toggle-icon::after {
+  display: block;
+  position: absolute;
+  width: 1.75rem;
   height: 2px;
-  background-color: var(--text-primary);
+  background-color: var(--color-brown, #4F2C1D);
+  transition: all 0.3s ease;
   border-radius: 2px;
-  transition: transform var(--transition-speed) ease,
-              opacity var(--transition-speed) ease;
-  will-change: transform, opacity;
 }
 
-/* Animation for toggle button */
-.navbar--open .navbar__toggle-bar:nth-child(1) {
-  transform: translateY(10px) rotate(45deg);
+.navbar__toggle-icon {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.navbar--open .navbar__toggle-bar:nth-child(2) {
-  opacity: 0;
-}
-
-.navbar--open .navbar__toggle-bar:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg);
-}
-
-/* Navigation content area */
-.navbar__content {
-  position: fixed;
-  top: var(--navbar-height);
-  right: 0;
-  width: 100%;
-  height: calc(100vh - var(--navbar-height));
-  background-color: var(--navbar-bg);
-  transform: translateX(100%);
-  transition: transform var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  z-index: 10;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  will-change: transform;
-  visibility: hidden;
-}
-
-.navbar__content--visible {
-  visibility: visible;
-}
-
-.navbar--open .navbar__content {
-  transform: translateX(0);
-}
-
-.navbar--scrolled .navbar__content {
-  top: var(--navbar-height-scrolled);
-  height: calc(100vh - var(--navbar-height-scrolled));
-}
-
-/* Backdrop overlay */
-.navbar__backdrop {
-  position: fixed;
-  top: 0;
+.navbar__toggle-icon::before,
+.navbar__toggle-icon::after {
+  content: '';
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--transition-speed) ease,
-              visibility 0s linear var(--transition-speed);
-  will-change: opacity;
-  backdrop-filter: blur(2px);
 }
 
-.navbar--open .navbar__backdrop {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity var(--transition-speed) ease,
-              visibility 0s linear 0s;
+.navbar__toggle-icon::before {
+  top: -8px;
 }
 
-/* Navigation styling */
-.navbar__nav {
-  padding: 1.5rem 1rem 1rem;
+.navbar__toggle-icon::after {
+  bottom: -8px;
 }
 
-.navbar__nav-list {
+/* Toggle button animation */
+.navbar--open .navbar__toggle-icon {
+  background-color: transparent;
+}
+
+.navbar--open .navbar__toggle-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.navbar--open .navbar__toggle-icon::after {
+  bottom: 0;
+  transform: rotate(-45deg);
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__list {
+  display: flex;
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
-.navbar__nav-item {
-  width: 100%;
-  overflow: hidden;
-}
-
-.navbar__nav-link {
+.navbar__link {
   display: flex;
   align-items: center;
-  padding: 0.875rem 1rem;
-  color: var(--text-primary);
+  padding: 0.5rem 1.1rem;
+  color: var(--color-brown, #4F2C1D);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: all 0.3s ease;
   border-radius: 0.375rem;
-  transition: background-color 0.2s ease,
-              color 0.2s ease;
   position: relative;
   overflow: hidden;
 }
 
-.navbar__nav-link::before {
+.navbar__link::after {
   content: '';
   position: absolute;
-  left: 0;
   bottom: 0;
-  width: 4px;
-  height: 0;
-  background-color: var(--accent-color);
-  transition: height 0.2s ease;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: var(--color-gold, #F2A900);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 3px 3px 0 0;
 }
 
-.navbar__nav-link:hover,
-.navbar__nav-link:focus-visible {
-  background-color: rgba(74, 49, 20, 0.08);
-  color: var(--text-active);
+.navbar__link:hover::after, 
+.navbar__link:focus::after {
+  width: 80%;
 }
 
-.navbar__nav-link:hover::before {
-  height: 100%;
-}
-
-.navbar__nav-link:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: -2px;
-}
-
-.navbar__nav-link--active {
-  color: var(--text-active);
-  font-weight: 600;
-  background-color: rgba(56, 94, 157, 0.08);
-}
-
-.navbar__nav-link--active::before {
-  height: 100%;
-}
-
-.navbar__nav-icon {
-  margin-right: 0.75rem;
-  font-size: 1.125rem;
-  color: currentColor;
-  flex-shrink: 0;
-}
-
-.navbar__nav-text {
-  line-height: 1.4;
-}
-
-/* Action buttons - improved styling */
-.navbar__actions {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  margin-top: auto; /* Push to bottom on mobile */
-}
-
-.navbar__button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 300px; /* Prevent excessive width on mobile */
-  padding: 0.75rem 1.25rem; /* More consistent padding */
-  background-color: var(--text-secondary);
-  color: white;
-  border: none;
-  border-radius: 0.5rem; /* Less extreme border-radius */
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease,
-              transform 0.2s ease,
-              box-shadow 0.2s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle initial shadow */
-  height: 2.75rem; /* Consistent height */
-}
-
-.navbar__button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg, 
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transition: left 0.6s ease;
-}
-
-.navbar__button:hover,
-.navbar__button:focus-visible {
-  background-color: var(--text-primary);
+.navbar__link:hover, 
+.navbar__link:focus {
+  color: var(--color-brown, #4F2C1D);
+  background-color: rgba(242, 169, 0, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  outline: none;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 
-.navbar__button:hover::before {
-  left: 100%;
-}
-
-.navbar__button:focus-visible {
-  outline: 2px solid white;
-  outline-offset: 2px;
-}
-
-.navbar__button:active {
-  transform: translateY(0);
-}
-
-.navbar__button-icon {
+.navbar__icon {
   margin-right: 0.5rem;
-  font-size: 1rem;
+  transition: transform 0.3s ease;
+  color: var(--color-gold, #F2A900);
 }
 
-.navbar__button-text {
-  font-size: 0.95rem; /* Consistent font size */
-  white-space: nowrap; /* Prevent text wrapping */
+.navbar__link:hover .navbar__icon {
+  transform: translateY(-2px);
 }
 
-/* Desktop adjustments for button */
+/* Desktop+ screens */
 @media (min-width: 1024px) {
-  .navbar__actions {
-    padding: 0 0 0 1rem;
-    border-top: none;
-    margin-top: 0;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar__button {
-    width: auto;
-    padding: 0.5rem 1.25rem;
-    border-radius: 2rem; /* Return to pill shape on desktop */
-    height: 2.5rem; /* Slightly smaller height on desktop */
-    min-width: 120px; /* Ensure minimum width */
-  }
-}
-
-/* Tablet adjustments */
-@media (min-width: 640px) {
-  .navbar__container {
-    padding: 0 1.5rem;
-  }
-  
-  .navbar__subtitle {
+  .navbar__full-name {
     display: block;
   }
-  
-  .navbar__title {
-    font-size: 1.5rem;
+
+  /* Add a subtle animation when the navbar first appears */
+  .navbar {
+    animation: fadeIn 0.5s ease-in-out;
   }
   
-  .navbar__content {
-    width: 60%;
-    max-width: 360px;
-    border-left: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  
-  .navbar__nav-link::before {
-    width: 5px;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
-/* Desktop layout */
-@media (min-width: 1024px) {
-  .navbar__container {
-    padding: 0 2rem;
-  }
-  
+/* Responsive styles */
+@media (max-width: 900px) {
   .navbar__toggle {
-    display: none;
+    display: block; /* Show on mobile */
   }
   
-  .navbar__content {
-    position: static;
-    height: 100%;
-    width: auto;
-    transform: none !important;
-    flex-direction: row;
+  .navbar__menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(248, 248, 248, 0.98));
+    padding-top: 5rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    overflow: visible;
-    border: none;
-    background-color: transparent;
-    box-shadow: none;
-    visibility: visible;
+    text-align: center;
   }
   
-  .navbar__nav {
-    padding: 0;
-    margin-left: 2rem;
+  .navbar--open .navbar__menu {
+    right: 0;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
   }
   
-  .navbar__nav-list {
-    flex-direction: row;
-    gap: 0.35rem;
+  .navbar__list {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    width: 100%;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.1s;
   }
   
-  .navbar__nav-item {
-    width: auto;
+  .navbar--open .navbar__list {
+    opacity: 1;
+    transform: translateY(0);
   }
   
-  .navbar__nav-link {
-    padding: 0.5rem 1rem;
-    position: relative;
+  .navbar__item {
+    width: 100%;
+    max-width: 300px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
   }
   
-  .navbar__nav-link::before {
-    content: '';
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: 0.3rem;
-    width: auto;
-    height: 0;
-    background-color: var(--accent-color);
-    transition: height 0.2s ease;
+  .navbar--open .navbar__item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+  .navbar--open .navbar__item:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+  .navbar--open .navbar__item:nth-child(3) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+  .navbar--open .navbar__item:nth-child(4) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+  .navbar--open .navbar__item:nth-child(5) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+  .navbar--open .navbar__item:nth-child(6) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+  
+  .navbar__link {
+    width: 100%;
+    justify-content: center;
+    font-size: 1.1rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
   
-  .navbar__nav-link--active::before {
-    height: 2px;
-  }
-  
-  .navbar__nav-link:hover::before {
-    height: 2px;
-  }
-  
-  .navbar__actions {
-    padding: 0 0 0 1rem;
-    border-top: none;
-    margin-top: 0;
-    margin-left: auto;
-  }
-  
-  .navbar__button {
-    width: auto;
-    padding: 0.5rem 1.25rem;
-  }
-  
-  .navbar__backdrop {
+  .navbar__link::after {
     display: none;
   }
-}
-
-/* Large screens */
-@media (min-width: 1280px) {
-  .navbar__nav {
-    margin-left: 3rem;
+  
+  .navbar__link:hover, 
+  .navbar__link:focus {
+    background-color: var(--color-brown, #4F2C1D);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
   
-  .navbar__nav-link {
-    padding: 0.5rem 1.25rem;
+  .navbar__link:hover .navbar__icon {
+    color: var(--color-gold, #F2A900);
   }
   
-  .navbar__nav-icon {
-    font-size: 1rem;
-  }
-}
-
-/* Prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .navbar,
-  .navbar__logo,
-  .navbar__toggle-bar,
-  .navbar__content,
-  .navbar__backdrop,
-  .navbar__nav-link,
-  .navbar__button,
-  .navbar__button::before {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
-/* Add these fixes to your existing styles */
-
-/* Fix for medium laptop screens - adjust padding and spacing */
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Reduced container padding */
   .navbar__container {
     padding: 0 1rem;
+    height: 4rem;
   }
   
-  /* Smaller logo */
+  /* Enhance mobile menu appearance */
+  .navbar--scrolled {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Medium-small screens */
+@media (max-width: 500px) {
   .navbar__logo {
-    height: calc(var(--navbar-height) * 0.5);
+    height: 2.8rem;
   }
   
-  /* Narrower navigation */
-  .navbar__nav {
-    margin-left: 1rem;
+  .navbar__name {
+    font-size: 1.2rem;
   }
   
-  /* Tighter navigation spacing */
-  .navbar__nav-list {
-    gap: 0.15rem;
-  }
-  
-  /* More compact navigation items */
-  .navbar__nav-link {
-    padding: 0.5rem 0.65rem;
-    font-size: 0.9rem;
-  }
-  
-  .navbar__nav-icon {
-    margin-right: 0.5rem;
-    font-size: 0.9rem;
-  }
-  
-  /* Smaller button */
-  .navbar__button {
-    min-width: auto;
-    padding: 0.5rem 0.75rem;
-  }
-  
-  /* Hide subtitle on medium screens that are too narrow */
-  @media (max-width: 900px) {
-    .navbar__subtitle {
-      display: none;
-    }
-    
-    .navbar__title {
-      font-size: 1.3rem;
-    }
+  .navbar__container {
+    height: 3.8rem;
   }
 }
 
-/* Make navigation wrap if needed */
-@media (min-width: 1024px) and (max-width: 1200px) {
-  .navbar__nav-list {
-    flex-wrap: wrap;
+/* Very small screens */
+@media (max-width: 350px) {
+  .navbar__name {
+    font-size: 1.1rem;
   }
   
-  .navbar__nav-link {
-    padding: 0.5rem 0.75rem;
+  .navbar__logo {
+    height: 2.5rem;
+  }
+  
+  .navbar__container {
+    padding: 0 0.75rem;
+    height: 3.5rem;
   }
 }
 
-/* Ensure nav container doesn't overflow */
-@media (min-width: 1024px) {
-  .navbar__content {
-    max-width: calc(100% - 200px); /* Reserve space for logo */
+/* Animation for navbar appearance */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
   }
-  
-  /* Add this to allow wrapping for tighter spaces */
-  .navbar__nav-list {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-/* Add a conditional vertical layout for very tight horizontal spaces */
-@media (min-width: 1024px) and (max-width: 1150px) {
-  /* Allow vertical stacking of nav and buttons when space is tight */
-  .navbar__content {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+
+/* Improved focus styles for accessibility */
+.navbar__link:focus-visible {
+  outline: 2px solid var(--color-gold, #F2A900);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(242, 169, 0, 0.3);
+}
+
+/* Add a subtle hover effect to the navbar container on desktop */
+@media (min-width: 901px) {
+  .navbar:hover {
+    transform: translateY(1px);
   }
   
-  .navbar__actions {
-    margin-top: 0.35rem;
-    width: 100%;
-    justify-content: flex-end;
-    padding-left: 0;
+  .navbar--scrolled:hover {
+    border-bottom-color: var(--color-blue-medium, #385E9D);
   }
 }
 </style>
+``` 

@@ -21,7 +21,17 @@ export const routes = [
   {
     path: '/contact',
     name: 'Contact',
-    component: () => import('../views/ContactView.vue')
+    component: UnderConstruction
+  },
+  {
+    path: '/sponsor',
+    name: 'sponsor',
+    component: UnderConstruction
+  },
+  {
+    path: '/join',
+    name: 'join',
+    component: UnderConstruction
   }
 ]
 

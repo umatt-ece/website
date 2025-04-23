@@ -1,0 +1,41 @@
+
+:root {
+   
+    --background-white: #ffffff;
+    --umatt-c-white: #f7f7f7;
+    --umatt-c-brown: #4F2C1D;
+    --umatt-c-gold: #F2A900;
+    --umatt-c-medium-blue: #385E9D;
+    --umatt-c-light-blue: #00A3E0;
+    --umatt-c-white: #FFFFFF;
+
+
+
+  /* CSS HEX */
+  --black: #000000ff;
+  --engineering-orange: #C11718ff;
+  --saffron: #E6BC0Cff;
+  --saffron-2: #E7BB07ff;
+  --black-2: #000000ff;
+
+  /* CSS HSL */
+  --black-hsl: hsla(0, 0%, 0%, 1);
+  --engineering-orange-hsl: hsla(360, 79%, 42%, 1);
+  --saffron-hsl: hsla(48, 90%, 47%, 1);
+  --saffron-2-hsl: hsla(48, 94%, 47%, 1);
+  --black-2-hsl: hsla(0, 0%, 0%, 1);
+   scroll-behavior: smooth;
+}
+/* Basic styling for the entire application */
+body {
+  /* Page Styling */
+  background: #f5f8fd;
+  /* Font Styling */
+  color: var(--color-text);
+  min-height: 100vh;
+  font-family:
+    Poppins,
+    Roboto,
+    sans-serif;
+  font-size: 15px;
+}

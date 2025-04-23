@@ -55,14 +55,14 @@ const tiers = [
         id: 4,
         name: "Extreme Machine Corp",
         logo: extremeMachineLogo,
-        link: "https://www.extrememachine.com/",
+        link: "http://extrememachinecorp.com/",
         description: "Precision machining and manufacturing"
       },
       {
         id: 5,
         name: "Engineering Endowment",
         logo: engEndowmentLogo,
-        link: "#",
+        link: "https://endowment.eng.umanitoba.ca",
         description: "Engineering scholarship and project funding"
       }
     ]
@@ -76,7 +76,7 @@ const tiers = [
         id: 6,
         name: "Vehicle Technology Centre",
         logo: vehicleMediaLogo, 
-        link: "https://vehicletechnologycentre.com/",
+        link: "https://vtci.ca/",
         description: "Specialized automotive industry solutions"
       },
       {
@@ -90,14 +90,14 @@ const tiers = [
         id: 8,
         name: "Matex",
         logo: matexLogo,
-        link: "#",
+        link: "https://www.matexgears.com/",
         description: "Materials and manufacturing solutions"
       },
       {
         id: 9,
         name: "Yakta",
         logo: yaktaLogo,
-        link: "#",
+        link: "https://www.yakta.com/",
         description: "Engineering and technical solutions"
       }
     ]

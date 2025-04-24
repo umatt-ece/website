@@ -102,7 +102,7 @@
           
           <!-- CTA Button -->
           <div class="about-cta">
-            <a href="#join" class="cta-button">Join Our Team</a>
+            <router-link to="/join" class="cta-button">Join Our Team</router-link>
           </div>
         </div>
       </div>

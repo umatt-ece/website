@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import UnderConstruction from '../Components/UnderConstruction.vue'
-import Contact from '../views/ContactView.vue'
 
 // Define routes for the application
 export const routes = [

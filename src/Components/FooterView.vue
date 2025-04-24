@@ -1,4 +1,42 @@
 <script setup>
+import { reactive } from 'vue';
+import logoImage from '@/assets/images/logo.png'; // Import the image directly
+
+
+// Extract footer content into reactive objects
+const footerData = reactive({
+  organization: {
+    name: 'University of Manitoba Association of Tiny Tractors',
+    description: 'Building the future of agricultural engineering, one tiny tractor at a time.',
+    logo: logoImage,
+  },
+  
+  quickLinks: [
+    { text: 'Home', url: '/' },
+    { text: 'About Us', url: '/about' },
+    { text: 'Team', url: '/team' },
+    { text: 'Contact', url: '/contact' },
+    
+  ],
+  
+  contactInfo: [
+    { icon: 'pi-envelope', text: 'info@umatt.ca', url: 'mailto:info@umatt.ca', type: 'email' },
+    { icon: 'pi-phone', text: '(204) 555-0123', url: 'tel:+12045550123', type: 'phone' },
+    { icon: 'pi-map', text: 'University of Manitoba, Winnipeg, MB', type: 'address' },
+  ],
+  
+  socialMedia: [
+    { platform: 'Facebook', icon: 'pi-facebook', url: '#' },
+    { platform: 'Twitter', icon: 'pi-twitter', url: '#' },
+    { platform: 'Instagram', icon: 'pi-instagram', url: '#' },
+    { platform: 'LinkedIn', icon: 'pi-linkedin', url: '#' },
+  ],
+  
+  copyright: {
+    year: '2025',
+    text: 'All rights reserved.'
+  }
+});
 </script>
 
 <template>
@@ -7,9 +45,9 @@
       <div class="footer-content">
         <section class="footer-section logo-section">
           <div class="footer-logo">
-            <img src="@/assets/images/logo.png" alt="UMATT Logo" class="logo-img" />
+            <img :src="footerData.organization.logo" alt="UMATT Logo" class="logo-img" />
             <p class="footer-description">
-              Building the future of agricultural engineering, one tiny tractor at a time.
+              {{ footerData.organization.description }}
             </p>
           </div>
         </section>
@@ -18,10 +56,9 @@
           <h3 class="footer-heading">Quick Links</h3>
           <nav class="quick-links">
             <ul>
-              <li><a href="#about">About Us</a></li>
-              <li><a href="#what-we-do">What We Do</a></li>
-              <li><a href="#get-involved">Get Involved</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li v-for="link in footerData.quickLinks" :key="link.text">
+                <a :href="link.url">{{ link.text }}</a>
+              </li>
             </ul>
           </nav>
         </section>
@@ -29,17 +66,10 @@
         <section class="footer-section">
           <h3 class="footer-heading">Contact Us</h3>
           <address class="contact-us">
-            <div class="contact-item">
-              <pi class="pi pi-envelope" aria-hidden="true"></pi>
-              <a href="mailto:info@umatt.ca">info@umatt.ca</a>
-            </div>
-            <div class="contact-item">
-              <pi class="pi pi-phone" aria-hidden="true"></pi>
-              <a href="tel:+12045550123">(204) 555-0123</a>
-            </div>
-            <div class="contact-item">
-              <pi class="pi pi-map" aria-hidden="true"></pi>
-              <span>University of Manitoba, Winnipeg, MB</span>
+            <div v-for="item in footerData.contactInfo" :key="item.icon" class="contact-item">
+              <pi :class="['pi', item.icon]" aria-hidden="true"></pi>
+              <a v-if="item.url" :href="item.url">{{ item.text }}</a>
+              <span v-else>{{ item.text }}</span>
             </div>
           </address>
         </section>
@@ -47,10 +77,14 @@
         <section class="footer-section">
           <h3 class="footer-heading">Follow Us</h3>
           <div class="social-icons">
-            <a href="#" aria-label="Facebook"><pi class="pi pi-facebook"></pi></a>
-            <a href="#" aria-label="Twitter"><pi class="pi pi-twitter"></pi></a>
-            <a href="#" aria-label="Instagram"><pi class="pi pi-instagram"></pi></a>
-            <a href="#" aria-label="LinkedIn"><pi class="pi pi-linkedin"></pi></a>
+            <a 
+              v-for="item in footerData.socialMedia" 
+              :key="item.platform"
+              :href="item.url" 
+              :aria-label="item.platform"
+            >
+              <pi :class="['pi', item.icon]"></pi>
+            </a>
           </div>
         </section>
       </div>
@@ -58,7 +92,7 @@
     
     <div class="footer-bottom">
       <p class="footer-bottom-text">
-        © 2025 University of Manitoba Association of Tiny Tractors. All rights reserved.
+        © {{ footerData.copyright.year }} {{ footerData.organization.name }}. {{ footerData.copyright.text }}
       </p>
     </div>
   </footer>

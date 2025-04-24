@@ -1,40 +1,29 @@
-# Use the official Node.js image from the Docker Hub as a base
+### Stage 1: Build the Vue app
 FROM node:slim AS builder
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to take advantage of Docker cache
+# Install dependencies (leverage Docker cache)
 COPY package*.json ./
-
-# Install project dependencies
 RUN npm install
 
-
-# Copy all the project files to the container
+# Copy source and build
 COPY . .
-
-# Run the build process (this should create a 'dist' folder)
 RUN npm run build
 
-# Use the official Nginx image to serve the built app
+
+### Stage 2: Serve with Nginx
 FROM nginx:alpine AS web
 
-# Copy the build directory (dist) from your previous build stage
+# Copy built assets into Nginx web root
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Create the sites-enabled directory
-RUN mkdir -p /etc/nginx/sites-enabled
+# Drop custom vhost into conf.d so Nginx picks it up automatically
+COPY ./nginx/umatt.org.conf /etc/nginx/conf.d/umatt.org.conf
 
-# Copy the Nginx config into the container
-COPY ./nginx/umatt.org /etc/nginx/sites-available/umatt.org
-# COPY ./nginx/default.conf /etc/nginx/nginx.conf  # optional, for custom global settings
-
-# Enable your site (create a symlink in sites-enabled)
-RUN ln -s /etc/nginx/sites-available/umatt.org /etc/nginx/sites-enabled/
-
-# Expose port 80 for HTTP traffic
+# Expose HTTP port
 EXPOSE 80
 
-# Start Nginx
+# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]

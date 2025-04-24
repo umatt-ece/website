@@ -19,10 +19,10 @@
       <div class="navbar__menu">
         <ul class="navbar__list">
           <li class="navbar__item" v-for="item in navItems" :key="item.label">
-            <a :href="item.href" class="navbar__link" @click="closeMenu">
+            <router-link :to="item.path" class="navbar__link" @click="closeMenu">
               <i :class="item.icon" class="navbar__icon"></i>
               <span>{{ item.label }}</span>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -38,18 +38,12 @@ const isScrolled = ref(false);
 const isOpen = ref(false);
 const onTopHome = ref(false);
 
-
 const navItems = [
-  { label: 'Home', icon: 'pi pi-home', href: '/' },
-  { label: 'About', icon: 'pi pi-info', href: '/about' },
-  { label: 'Team', icon: 'pi pi-users', href: '/team' },
-  { label: 'Contact', icon: 'pi pi-envelope', href: '/contact' },
+  { label: 'Home', icon: 'pi pi-home', path: '/' },
+  { label: 'About', icon: 'pi pi-info', path: '/about' },
+  { label: 'Team', icon: 'pi pi-users', path: '/team' },
+  { label: 'Contact', icon: 'pi pi-envelope', path: '/contact' },
 ];
-
-
-
- 
-
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
@@ -66,7 +60,6 @@ const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
 };
 
-
 const onTopHomeView = () => {
   const onHome = router.currentRoute.value.path === '/home';
   const onTop = window.scrollY === 0;
@@ -78,16 +71,12 @@ const onTopHomeView = () => {
   }
 
   onTopHome.value = onTop && onHome;
-
-  
 };
-
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   handleScroll(); // Initial check
   onTopHomeView(); // Initial check for onTopHome
-
 });
 
 onUnmounted(() => {
@@ -457,7 +446,6 @@ onUnmounted(() => {
   }
 }
 
-
 /* Improved focus styles for accessibility */
 .navbar__link:focus-visible {
   outline: 2px solid var(--color-gold, #F2A900);
@@ -476,4 +464,3 @@ onUnmounted(() => {
   }
 }
 </style>
-``` 

@@ -21,7 +21,7 @@ export const routes = [
   {
     path: '/contact',
     name: 'Contact',
-    component: UnderConstruction
+    component:  UnderConstruction
   },
   {
     path: '/sponsor',

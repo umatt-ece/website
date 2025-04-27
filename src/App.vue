@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {  RouterView } from 'vue-router'
-import Navbar from './Components/NavbarView.vue'
-import Footer from './Components/FooterView.vue'
+
 
 /* =================================================================================================
  * App.vue
@@ -17,10 +16,8 @@ import Footer from './Components/FooterView.vue'
 
 <template>
   
-      <Navbar/>
 
   <RouterView class="router-view"/> <!-- renders 'views' based on current path url/path -->
-  <Footer />
 
 </template>
 

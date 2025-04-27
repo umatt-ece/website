@@ -6,6 +6,7 @@ import MissionVisionSection from '@/Components/MissionVisionSection.vue'
 import AchievementsSection from '@/Components/AchievementsSection.vue'
 import SponsorsSection from '@/Components/SponsorsSection.vue' // Add this line
 import GetInvolvedSection from '@/Components/GetInvolvedSection.vue'
+
 </script>
 
 <template>

@@ -1,37 +1,63 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UnderConstruction from '../Components/UnderConstruction.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+// Use dynamic imports for route components
+const HomeView = () => import('@/views/HomeView.vue')
+const UnderConstruction = () => import('@/views/UnderConstruction.vue')
 
 // Define routes for the application
 export const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('../views/HomeView.vue'),
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: UnderConstruction
-  },
-  {
-    path: '/team',
-    name: 'Team',
-    component: UnderConstruction
-  },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component:  UnderConstruction
-  },
-  {
-    path: '/sponsor',
-    name: 'sponsor',
-    component: UnderConstruction
-  },
-  {
-    path: '/join',
-    name: 'join',
-    component: UnderConstruction
+    component: DefaultLayout,
+    children: [
+      {
+        /* webpackChunkName: "home" */
+        /* webpackPrefetch: true */
+        path: '',
+        component: HomeView,
+        name: 'home',
+      },
+      {
+        /* webpackChunkName: "join" */
+        /* webpackPrefetch: true */
+        path: '/join',
+        name: 'join',
+        component: UnderConstruction
+
+      },
+      {
+        /* webpackChunkName: "about" */
+        /* webpackPrefetch: true */
+
+        path: '/about',
+        name: 'about',
+        component: UnderConstruction
+      },
+      {
+        /* webpackChunkName: "team" */
+        /* webpackPrefetch: true */
+        path: '/team',
+        name: 'team',
+        component: UnderConstruction
+      },
+      {
+        /* webpackChunkName: "contact" */
+        /* webpackPrefetch: true */
+
+        path: '/contact',
+        name: 'contact',
+        component: UnderConstruction
+
+      },
+      {
+        /* webpackChunkName: "sponsor" */
+        /* webpackPrefetch: true */
+        path: '/sponsor',
+        name: 'sponsor',
+        component: UnderConstruction
+      }
+
+    ]
   }
 ]
 

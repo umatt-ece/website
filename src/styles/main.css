@@ -144,7 +144,7 @@ a {
 /* Basic styling for the entire application */
 body {
   /* Page Styling */
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   /* Font Styling */
   color: var(--text-primary);
   min-height: 100vh;

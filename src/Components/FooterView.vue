@@ -26,10 +26,8 @@ const footerData = reactive({
   ],
   
   socialMedia: [
-    { platform: 'Facebook', icon: 'pi-facebook', url: '#' },
-    { platform: 'Twitter', icon: 'pi-twitter', url: '#' },
-    { platform: 'Instagram', icon: 'pi-instagram', url: '#' },
-    { platform: 'LinkedIn', icon: 'pi-linkedin', url: '#' },
+    { platform: 'Instagram', icon: 'pi-instagram', url: 'https://www.instagram.com/umatt_team/' },
+    { platform: 'LinkedIn', icon: 'pi-linkedin', url: 'https://www.linkedin.com/in/university-of-manitoba-association-of-tiny-tractor-umatt/' },
   ],
   
   copyright: {

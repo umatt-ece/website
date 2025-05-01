@@ -110,7 +110,7 @@ onUnmounted(() => {
   padding: 0 clamp(1rem, 5vw, 2.5rem);
   max-width: 1440px;
   margin: 0 auto;
-  height: 4.5rem;
+  height: var(--navbar-height);
 }
 
 .navbar__brand {
@@ -393,7 +393,7 @@ onUnmounted(() => {
   
   .navbar__container {
     padding: 0 1rem;
-    height: 4rem;
+    height: var(--navbar-height-mobile);
   }
   
   /* Enhance mobile menu appearance */
@@ -414,7 +414,7 @@ onUnmounted(() => {
   }
   
   .navbar__container {
-    height: 3.8rem;
+    height: var(--navbar-height-small);
   }
 }
 
@@ -430,7 +430,7 @@ onUnmounted(() => {
   
   .navbar__container {
     padding: 0 0.75rem;
-    height: 3.5rem;
+    height: var(--navbar-height-xs);
   }
 }
 

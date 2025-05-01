@@ -33,6 +33,12 @@ a {
    * 3. Component colors: Specific UI elements
    */
 
+  /* Layout Variables */
+  --navbar-height: 4.5rem;
+  --navbar-height-mobile: 4rem;
+  --navbar-height-small: 3.8rem;
+  --navbar-height-xs: 3.5rem;
+  
   /* Brand Palette - Primary Colors */
   --color-gold: #F2A900;
   --color-blue-medium: #385E9D;

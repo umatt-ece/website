@@ -20,9 +20,8 @@ const footerData = reactive({
   ],
   
   contactInfo: [
-    { icon: 'pi-envelope', text: 'info@umatt.ca', url: 'mailto:info@umatt.ca', type: 'email' },
-    { icon: 'pi-phone', text: '(204) 555-0123', url: 'tel:+12045550123', type: 'phone' },
-    { icon: 'pi-map', text: 'University of Manitoba, Winnipeg, MB', type: 'address' },
+    { icon: 'pi-envelope', text: 'umattinfo@gmail.com', url: 'mailto:umattinfo@gmail.com', type: 'email' },
+    { icon: 'pi-map', text: 'University of Manitoba, Winnipeg, MB R3T 2N2', type: 'address' },
   ],
   
   socialMedia: [

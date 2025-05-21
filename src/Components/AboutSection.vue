@@ -27,11 +27,12 @@
                 alt="UMATT team working on their quarter-scale tractor"
                 class="about-image"
               />
-              <div class="image-overlay">
+              <!-- following div is for established / competition data (to be updated in future) -->
+              <!-- <div class="image-overlay">
                 <div class="image-badge">
                   <span class="badge-text">Est. 2010</span>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="image-accent top-right"></div>
             <div class="image-accent bottom-left"></div>

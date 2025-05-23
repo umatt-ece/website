@@ -4,10 +4,13 @@ on:
   push:
     branches:
       - main  # Trigger on push to main branch
-  pull_request:
-    branches:
-      - main
-
+    paths-ignore:
+      - '.github/workflows/**'  # Ignore changes to workflow files
+      - '**/*.md'               # Ignore markdown documentation
+      - '**/*.txt'              # Ignore text files
+      - 'LICENSE'               # Ignore license file
+      - '.gitignore'            # Ignore gitignore file
+      - 'README.md' 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

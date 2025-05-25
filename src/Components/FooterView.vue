@@ -7,7 +7,7 @@ import logoImage from '@/assets/images/logo.png'; // Import the image directly
 const footerData = reactive({
   organization: {
     name: 'University of Manitoba Association of Tiny Tractors',
-    description: 'Building the future of agricultural engineering, one tiny tractor at a time.',
+    description: 'Tiny tractors, massive opportunities',
     logo: logoImage,
   },
   

@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const tagline = ref('Innovating Small-Scale Agricultural Engineering');
+const tagline = ref('Tiny tractors, massive opportunities');
 const isLoaded = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 

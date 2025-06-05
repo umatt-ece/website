@@ -11,9 +11,7 @@
         <h2 id="about-heading" class="section-heading">
           About <span class="highlight">UMATT</span>
         </h2>
-        <div class="heading-underline">
-          <div class="heading-underline-animated"></div>
-        </div>
+        <div class="heading-underline"></div>
       </header>
       
       <div class="about-content">
@@ -190,21 +188,9 @@
 .heading-underline {
   width: 80px;
   height: 4px;
-  background: rgba(242, 169, 0, 0.3);
+  background-color: var(--umatt-c-gold);
   border-radius: 2px;
   margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-}
-
-.heading-underline-animated {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--umatt-c-gold, #F2A900);
-  animation: underlineGlow 2s ease-in-out infinite;
 }
 
 @keyframes underlineGlow {

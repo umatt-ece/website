@@ -291,26 +291,12 @@ onUnmounted(() => {
   position: relative;
 }
 
-/* Animated underline */
 .heading-underline {
   width: 80px;
   height: 4px;
-  background: linear-gradient(90deg, #F2A900, #FFD166);
+  background-color: var(--umatt-c-gold);
   border-radius: 2px;
   margin: 0.75rem auto 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.heading-underline::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {

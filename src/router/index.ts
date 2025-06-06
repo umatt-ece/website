@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 // Use dynamic imports for route components
 const HomeView = () => import(/* webpackChunkName: "home" */  /* webpackPrefetch: true */ '@/views/HomeView.vue')
+const JoinView = () => import(/* webpackChunkName: "join" */ /* webpackPrefetch: true */ '@/views/JoinView.vue')
 const UnderConstruction = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "under-construction" */'@/views/UnderConstruction.vue')
 
 // Define routes for the application
@@ -16,13 +17,12 @@ export const routes = [
         path: '',
         name: 'home',
         component: HomeView
-      },
-      {
+      },      {
         /* webpackChunkName: "join" */
         /* webpackPrefetch: true */
         path: '/join',
         name: 'join',
-        component: UnderConstruction
+        component: JoinView
 
       },
       {

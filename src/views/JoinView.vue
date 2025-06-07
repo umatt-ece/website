@@ -45,6 +45,16 @@ const interestAreas = [
   'Testing'
 ];
 
+// Form step navigation
+const currentStep = ref(1);
+const totalSteps = 4;
+const stepTitles = [
+  'Personal Information',
+  'Academic Information',
+  'Interest & Experience',
+  'Review & Submit'
+];
+
 const validateForm = () => {
   const errors = {};
   
@@ -56,8 +66,8 @@ const validateForm = () => {
     errors.email = 'Email is required';
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) {
     errors.email = 'Please enter a valid email address';
-  } else if (!formData.value.email.includes('umanitoba.ca')) {
-    errors.email = 'Please use your umanitoba.ca email address';
+  } else if (!formData.value.email.endsWith('myumanitoba.ca')) {
+    errors.email = 'Please use your myumanitoba.ca email address';
   }
   
   if (!formData.value.program) errors.program = 'Program is required';
@@ -128,6 +138,65 @@ const submitForm = async () => {
   }
 };
 
+// Go to next step with validation
+const goToNextStep = () => {
+  // Validate current step
+  const errors = {};
+  
+  if (currentStep.value === 1) {
+    if (!formData.value.firstName.trim()) errors.firstName = 'First name is required';
+    if (!formData.value.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!formData.value.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) {
+      errors.email = 'Please enter a valid email address';
+    } else if (!formData.value.email.includes('myumanitoba.ca')) {
+      errors.email = 'Please use your myumanitoba.ca email address';
+    }
+  } else if (currentStep.value === 2) {
+    if (!formData.value.program) errors.program = 'Program is required';
+    if (!formData.value.year) errors.year = 'Year is required';
+  } else if (currentStep.value === 3) {
+    if (!formData.value.interest) errors.interest = 'Area of interest is required';
+    if (!formData.value.experience.trim()) errors.experience = 'Please tell us about your experience';
+  }
+  
+  formErrors.value = errors;
+  
+  // If no errors, proceed to next step
+  if (Object.keys(errors).length === 0) {
+    if (currentStep.value < totalSteps) {
+      currentStep.value++;
+      // Scroll to top of form
+      setTimeout(() => {
+        document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }
+};
+
+// Go to previous step
+const goToPreviousStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--;
+    // Scroll to top of form
+    setTimeout(() => {
+      document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+};
+
+// Go to specific step (only allow going to previous completed steps)
+const goToStep = (step) => {
+  if (step < currentStep.value) {
+    currentStep.value = step;
+    // Scroll to top of form
+    setTimeout(() => {
+      document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+};
+
 // Animation on scroll
 onMounted(() => {
   const observer = new IntersectionObserver(
@@ -141,14 +210,15 @@ onMounted(() => {
     { threshold: 0.1 }
   );
   
-  document.querySelectorAll('.observe-me').forEach((el) => {
-    observer.observe(el);
-  });
+  // Select specific text elements for animations
+  document.querySelectorAll('.animate-text, .animate-fade, .animate-slide, .animate-zoom, .animate-pop')
+    .forEach((el) => {
+      observer.observe(el);
+    });
 });
 </script>
 
 <template>
-  <main class="join-page">
     <!-- Hero Section -->
     <section class="join-hero-section">
       <div class="hero-background">
@@ -173,39 +243,31 @@ onMounted(() => {
         </div>
       </div>
       
-      <!-- Scroll indicator -->
-      <div class="scroll-indicator">
-        <div class="scroll-text">Scroll to learn more</div>
-        <div class="scroll-arrow">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+      
     </section>
     
     <!-- Why Join Section -->
-    <section id="why-join" class="why-join-section observe-me">
+    <section id="why-join" class="why-join-section">
       <div class="container">
         <header class="section-header">
-          <h2 class="section-title">Why Join <span class="highlight">UMATT</span>?</h2>
-          <div class="title-underline"></div>
+          <h2 class="section-title animate-text">Why Join <span class="highlight">UMATT</span>?</h2>
+          <div class="title-underline animate-slide delay-200"></div>
         </header>
         
         <div class="content-columns">
           <div class="text-column">
-            <p class="lead-text">
+            <p class="lead-text animate-fade delay-300">
               Joining UMATT provides university students with practical, hands-on learning experience 
               that complements classroom education and prepares you for your future career.
             </p>
-            <p>
+            <p class="animate-fade delay-400">
               As part of UMATT, you'll immerse yourself in a hands-on learning environment, honing 
               both technical and soft skills in areas of design, manufacturing, and marketing. This 
               experience fosters growth in teamwork, leadership, and project management which 
               complement the theoretical concepts taught in classrooms with practical, real-world 
               application.
             </p>
-            <p>
+            <p class="animate-fade delay-500">
               With our small yet growing team of approximately a dozen core students, UMATT 
               provides members with a diverse and involved experience, enabling a larger variety 
               of opportunities not possible on some of the larger, more established groups.
@@ -213,10 +275,9 @@ onMounted(() => {
           </div>
           
           <div class="image-column">
-            <div class="image-frame">
+            <div class="image-frame animate-zoom delay-300">
               <img src="@/assets/images/competition-group-photo-2024.jpg" alt="UMATT team working on tractor" class="team-image">
-              <div class="image-accent top-right"></div>
-              <div class="image-accent bottom-left"></div>
+              
             </div>
           </div>
         </div>
@@ -224,19 +285,19 @@ onMounted(() => {
     </section>
     
     <!-- Benefits Section -->
-    <section id="benefits" class="benefits-section observe-me">
+    <section id="benefits" class="benefits-section">
       <div class="container">
         <header class="section-header">
-          <h2 class="section-title">Member <span class="highlight">Benefits</span></h2>
-          <div class="title-underline"></div>
-          <p class="section-description">
+          <h2 class="section-title animate-text">Member <span class="highlight">Benefits</span></h2>
+          <div class="title-underline animate-slide delay-200"></div>
+          <p class="section-description animate-fade delay-300">
             UMATT membership offers numerous advantages that enhance your university experience and career prospects
           </p>
         </header>
         
         <div class="benefits-grid">
           <!-- Benefit Card 1 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-100">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -250,7 +311,7 @@ onMounted(() => {
           </div>
           
           <!-- Benefit Card 2 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-200">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22,6 12,11 2,6"></polyline>
@@ -265,7 +326,7 @@ onMounted(() => {
           </div>
           
           <!-- Benefit Card 3 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-300">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -280,7 +341,7 @@ onMounted(() => {
           </div>
           
           <!-- Benefit Card 4 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-400">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 7h-9"></path>
@@ -296,7 +357,7 @@ onMounted(() => {
           </div>
           
           <!-- Benefit Card 5 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-500">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -312,7 +373,7 @@ onMounted(() => {
           </div>
           
           <!-- Benefit Card 6 -->
-          <div class="benefit-card">
+          <div class="benefit-card animate-pop delay-600">
             <div class="benefit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 20h9"></path>
@@ -329,7 +390,7 @@ onMounted(() => {
     </section>
     
     <!-- Application Form Section -->
-    <section id="application-form" class="application-section observe-me">
+    <section id="application-form" class="application-section">
       <div class="container">
         <header class="section-header">
           <h2 class="section-title">Apply to <span class="highlight">Join UMATT</span></h2>
@@ -350,147 +411,264 @@ onMounted(() => {
           <p>Thank you for your interest in joining UMATT. We'll review your application and get back to you soon.</p>
         </div>
         
+        <!-- Replace the existing application form with this carousel version -->
         <form v-else class="application-form" @submit.prevent="submitForm">
-          <div class="form-grid">
-            <!-- Personal Information -->
-            <div class="form-section">
-              <h3 class="form-section-title">Personal Information</h3>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="firstName">First Name *</label>
-                  <input 
-                    type="text" 
-                    id="firstName" 
-                    v-model="formData.firstName"
-                    :class="{ 'error': formSubmitted && formErrors.firstName }"
-                  >
-                  <p v-if="formSubmitted && formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="lastName">Last Name *</label>
-                  <input 
-                    type="text" 
-                    id="lastName" 
-                    v-model="formData.lastName"
-                    :class="{ 'error': formSubmitted && formErrors.lastName }"
-                  >
-                  <p v-if="formSubmitted && formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="email">University Email *</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  v-model="formData.email"
-                  placeholder="your.name@umanitoba.ca"
-                  :class="{ 'error': formSubmitted && formErrors.email }"
-                >
-                <p v-if="formSubmitted && formErrors.email" class="error-message">{{ formErrors.email }}</p>
-              </div>
-            </div>
-            
-            <!-- Academic Information -->
-            <div class="form-section">
-              <h3 class="form-section-title">Academic Information</h3>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="program">Program/Major *</label>
-                  <select 
-                    id="program" 
-                    v-model="formData.program"
-                    :class="{ 'error': formSubmitted && formErrors.program }"
-                  >
-                    <option value="" disabled selected>Select your program</option>
-                    <option v-for="program in programs" :key="program" :value="program">
-                      {{ program }}
-                    </option>
-                  </select>
-                  <p v-if="formSubmitted && formErrors.program" class="error-message">{{ formErrors.program }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="year">Year of Study *</label>
-                  <select 
-                    id="year" 
-                    v-model="formData.year"
-                    :class="{ 'error': formSubmitted && formErrors.year }"
-                  >
-                    <option value="" disabled selected>Select your year</option>
-                    <option v-for="year in years" :key="year" :value="year">
-                      {{ year }}
-                    </option>
-                  </select>
-                  <p v-if="formSubmitted && formErrors.year" class="error-message">{{ formErrors.year }}</p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Interest and Experience -->
-            <div class="form-section">
-              <h3 class="form-section-title">Interest and Experience</h3>
-              
-              <div class="form-group">
-                <label for="interest">Primary Area of Interest *</label>
-                <select 
-                  id="interest" 
-                  v-model="formData.interest"
-                  :class="{ 'error': formSubmitted && formErrors.interest }"
-                >
-                  <option value="" disabled selected>Select your area of interest</option>
-                  <option v-for="area in interestAreas" :key="area" :value="area">
-                    {{ area }}
-                  </option>
-                </select>
-                <p v-if="formSubmitted && formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
-              </div>
-              
-              <div class="form-group">
-                <label for="experience">Relevant Experience/Skills *</label>
-                <textarea 
-                  id="experience" 
-                  v-model="formData.experience"
-                  rows="4"
-                  placeholder="Describe any relevant experience, skills, or projects you've worked on..."
-                  :class="{ 'error': formSubmitted && formErrors.experience }"
-                ></textarea>
-                <p v-if="formSubmitted && formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
-              </div>
-              
-              <div class="form-group">
-                <label for="resume">Resume (PDF, optional)</label>
-                <input 
-                  type="file" 
-                  id="resume" 
-                  @change="handleFileChange"
-                  accept=".pdf"
-                >
-              </div>
-            </div>
-          </div>
-          
-          <!-- Terms and Submit -->
-          <div class="form-footer">
-            <div class="form-group checkbox-group">
-              <input 
-                type="checkbox" 
-                id="agreed" 
-                v-model="formData.agreed"
-                :class="{ 'error': formSubmitted && formErrors.agreed }"
+          <div class="form-steps-container">
+            <!-- Breadcrumbs navigation -->
+            <div class="form-breadcrumbs">
+              <div 
+                v-for="(title, index) in stepTitles" 
+                :key="index"
+                class="breadcrumb-step"
+                :class="{
+                  'active': index + 1 === currentStep,
+                  'completed': index + 1 < currentStep,
+                  'clickable': index + 1 < currentStep
+                }"
+                @click="goToStep(index + 1)"
               >
-              <label for="agreed">
-                I understand that by submitting this application, I am expressing interest in joining UMATT. 
-                If selected, I will commit to participating in team activities and contributing to the project. *
-              </label>
-              <p v-if="formSubmitted && formErrors.agreed" class="error-message">{{ formErrors.agreed }}</p>
+                <div class="step-indicator">
+                  <span v-if="index + 1 < currentStep" class="step-check">✓</span>
+                  <span v-else>{{ index + 1 }}</span>
+                </div>
+                <span class="step-title">{{ title }}</span>
+              </div>
             </div>
             
-            <div class="submit-container">
-              <button type="submit" class="submit-button" :disabled="isSubmitting">
+            <!-- Progress bar -->
+            <div class="progress-container">
+              <div class="progress-bar" :style="{width: `${(currentStep - 1) / (totalSteps - 1) * 100}%`}"></div>
+            </div>
+
+            <!-- Form steps content -->
+            <div class="form-grid">
+              <!-- Step 1: Personal Information -->
+              <div v-if="currentStep === 1" class="form-section">
+                <h3 class="form-section-title">Personal Information</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="firstName">First Name<span class="required"> *</span></label>
+                    <input 
+                      type="text" 
+                      id="firstName" 
+                      v-model="formData.firstName"
+                      :class="{ 'error': formErrors.firstName }"
+                    >
+                    <p v-if="formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="lastName">Last Name<span class="required"> *</span></label>
+                    <input 
+                      type="text" 
+                      id="lastName" 
+                      v-model="formData.lastName"
+                      :class="{ 'error': formErrors.lastName }"
+                    >
+                    <p v-if="formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">University Email<span class="required"> *</span></label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    v-model="formData.email"
+                    placeholder="e.g., john.doe@myumanitoba.ca"
+                    :class="{ 'error': formErrors.email }"
+                  >
+                  <p v-if="formErrors.email" class="error-message">{{ formErrors.email }}</p>
+                </div>
+              </div>
+              
+              <!-- Step 2: Academic Information -->
+              <div v-if="currentStep === 2" class="form-section">
+                <h3 class="form-section-title">Academic Information</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="program">Program/Major<span class="required"> *</span></label>
+                    <select 
+                      id="program" 
+                      v-model="formData.program"
+                      :class="{ 'error': formErrors.program }"
+                    >
+                      <option value="" disabled>Select your program</option>
+                      <option v-for="program in programs" :key="program" :value="program">
+                        {{ program }}
+                      </option>
+                    </select>
+                    <p v-if="formErrors.program" class="error-message">{{ formErrors.program }}</p>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="year">Year of Study<span class="required"> *</span></label>
+                    <select 
+                      id="year" 
+                      v-model="formData.year"
+                      :class="{ 'error': formErrors.year }"
+                    >
+                      <option value="" disabled>Select your year</option>
+                      <option v-for="year in years" :key="year" :value="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                    <p v-if="formErrors.year" class="error-message">{{ formErrors.year }}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 3: Interest and Experience -->
+              <div v-if="currentStep === 3" class="form-section">
+                <h3 class="form-section-title">Interest and Experience</h3>
+                
+                <div class="form-group">
+                  <label for="interest">Primary Area of Interest<span class="required"> *</span></label>
+                  <select 
+                    id="interest" 
+                    v-model="formData.interest"
+                    :class="{ 'error': formErrors.interest }"
+                  >
+                    <option value="" disabled>Select your area of interest</option>
+                    <option v-for="area in interestAreas" :key="area" :value="area">
+                      {{ area }}
+                    </option>
+                  </select>
+                  <p v-if="formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
+                </div>
+                
+                <div class="form-group">
+                  <label for="experience">Relevant Experience/Skills<span class="required"> *</span></label>
+                  <textarea 
+                    id="experience" 
+                    v-model="formData.experience"
+                    rows="4"
+                    placeholder="Describe any relevant experience, skills, or projects you've worked on..."
+                    :class="{ 'error': formErrors.experience }"
+                  ></textarea>
+                  <p v-if="formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
+                </div>
+                
+                <div class="form-group">
+                  <label for="resume">Resume (PDF, optional)</label>
+                  <input 
+                    type="file" 
+                    id="resume" 
+                    @change="handleFileChange"
+                    accept=".pdf"
+                    style="display: none;"
+                  >
+                  <label for="resume" class="file-upload-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    {{ formData.resume ? formData.resume.name : 'Choose PDF file' }}
+                  </label>
+                  <div v-if="formData.resume" class="file-name">
+                    File selected: {{ formData.resume.name }}
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 4: Review & Submit -->
+              <div v-if="currentStep === 4" class="form-section">
+                <h3 class="form-section-title">Review & Submit</h3>
+                
+                <div class="review-summary">
+                  <div class="review-section">
+                    <h4>Personal Information</h4>
+                    <div class="review-item">
+                      <span class="review-label">Name:</span>
+                      <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
+                    </div>
+                    <div class="review-item">
+                      <span class="review-label">Email:</span>
+                      <span class="review-value">{{ formData.email }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="review-section">
+                    <h4>Academic Information</h4>
+                    <div class="review-item">
+                      <span class="review-label">Program:</span>
+                      <span class="review-value">{{ formData.program }}</span>
+                    </div>
+                    <div class="review-item">
+                      <span class="review-label">Year:</span>
+                      <span class="review-value">{{ formData.year }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="review-section">
+                    <h4>Interest & Experience</h4>
+                    <div class="review-item">
+                      <span class="review-label">Interest Area:</span>
+                      <span class="review-value">{{ formData.interest }}</span>
+                    </div>
+                    <div class="review-item">
+                      <span class="review-label">Resume:</span>
+                      <span class="review-value">{{ formData.resume ? formData.resume.name : 'Not provided' }}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                  <div class="checkbox-container">
+                    <input 
+                      type="checkbox" 
+                      id="agreed" 
+                      v-model="formData.agreed"
+                      :class="{ 'error': formSubmitted && formErrors.agreed }"
+                    >
+                    <span class="checkmark"></span>
+                  </div>
+                  <label for="agreed">
+                    I understand that by submitting this application, I am expressing interest in joining UMATT. 
+                    If selected, I will commit to participating in team activities and contributing to the project. <span class="required">*</span>
+                  </label>
+                </div>
+                <p v-if="formSubmitted && formErrors.agreed" class="error-message">{{ formErrors.agreed }}</p>
+              </div>
+            </div>
+            
+            <!-- Form navigation -->
+            <div class="form-navigation">
+              <button 
+                type="button" 
+                class="nav-button prev-button" 
+                v-if="currentStep > 1"
+                @click="goToPreviousStep"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Previous
+              </button>
+              
+              <button 
+                type="button" 
+                class="nav-button next-button" 
+                v-if="currentStep < totalSteps"
+                @click="goToNextStep"
+              >
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+              
+              <button 
+                type="submit" 
+                class="submit-button" 
+                v-if="currentStep === totalSteps"
+                :disabled="isSubmitting"
+              >
                 <span v-if="isSubmitting">
                   <svg class="spinner" viewBox="0 0 50 50">
                     <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
@@ -504,19 +682,18 @@ onMounted(() => {
         </form>
       </div>
     </section>
-  </main>
+  
 </template>
 
 <style scoped>
-/* Main styles */
-.join-page {
-  background: var(--umatt-c-background-light, #f5f5f5);
-}
 
 /* Hero section styles */
+.required {
+  color: var(--error-red, #ff0000);
+}
 .join-hero-section {
   position: relative;
-  height: calc(70vh - var(--navbar-height));
+  height: calc(80vh - var(--navbar-height));
   min-height: 400px;
   width: 100%;
   overflow: hidden;
@@ -524,7 +701,6 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: var(--navbar-height);
   color: var(--color-white, #ffffff);
   font-family: 'Poppins', sans-serif;
 }
@@ -645,71 +821,6 @@ onMounted(() => {
   justify-content: center;
 }
 
-/* Scroll indicator */
-.scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  animation: fade-in 1s ease-out forwards 1.5s;
-  z-index: 10;
-}
-
-.scroll-text {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
-}
-
-.scroll-arrow {
-  position: relative;
-  width: 24px;
-  height: 24px;
-}
-
-.scroll-arrow span {
-  position: absolute;
-  top: 0;
-  left: 8px;
-  width: 8px;
-  height: 8px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
-  border-right: 2px solid rgba(255, 255, 255, 0.8);
-  transform: rotate(45deg);
-  animation: scroll-down 2s infinite;
-  opacity: 0;
-}
-
-.scroll-arrow span:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.scroll-arrow span:nth-child(2) {
-  top: 6px;
-  animation-delay: 0.15s;
-}
-
-.scroll-arrow span:nth-child(3) {
-  top: 12px;
-  animation-delay: 0.3s;
-}
-
-@keyframes scroll-down {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: rotate(45deg) translate(8px, 8px);
-  }
-}
 
 /* Section styles */
 .container {
@@ -880,8 +991,9 @@ onMounted(() => {
 
 /* Application Form Section */
 .application-section {
-  background-color: #fff;
+  background-color: #fafafa;
   position: relative;
+  padding: 2rem 0;
 }
 
 .application-form {
@@ -889,27 +1001,134 @@ onMounted(() => {
   margin: 0 auto;
   background: #fff;
   border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+.application-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.form-steps-container {
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
 }
 
-.form-section {
+.form-breadcrumbs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.breadcrumb-step {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  width: 24%;
+  position: relative;
+  z-index: 2;
+}
+
+.step-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #777;
+  border: 2px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.step-title {
+  font-size: 0.85rem;
+  color: #777;
+  font-weight: 500;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+/* Active step */
+.breadcrumb-step.active .step-indicator {
+  background-color: var(--color-gold, #F2A900);
+  border-color: var(--color-gold, #F2A900);
+  color: #000;
+  box-shadow: 0 0 0 4px rgba(242, 169, 0, 0.25);
+  transform: scale(1.1);
+}
+
+.breadcrumb-step.active .step-title {
+  color: var(--umatt-c-text-dark, #333);
+  font-weight: 600;
+}
+
+/* Completed step */
+.breadcrumb-step.completed .step-indicator {
+  background-color: var(--color-blue-medium, #385E9D);
+  border-color: var(--color-blue-medium, #385E9D);
+  color: white;
+}
+
+.breadcrumb-step.completed .step-title {
+  color: var(--color-blue-medium, #385E9D);
+}
+
+/* Clickable step */
+.breadcrumb-step.clickable {
+  cursor: pointer;
+}
+
+.breadcrumb-step.clickable:hover .step-indicator {
+  transform: scale(1.1);
+}
+
+/* Progress bar */
+.progress-container {
+  height: 6px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  margin-top: -23px;
+  margin-bottom: 2rem;
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 96%;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #F2A900, #f5c346, #fad47a);
+  width: 0;
+  transition: width 0.5s ease;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(255,255,255,0.3) inset;
+}
+
+/* Form styling - Add these rules */
+.form-section {
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border-left: 4px solid var(--color-gold, #F2A900);
+  margin-bottom: 1rem;
 }
 
 .form-section-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--umatt-c-text-dark, #333);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid rgba(242, 169, 0, 0.3);
 }
@@ -918,17 +1137,19 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  position: relative;
 }
 
 .form-group label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   font-size: 0.95rem;
   color: var(--umatt-c-text-dark, #333);
 }
@@ -941,126 +1162,216 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
+  color: var(--umatt-c-text-dark, #333);
+  background-color: #fff;
   transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.form-group input[type="text"]:focus,
-.form-group input[type="email"]:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--color-blue-medium, #385E9D);
-  box-shadow: 0 0 0 3px rgba(56, 94, 157, 0.2);
-  outline: none;
+/* Fix for autofill blue background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #333 !important;
 }
 
-.form-group input[type="file"] {
-  padding: 0.75rem 0;
+/* Error styling */
+.error-message {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
 }
 
-.checkbox-group {
+input.error, select.error, textarea.error {
+  border-color: #d32f2f;
+  background-color: rgba(211, 47, 47, 0.05);
+}
+
+/* File upload styling */
+.file-upload-label {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
-  margin-top: 1rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  color: #666;
 }
 
-.checkbox-group label {
-  font-size: 0.9rem;
-  font-weight: normal;
-  margin-bottom: 0;
+.file-name {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-gold, #F2A900);
+  font-weight: 500;
 }
 
-.checkbox-group input[type="checkbox"] {
-  margin-top: 0.15rem;
+/* Success message */
+.success-message {
+  background: #f1f9f1;
+  border-left: 4px solid #4caf50;
+  padding: 2.5rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 0 auto 2rem;
+  max-width: 800px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
 }
 
-.form-footer {
-  margin-top: 2rem;
-  border-top: 1px solid #eee;
-  padding-top: 2rem;
+.success-message h3 {
+  color: #2e7d32;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.submit-container {
+.success-message p {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.success-icon {
+  color: #4caf50;
+  margin-bottom: 1.5rem;
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
 }
 
+.success-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(76, 175, 80, 0.3));
+}
+
+/* Submit button styling */
 .submit-button {
-  background: var(--color-gold, #F2A900);
+  background: linear-gradient(45deg, #F2A900 0%, #f5c346 100%);
   color: #000;
   font-weight: 600;
-  padding: 1rem 2.5rem;
+  padding: 0.75rem 2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px -8px rgba(242, 169, 0, 0.5);
   min-width: 200px;
 }
 
 .submit-button:hover {
-  background: #d99400;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(242, 169, 0, 0.25);
+  transform: translateY(-3px);
+  background: linear-gradient(45deg, #e69d00 0%, #e5b32a 100%);
+  box-shadow: 0 15px 25px -5px rgba(242, 169, 0, 0.4);
 }
 
 .submit-button:disabled {
-  background: #ccc;
+  opacity: 0.7;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
 }
 
-.error {
-  border-color: #e74c3c !important;
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-}
-
-/* Success Message */
-.success-message {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 3rem;
-  text-align: center;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-.success-icon {
-  margin: 0 auto 1.5rem;
-  color: #2ecc71;
-  width: 80px;
-  height: 80px;
+.submit-button span {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(46, 204, 113, 0.1);
-  border-radius: 50%;
+  gap: 0.5rem;
 }
 
-.success-message h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
+/* Review section styling improvements */
+.review-summary {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
 }
 
-.success-message p {
+.review-section {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.5rem;
+}
+
+.review-section:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-section h4 {
   font-size: 1.1rem;
-  color: #666;
-  line-height: 1.6;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-blue-medium, #385E9D);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-item {
+  display: flex;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.review-label {
+  font-weight: 600;
+  width: 120px;
+  flex-shrink: 0;
+  color: #444;
+}
+
+.review-value {
+  color: #222;
+}
+
+/* Form navigation buttons */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: var(--umatt-c-text-medium, #555);
+}
+
+.prev-button {
+  border-color: #ddd;
+}
+
+.prev-button:hover {
+  background: #f5f5f5;
+}
+
+.next-button {
+  background: var(--color-blue-medium, #385E9D);
+  color: white;
+  border-color: var(--color-blue-medium, #385E9D);
+}
+
+.next-button:hover {
+  background: #2d4a7d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px -5px rgba(56, 94, 157, 0.4);
 }
 
 /* Loading spinner */
@@ -1068,19 +1379,17 @@ onMounted(() => {
   animation: rotate 2s linear infinite;
   width: 20px;
   height: 20px;
-  margin-right: 0.5rem;
+  margin-right: 8px;
 }
 
-.path {
-  stroke: currentColor;
+.spinner .path {
+  stroke: #000;
   stroke-linecap: round;
   animation: dash 1.5s ease-in-out infinite;
 }
 
 @keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes dash {
@@ -1098,64 +1407,32 @@ onMounted(() => {
   }
 }
 
-/* Animation classes */
-.observe-me {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.observe-me.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* Responsive adjustments */
-@media (max-width: 900px) {
-  .content-columns {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+@media (max-width: 768px) {
+  .step-title {
+    display: none;
   }
   
-  .image-column {
-    order: -1;
+  .form-breadcrumbs {
+    margin-bottom: 2.5rem;
   }
   
-  .image-frame {
-    transform: none;
-    max-width: 600px;
-    margin: 0 auto;
+  .progress-container {
+    margin-top: -20px;
   }
   
   .form-row {
     grid-template-columns: 1fr;
-    gap: 0;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-title {
-    font-size: 2.2rem;
   }
   
-  .hero-subtitle {
-    font-size: 1rem;
+  .form-navigation {
+    flex-direction: column;
+    gap: 1rem;
   }
   
-  .container {
-    padding: 3rem 1.25rem;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .benefit-card {
-    padding: 1.5rem;
-  }
-  
-  .application-form {
-    padding: 1.5rem;
+  .nav-button, .submit-button {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

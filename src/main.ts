@@ -5,8 +5,10 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
+import emailjs from '@emailjs/browser'
 
-    
+// Initialize EmailJS
+emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
 // Create a Vue3 application
 const app = createApp(App)

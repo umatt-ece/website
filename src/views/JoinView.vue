@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import emailjs from '@emailjs/browser';
 
 // Form data
 const formData = ref({
@@ -102,8 +103,27 @@ const submitForm = async () => {
   isSubmitting.value = true;
   
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Prepare data for EmailJS
+    const templateParams = {
+      firstName: formData.value.firstName,
+      lastName: formData.value.lastName,
+      email: formData.value.email,
+      program: formData.value.program,
+      year: formData.value.year,
+      interest: formData.value.interest,
+      experience: formData.value.experience,
+      resumeUploaded: formData.value.resume ? 'Yes, file was uploaded' : 'No resume provided',
+      submissionDate: new Date().toLocaleString(),
+      currentYear: new Date().getFullYear()
+    };
+    
+    // Send email using EmailJS
+    await emailjs.send(
+      import.meta.env.VITE_SERVICE_ID || process.env.SERVICE_ID,
+      import.meta.env.VITE_TEMPLATE_ID || process.env.TEMPLATE_ID,
+      templateParams,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY || process.env.EMAILJS_PUBLIC_KEY
+    );
     
     // Success
     formSuccess.value = true;

@@ -11,7 +11,7 @@ const formData = ref({
   year: '',
   interest: '',
   experience: '',
-  resume: null,
+  resumeLink: '', // Replace resume file with link
   agreed: false
 });
 
@@ -20,6 +20,9 @@ const formErrors = ref({});
 const formSubmitted = ref(false);
 const formSuccess = ref(false);
 const isSubmitting = ref(false);
+
+// Show resume instructions
+const showResumeInstructions = ref(false);
 
 // Available programs and years for select inputs
 const programs = [
@@ -81,13 +84,6 @@ const validateForm = () => {
   return Object.keys(errors).length === 0;
 };
 
-const handleFileChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    formData.value.resume = file;
-  }
-};
-
 const submitForm = async () => {
   formSubmitted.value = true;
   
@@ -105,6 +101,7 @@ const submitForm = async () => {
   try {
     // Prepare data for EmailJS
     const templateParams = {
+      title: formData.value.firstName + ' ' + formData.value.lastName,
       firstName: formData.value.firstName,
       lastName: formData.value.lastName,
       email: formData.value.email,
@@ -112,17 +109,18 @@ const submitForm = async () => {
       year: formData.value.year,
       interest: formData.value.interest,
       experience: formData.value.experience,
-      resumeUploaded: formData.value.resume ? 'Yes, file was uploaded' : 'No resume provided',
+      resumeLink: formData.value.resumeLink, // Send the raw link
+      hasResumeLink: formData.value.resumeLink ? true : false,
       submissionDate: new Date().toLocaleString(),
       currentYear: new Date().getFullYear()
     };
     
     // Send email using EmailJS
     await emailjs.send(
-      import.meta.env.VITE_SERVICE_ID || process.env.SERVICE_ID,
-      import.meta.env.VITE_TEMPLATE_ID || process.env.TEMPLATE_ID,
+      import.meta.env.VITE_SERVICE_ID,
+      import.meta.env.VITE_TEMPLATE_ID,
       templateParams,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY || process.env.EMAILJS_PUBLIC_KEY
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
     );
     
     // Success
@@ -137,7 +135,7 @@ const submitForm = async () => {
       year: '',
       interest: '',
       experience: '',
-      resume: null,
+      resumeLink: '', // Updated from resume: null
       agreed: false
     };
     formSubmitted.value = false;
@@ -170,7 +168,7 @@ const goToNextStep = () => {
       errors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) {
       errors.email = 'Please enter a valid email address';
-    } else if (!formData.value.email.includes('myumanitoba.ca')) {
+    } else if (!formData.value.email.includes('umanitoba.ca')) {
       errors.email = 'Please use your myumanitoba.ca email address';
     }
   } else if (currentStep.value === 2) {
@@ -572,24 +570,39 @@ onMounted(() => {
                 </div>
                 
                 <div class="form-group">
-                  <label for="resume">Resume (PDF, optional)</label>
+                  <label for="resumeLink">Resume Link (Google Drive, OneDrive, etc.)</label>
                   <input 
-                    type="file" 
-                    id="resume" 
-                    @change="handleFileChange"
-                    accept=".pdf"
-                    style="display: none;"
+                    type="url" 
+                    id="resumeLink" 
+                    v-model="formData.resumeLink"
+                    placeholder="https://drive.google.com/..."
+                    class="link-input"
                   >
-                  <label for="resume" class="file-upload-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                      <polyline points="17 8 12 3 7 8"></polyline>
-                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                  <div class="instructions-toggle" @click="showResumeInstructions = !showResumeInstructions">
+                    <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="16" 
+                      height="16" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      stroke-width="2" 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round"
+                      :class="{ 'rotate-icon': showResumeInstructions }"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
-                    {{ formData.resume ? formData.resume.name : 'Choose PDF file' }}
-                  </label>
-                  <div v-if="formData.resume" class="file-name">
-                    File selected: {{ formData.resume.name }}
+                  </div>
+                  <div v-show="showResumeInstructions" class="link-instructions">
+                    <p class="instruction-title">How to share your resume:</p>
+                    <ol>
+                      <li>Upload your resume to Google Drive or OneDrive</li>
+                      <li>Right-click the file and select "Share" or "Get link"</li> 
+                      <li>Set permissions to "Anyone with the link can view"</li>
+                      <li>Copy the link and paste it above</li>
+                    </ol>
                   </div>
                 </div>
               </div>
@@ -631,7 +644,9 @@ onMounted(() => {
                     </div>
                     <div class="review-item">
                       <span class="review-label">Resume:</span>
-                      <span class="review-value">{{ formData.resume ? formData.resume.name : 'Not provided' }}</span>
+                      <span class="review-value">
+                        {{ formData.resumeLink ? 'Link provided' : 'No link provided' }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1454,5 +1469,76 @@ input.error, select.error, textarea.error {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* Additional styles */
+.link-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: var(--umatt-c-text-dark, #333);
+  background-color: #fff;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.instructions-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--color-blue-medium, #385E9D);
+  background-color: #f0f4f9;
+  transition: background-color 0.2s ease;
+}
+
+.instructions-toggle:hover {
+  background-color: #e0eaf5;
+}
+
+.rotate-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.link-instructions {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background-color: #f8faff;
+  border: 1px solid #e0eaf5;
+  border-left: 3px solid var(--color-blue-medium, #385E9D);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #333;
+  animation: slideDown 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.instruction-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-blue-medium, #385E9D);
+}
+
+.link-instructions ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.link-instructions li {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  color: #444;
 }
 </style>

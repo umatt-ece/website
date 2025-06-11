@@ -4,7 +4,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 const HomeView = () => import(/* webpackChunkName: "home" */  /* webpackPrefetch: true */ '@/views/HomeView.vue')
 const JoinView = () => import(/* webpackChunkName: "join" */ /* webpackPrefetch: true */ '@/views/JoinView.vue')
 const UnderConstruction = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "under-construction" */'@/views/UnderConstruction.vue')
-
+const SponsorView = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "sponsor" */ '@/views/SponsorView.vue')
 // Define routes for the application
 export const routes = [
   {
@@ -54,7 +54,7 @@ export const routes = [
         /* webpackPrefetch: true */
         path: '/sponsor',
         name: 'sponsor',
-        component: UnderConstruction
+        component: SponsorView
       }
 
     ]

@@ -137,14 +137,21 @@ a {
   --card-border: var(--color-gray-200);
   --card-hover-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
   
-  /* Animation Variables */
-  --transition-fast: 0.2s;
-  --transition-normal: 0.3s;
-  --transition-slow: 0.5s;
-  --transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Add these at the end of your :root declaration */
+  /* Additional variables needed for the sponsor page */
+  --card-shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
   
-  /* Global Behaviors */
-  scroll-behavior: smooth;
+  /* Container width for consistent layouts */
+  --container-width: 1200px;
+  
+  /* Success and error colors */
+  --color-success: #4CAF50;
+  --color-success-light: rgba(76, 175, 80, 0.08);
+  --color-error: #d32f2f;
+  --color-error-light: rgba(211, 47, 47, 0.08);
 }
 
 /* Basic styling for the entire application */

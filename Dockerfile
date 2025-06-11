@@ -8,6 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Set build arguments and environment variables
+ARG EMAILJS_PUBLIC_KEY
+ARG SERVICE_ID
+ARG TEMPLATE_ID
+
+ENV VITE_EMAILJS_PUBLIC_KEY=$EMAILJS_PUBLIC_KEY
+ENV VITE_SERVICE_ID=$SERVICE_ID
+ENV VITE_TEMPLATE_ID=$TEMPLATE_ID
+
 # Copy source and build
 COPY . .
 RUN npm run build

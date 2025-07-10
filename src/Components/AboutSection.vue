@@ -1,3 +1,7 @@
+<script setup>
+import teamPhoto from '@/assets/images/competition-team-photo-2025.jpg';
+</script>
+
 <template>
   <section id="about" class="about-section" aria-labelledby="about-heading">
     <!-- Background decoration elements -->
@@ -21,16 +25,15 @@
             <div class="image-container">
               <img
                 loading="lazy"
-                src="@/assets/images/competition-team-photo-2024.jpg"
+                :src="teamPhoto"
                 alt="UMATT team working on their quarter-scale tractor"
                 class="about-image"
               />
-              <!-- following div is for established / competition data (to be updated in future) -->
-              <!-- <div class="image-overlay">
+              <div class="image-overlay">
                 <div class="image-badge">
-                  <span class="badge-text">Est. 2010</span>
+                  <span class="badge-text">Competition 2025</span>
                 </div>
-              </div> -->
+              </div>
             </div>
             <div class="image-accent top-right"></div>
             <div class="image-accent bottom-left"></div>
@@ -108,10 +111,6 @@
     </div>
   </section>
 </template>
-
-<script setup>
-// No additional logic for this component
-</script>
 
 <style scoped>
 /* Main section styling */
@@ -435,6 +434,7 @@
   font-size: 0.95rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  margin-bottom: -8px;
 }
 
 .image-container:hover .image-badge {

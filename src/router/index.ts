@@ -54,7 +54,7 @@ export const routes = [
         /* webpackPrefetch: true */
         path: '/sponsor',
         name: 'sponsor',
-        component: SponsorView
+        component: UnderConstruction
       }
 
     ]

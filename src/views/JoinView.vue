@@ -328,21 +328,25 @@ onMounted(() => {
             </p>
           </div>
           
-          <!-- Benefit Card 2 -->
-          <div class="benefit-card animate-pop delay-200">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="22,6 12,11 2,6"></polyline>
-                <path d="M12 22V11"></path>
-                <path d="M22 16.92v-8.4a2 2 0 0 0-1.33-1.88l-8-3.2a2 2 0 0 0-1.34 0l-8 3.2A2 2 0 0 0 2 8.52v8.4a2 2 0 0 0 1.33 1.88l8 3.2a2 2 0 0 0 1.34 0l8-3.2A2 2 0 0 0 22 16.92z"></path>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Leadership Opportunities</h3>
-            <p class="benefit-description">
-              Develop project management, teamwork, and leadership skills essential for career advancement
-            </p>
-          </div>
-          
+    <div class="benefit-card animate-pop delay-200">
+  <div class="benefit-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Team members -->
+      <g>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </g>
+      
+      <!-- Star repositioned to the right of the group -->
+      <polygon points="18 7 19 9.5 21.5 9.7 19.8 11.5 20.3 14 18 12.8 15.7 14 16.2 11.5 14.5 9.7 17 9.5" fill="none" stroke-width="0.75"></polygon>
+    </svg>
+  </div>
+  <h3 class="benefit-title">Leadership Opportunities</h3>
+  <p class="benefit-description">
+    Develop project management, teamwork, and leadership skills essential for career advancement
+  </p>
+</div>
+            
           <!-- Benefit Card 3 -->
           <div class="benefit-card animate-pop delay-300">
             <div class="benefit-icon">
@@ -870,7 +874,7 @@ onMounted(() => {
 }
 
 .section-title {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 2.5vw, 2.5rem);
   font-weight: 700;
   color: var(--umatt-c-text-dark, #333);
   margin-bottom: 1rem;
@@ -1468,6 +1472,21 @@ input.error, select.error, textarea.error {
   .nav-button, .submit-button {
     width: 100%;
     justify-content: center;
+  }
+  .application-form{
+    padding-inline:.75rem;
+  }
+  .content-columns{
+    grid-template-columns: 1fr;
+  }
+  .container{
+    padding-inline: 1rem;
+  }
+  .form-steps-container{
+    gap:1rem;
+  }
+  .form-navigation{
+    margin-top: 1rem;
   }
 }
 

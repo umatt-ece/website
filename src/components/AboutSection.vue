@@ -111,7 +111,8 @@ import teamPhoto from '@/assets/images/competition-team-photo-2025.jpg';
     </div>
   </section>
 </template>
-
+<script setup>
+</script>
 <style scoped>
 /* Main section styling */
 .about-section {

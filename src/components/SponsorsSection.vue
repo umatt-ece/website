@@ -222,7 +222,6 @@ onMounted(() => {
                   :src="sponsor.logo" 
                   :alt="`${sponsor.name} logo`" 
                   class="sponsor-logo" 
-                  loading="lazy"
                 />
                 <div class="logo-overlay">
                   <span class="visit-text">Visit Site</span>
@@ -278,7 +277,6 @@ onMounted(() => {
                     :src="sponsor.logo"
                     :alt="`${sponsor.name}`"
                     class="cloud-logo"
-                    loading="lazy"
                   />
               </a>
             </div>

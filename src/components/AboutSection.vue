@@ -24,7 +24,6 @@ import teamPhoto from '@/assets/images/competition-team-photo-2025.jpg';
           <div class="image-frame">
             <div class="image-container">
               <img
-                loading="lazy"
                 :src="teamPhoto"
                 alt="UMATT team working on their quarter-scale tractor"
                 class="about-image"

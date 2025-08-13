@@ -1,11 +1,11 @@
 <script setup>
-import HeroSection from '@/Components/HeroSection.vue'
-import AboutSection from '@/Components/AboutSection.vue'
-import WhatWeDoSection from '@/Components/WhatWeDoSection.vue'
-import MissionVisionSection from '@/Components/MissionVisionSection.vue'
-import AchievementsSection from '@/Components/AchievementsSection.vue'
-import SponsorsSection from '@/Components/SponsorsSection.vue' // Add this line
-import GetInvolvedSection from '@/Components/GetInvolvedSection.vue'
+import HeroSection from '@/components/HeroSection.vue'
+import AboutSection from '@/components/AboutSection.vue'
+import WhatWeDoSection from '@/components/WhatWeDoSection.vue'
+import MissionVisionSection from '@/components/MissionVisionSection.vue'
+import AchievementsSection from '@/components/AchievementsSection.vue'
+import SponsorsSection from '@/components/SponsorsSection.vue' // Add this line
+import GetInvolvedSection from '@/components/GetInvolvedSection.vue'
 
 </script>
 

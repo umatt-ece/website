@@ -20,9 +20,9 @@
   
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navbar from '@/Components/NavbarView.vue'
-import Footer from '@/Components/FooterView.vue'
-import PageSkeleton from '@/Components/PageSkeleton.vue'
+import Navbar from '@/components/NavbarView.vue'
+import Footer from '@/components/FooterView.vue'
+import PageSkeleton from '@/components/PageSkeleton.vue'
 </script>
   
 <style scoped>

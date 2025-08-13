@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import emailjs from '@emailjs/browser';
+import BenefitsGrid from '../components/BenefitsGrid.vue';
+import BenefitCard from '../components/BenefitCard.vue';
+import { joinBenefits } from '../constants';
 
 // Form data
 const formData = ref({
@@ -237,491 +240,402 @@ onMounted(() => {
 </script>
 
 <template>
-    <!-- Hero Section -->
-    <section class="join-hero-section">
-      <div class="hero-background">
-        <div class="overlay"></div>
+  <!-- Hero Section -->
+  <section class="join-hero-section">
+    <div class="hero-background">
+      <div class="overlay"></div>
+    </div>
+    
+    <div class="content-wrapper">
+      <div class="hero-content">
+        <h1 class="hero-title">Join <span class="highlight">UMATT</span></h1>
+        <p class="hero-subtitle">
+          Become part of our innovative team designing and building quarter-scale tractors
+        </p>
+        <a href="#application-form" class="cta-button primary">
+          Apply Now
+          <span class="button-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+    
+  </section>
+  
+  <!-- Why Join Section -->
+  <section id="why-join" class="why-join-section">
+    <div class="container">
+      <header class="section-header">
+        <h2 class="section-title animate-text">Why Join <span class="highlight">UMATT</span>?</h2>
+        <div class="title-underline animate-slide delay-200"></div>
+      </header>
+      
+      <div class="content-columns">
+        <div class="text-column">
+          <p class="lead-text animate-fade delay-300">
+            Joining UMATT provides university students with practical, hands-on learning experience 
+            that complements classroom education and prepares you for your future career.
+          </p>
+          <p class="animate-fade delay-400">
+            As part of UMATT, you'll immerse yourself in a hands-on learning environment, honing 
+            both technical and soft skills in areas of design, manufacturing, and marketing. This 
+            experience fosters growth in teamwork, leadership, and project management which 
+            complement the theoretical concepts taught in classrooms with practical, real-world 
+            application.
+          </p>
+          <p class="animate-fade delay-500">
+            With our small yet growing team of approximately a dozen core students, UMATT 
+            provides members with a diverse and involved experience, enabling a larger variety 
+            of opportunities not possible on some of the larger, more established groups.
+          </p>
+        </div>
+        
+        <div class="image-column">
+          <div class="image-frame animate-zoom delay-300">
+            <img src="@/assets/images/competition-group-photo-2024.jpg" alt="UMATT team working on tractor" class="team-image">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Benefits Section -->
+  <section id="benefits" class="benefits-section">
+    <div class="container">
+      <header class="section-header">
+        <h2 class="section-title animate-text">Member <span class="highlight">Benefits</span></h2>
+        <div class="title-underline animate-slide delay-200"></div>
+        <p class="section-description animate-fade delay-300">
+          UMATT membership offers numerous advantages that enhance your university experience and career prospects
+        </p>
+      </header>
+      
+      <BenefitsGrid :benefits="joinBenefits">
+        <template #benefit="{ benefit }">
+          <!-- Here we apply animation classes to the vanilla BenefitCard -->
+          <div :class="`animate-pop delay-${(benefit.id * 100)}`">
+            <BenefitCard :benefit="benefit" />
+          </div>
+        </template>
+      </BenefitsGrid>
+    </div>
+  </section>
+  
+  <!-- Application Form Section -->
+  <section id="application-form" class="application-section">
+    <div class="container">
+      <header class="section-header">
+        <h2 class="section-title">Apply to <span class="highlight">Join UMATT</span></h2>
+        <div class="title-underline"></div>
+        <p class="section-description">
+          Fill out the form below to apply to join the University of Manitoba Association of Tiny Tractors
+        </p>
+      </header>
+      
+      <div v-if="formSuccess" class="success-message">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h3>Application Submitted Successfully!</h3>
+        <p>Thank you for your interest in joining UMATT. We'll review your application and get back to you soon.</p>
       </div>
       
-      <div class="content-wrapper">
-        <div class="hero-content">
-          <h1 class="hero-title">Join <span class="highlight">UMATT</span></h1>
-          <p class="hero-subtitle">
-            Become part of our innovative team designing and building quarter-scale tractors
-          </p>
-          <a href="#application-form" class="cta-button primary">
-            Apply Now
-            <span class="button-icon">
+      <!-- Replace the existing application form with this carousel version -->
+      <form v-else class="application-form" @submit.prevent="submitForm">
+        <div class="form-steps-container">
+          <!-- Breadcrumbs navigation -->
+          <div class="form-breadcrumbs">
+            <div 
+              v-for="(title, index) in stepTitles" 
+              :key="index"
+              class="breadcrumb-step"
+              :class="{
+                'active': index + 1 === currentStep,
+                'completed': index + 1 < currentStep,
+                'clickable': index + 1 < currentStep
+              }"
+              @click="goToStep(index + 1)"
+            >
+              <div class="step-indicator">
+                <span v-if="index + 1 < currentStep" class="step-check">✓</span>
+                <span v-else>{{ index + 1 }}</span>
+              </div>
+              <span class="step-title">{{ title }}</span>
+            </div>
+          </div>
+          
+          <!-- Progress bar -->
+          <div class="progress-container">
+            <div class="progress-bar" :style="{width: `${(currentStep - 1) / (totalSteps - 1) * 100}%`}"></div>
+          </div>
+
+          <!-- Form steps content -->
+          <div class="form-grid">
+            <!-- Step 1: Personal Information -->
+            <div v-if="currentStep === 1" class="form-section">
+              <h3 class="form-section-title">Personal Information</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name<span class="required"> *</span></label>
+                  <input 
+                    type="text" 
+                    id="firstName" 
+                    v-model="formData.firstName"
+                    :class="{ 'error': formErrors.firstName }"
+                  >
+                  <p v-if="formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
+                </div>
+                
+                <div class="form-group">
+                  <label for="lastName">Last Name<span class="required"> *</span></label>
+                  <input 
+                    type="text" 
+                    id="lastName" 
+                    v-model="formData.lastName"
+                    :class="{ 'error': formErrors.lastName }"
+                  >
+                  <p v-if="formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">University Email<span class="required"> *</span></label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  v-model="formData.email"
+                  placeholder="e.g., john.doe@myumanitoba.ca"
+                  :class="{ 'error': formErrors.email }"
+                >
+                <p v-if="formErrors.email" class="error-message">{{ formErrors.email }}</p>
+              </div>
+            </div>
+            
+            <!-- Step 2: Academic Information -->
+            <div v-if="currentStep === 2" class="form-section">
+              <h3 class="form-section-title">Academic Information</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="program">Program/Major<span class="required"> *</span></label>
+                  <select 
+                    id="program" 
+                    v-model="formData.program"
+                    :class="{ 'error': formErrors.program }"
+                  >
+                    <option value="" disabled>Select your program</option>
+                    <option v-for="program in programs" :key="program" :value="program">
+                      {{ program }}
+                    </option>
+                  </select>
+                  <p v-if="formErrors.program" class="error-message">{{ formErrors.program }}</p>
+                </div>
+                
+                <div class="form-group">
+                  <label for="year">Year of Study<span class="required"> *</span></label>
+                  <select 
+                    id="year" 
+                    v-model="formData.year"
+                    :class="{ 'error': formErrors.year }"
+                  >
+                    <option value="" disabled>Select your year</option>
+                    <option v-for="year in years" :key="year" :value="year">
+                      {{ year }}
+                    </option>
+                  </select>
+                  <p v-if="formErrors.year" class="error-message">{{ formErrors.year }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 3: Interest and Experience -->
+            <div v-if="currentStep === 3" class="form-section">
+              <h3 class="form-section-title">Interest and Experience</h3>
+              
+              <div class="form-group">
+                <label for="interest">Primary Area of Interest<span class="required"> *</span></label>
+                <select 
+                  id="interest" 
+                  v-model="formData.interest"
+                  :class="{ 'error': formErrors.interest }"
+                >
+                  <option value="" disabled>Select your area of interest</option>
+                  <option v-for="area in interestAreas" :key="area" :value="area">
+                    {{ area }}
+                  </option>
+                </select>
+                <p v-if="formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
+              </div>
+              
+              <div class="form-group">
+                <label for="experience">Relevant Experience/Skills<span class="required"> *</span></label>
+                <textarea 
+                  id="experience" 
+                  v-model="formData.experience"
+                  rows="4"
+                  placeholder="Describe any relevant experience, skills, or projects you've worked on..."
+                  :class="{ 'error': formErrors.experience }"
+                ></textarea>
+                <p v-if="formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
+              </div>
+              
+              <div class="form-group">
+                <label for="resumeLink">Resume Link (Google Drive, OneDrive, etc.)</label>
+                <input 
+                  type="url" 
+                  id="resumeLink" 
+                  v-model="formData.resumeLink"
+                  placeholder="https://drive.google.com/..."
+                  class="link-input"
+                >
+                <div class="instructions-toggle" @click="showResumeInstructions = !showResumeInstructions">
+                  <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"
+                    :class="{ 'rotate-icon': showResumeInstructions }"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div v-show="showResumeInstructions" class="link-instructions">
+                  <p class="instruction-title">How to share your resume:</p>
+                  <ol>
+                    <li>Upload your resume to Google Drive or OneDrive</li>
+                    <li>Right-click the file and select "Share" or "Get link"</li> 
+                    <li>Set permissions to "Anyone with the link can view"</li>
+                    <li>Copy the link and paste it above</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 4: Review & Submit -->
+            <div v-if="currentStep === 4" class="form-section">
+              <h3 class="form-section-title">Review & Submit</h3>
+              
+              <div class="review-summary">
+                <div class="review-section">
+                  <h4>Personal Information</h4>
+                  <div class="review-item">
+                    <span class="review-label">Name:</span>
+                    <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Email:</span>
+                    <span class="review-value">{{ formData.email }}</span>
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <h4>Academic Information</h4>
+                  <div class="review-item">
+                    <span class="review-label">Program:</span>
+                    <span class="review-value">{{ formData.program }}</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Year:</span>
+                    <span class="review-value">{{ formData.year }}</span>
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <h4>Interest & Experience</h4>
+                  <div class="review-item">
+                    <span class="review-label">Interest Area:</span>
+                    <span class="review-value">{{ formData.interest }}</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Resume:</span>
+                    <span class="review-value">
+                      {{ formData.resumeLink ? 'Link provided' : 'No link provided' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group checkbox-group">
+                <div class="checkbox-container">
+                  <input 
+                    type="checkbox" 
+                    id="agreed" 
+                    v-model="formData.agreed"
+                    :class="{ 'error': formSubmitted && formErrors.agreed }"
+                  >
+                  <span class="checkmark"></span>
+                </div>
+                <label for="agreed">
+                  I understand that by submitting this application, I am expressing interest in joining UMATT. 
+                  If selected, I will commit to participating in team activities and contributing to the project. <span class="required">*</span>
+                </label>
+              </div>
+              <p v-if="formSubmitted && formErrors.agreed" class="error-message">{{ formErrors.agreed }}</p>
+            </div>
+          </div>
+          
+          <!-- Form navigation -->
+          <div class="form-navigation">
+            <button 
+              type="button" 
+              class="nav-button prev-button" 
+              v-if="currentStep > 1"
+              @click="goToPreviousStep"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Previous
+            </button>
+            
+            <button 
+              type="button" 
+              class="nav-button next-button" 
+              v-if="currentStep < totalSteps"
+              @click="goToNextStep"
+            >
+              Next
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
-            </span>
-          </a>
-        </div>
-      </div>
-      
-      
-    </section>
-    
-    <!-- Why Join Section -->
-    <section id="why-join" class="why-join-section">
-      <div class="container">
-        <header class="section-header">
-          <h2 class="section-title animate-text">Why Join <span class="highlight">UMATT</span>?</h2>
-          <div class="title-underline animate-slide delay-200"></div>
-        </header>
-        
-        <div class="content-columns">
-          <div class="text-column">
-            <p class="lead-text animate-fade delay-300">
-              Joining UMATT provides university students with practical, hands-on learning experience 
-              that complements classroom education and prepares you for your future career.
-            </p>
-            <p class="animate-fade delay-400">
-              As part of UMATT, you'll immerse yourself in a hands-on learning environment, honing 
-              both technical and soft skills in areas of design, manufacturing, and marketing. This 
-              experience fosters growth in teamwork, leadership, and project management which 
-              complement the theoretical concepts taught in classrooms with practical, real-world 
-              application.
-            </p>
-            <p class="animate-fade delay-500">
-              With our small yet growing team of approximately a dozen core students, UMATT 
-              provides members with a diverse and involved experience, enabling a larger variety 
-              of opportunities not possible on some of the larger, more established groups.
-            </p>
-          </div>
-          
-          <div class="image-column">
-            <div class="image-frame animate-zoom delay-300">
-              <img src="@/assets/images/competition-group-photo-2024.jpg" alt="UMATT team working on tractor" class="team-image">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Benefits Section -->
-    <section id="benefits" class="benefits-section">
-      <div class="container">
-        <header class="section-header">
-          <h2 class="section-title animate-text">Member <span class="highlight">Benefits</span></h2>
-          <div class="title-underline animate-slide delay-200"></div>
-          <p class="section-description animate-fade delay-300">
-            UMATT membership offers numerous advantages that enhance your university experience and career prospects
-          </p>
-        </header>
-        
-        <div class="benefits-grid">
-          <!-- Benefit Card 1 -->
-          <div class="benefit-card animate-pop delay-100">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Hands-on Experience</h3>
-            <p class="benefit-description">
-              Apply theoretical knowledge to solve real engineering challenges and build a working quarter-scale tractor
-            </p>
-          </div>
-          
-    <div class="benefit-card animate-pop delay-200">
-  <div class="benefit-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <!-- Team members -->
-      <g>
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-      </g>
-      
-      <!-- Star repositioned to the right of the group -->
-      <polygon points="18 7 19 9.5 21.5 9.7 19.8 11.5 20.3 14 18 12.8 15.7 14 16.2 11.5 14.5 9.7 17 9.5" fill="none" stroke-width="0.75"></polygon>
-    </svg>
-  </div>
-  <h3 class="benefit-title">Leadership Opportunities</h3>
-  <p class="benefit-description">
-    Develop project management, teamwork, and leadership skills essential for career advancement
-  </p>
-</div>
+            </button>
             
-          <!-- Benefit Card 3 -->
-          <div class="benefit-card animate-pop delay-300">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Network Expansion</h3>
-            <p class="benefit-description">
-              Connect with industry professionals, sponsors, and alumni who can help guide your career path
-            </p>
-          </div>
-          
-          <!-- Benefit Card 4 -->
-          <div class="benefit-card animate-pop delay-400">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 7h-9"></path>
-                <path d="M14 17H5"></path>
-                <circle cx="17" cy="17" r="3"></circle>
-                <circle cx="7" cy="7" r="3"></circle>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Career Advantage</h3>
-            <p class="benefit-description">
-              Stand out to employers with tangible experience and demonstrable skills from competition participation
-            </p>
-          </div>
-          
-          <!-- Benefit Card 5 -->
-          <div class="benefit-card animate-pop delay-500">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Community</h3>
-            <p class="benefit-description">
-              Join a supportive community of like-minded students passionate about engineering and innovation
-            </p>
-          </div>
-          
-          <!-- Benefit Card 6 -->
-          <div class="benefit-card animate-pop delay-600">
-            <div class="benefit-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </div>
-            <h3 class="benefit-title">Competition Experience</h3>
-            <p class="benefit-description">
-              Participate in the exciting ASABE International ¼ Scale Competition in Peoria, Illinois
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Application Form Section -->
-    <section id="application-form" class="application-section">
-      <div class="container">
-        <header class="section-header">
-          <h2 class="section-title">Apply to <span class="highlight">Join UMATT</span></h2>
-          <div class="title-underline"></div>
-          <p class="section-description">
-            Fill out the form below to apply to join the University of Manitoba Association of Tiny Tractors
-          </p>
-        </header>
-        
-        <div v-if="formSuccess" class="success-message">
-          <div class="success-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-          </div>
-          <h3>Application Submitted Successfully!</h3>
-          <p>Thank you for your interest in joining UMATT. We'll review your application and get back to you soon.</p>
-        </div>
-        
-        <!-- Replace the existing application form with this carousel version -->
-        <form v-else class="application-form" @submit.prevent="submitForm">
-          <div class="form-steps-container">
-            <!-- Breadcrumbs navigation -->
-            <div class="form-breadcrumbs">
-              <div 
-                v-for="(title, index) in stepTitles" 
-                :key="index"
-                class="breadcrumb-step"
-                :class="{
-                  'active': index + 1 === currentStep,
-                  'completed': index + 1 < currentStep,
-                  'clickable': index + 1 < currentStep
-                }"
-                @click="goToStep(index + 1)"
-              >
-                <div class="step-indicator">
-                  <span v-if="index + 1 < currentStep" class="step-check">✓</span>
-                  <span v-else>{{ index + 1 }}</span>
-                </div>
-                <span class="step-title">{{ title }}</span>
-              </div>
-            </div>
-            
-            <!-- Progress bar -->
-            <div class="progress-container">
-              <div class="progress-bar" :style="{width: `${(currentStep - 1) / (totalSteps - 1) * 100}%`}"></div>
-            </div>
-
-            <!-- Form steps content -->
-            <div class="form-grid">
-              <!-- Step 1: Personal Information -->
-              <div v-if="currentStep === 1" class="form-section">
-                <h3 class="form-section-title">Personal Information</h3>
-                
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="firstName">First Name<span class="required"> *</span></label>
-                    <input 
-                      type="text" 
-                      id="firstName" 
-                      v-model="formData.firstName"
-                      :class="{ 'error': formErrors.firstName }"
-                    >
-                    <p v-if="formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="lastName">Last Name<span class="required"> *</span></label>
-                    <input 
-                      type="text" 
-                      id="lastName" 
-                      v-model="formData.lastName"
-                      :class="{ 'error': formErrors.lastName }"
-                    >
-                    <p v-if="formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label for="email">University Email<span class="required"> *</span></label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    v-model="formData.email"
-                    placeholder="e.g., john.doe@myumanitoba.ca"
-                    :class="{ 'error': formErrors.email }"
-                  >
-                  <p v-if="formErrors.email" class="error-message">{{ formErrors.email }}</p>
-                </div>
-              </div>
-              
-              <!-- Step 2: Academic Information -->
-              <div v-if="currentStep === 2" class="form-section">
-                <h3 class="form-section-title">Academic Information</h3>
-                
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="program">Program/Major<span class="required"> *</span></label>
-                    <select 
-                      id="program" 
-                      v-model="formData.program"
-                      :class="{ 'error': formErrors.program }"
-                    >
-                      <option value="" disabled>Select your program</option>
-                      <option v-for="program in programs" :key="program" :value="program">
-                        {{ program }}
-                      </option>
-                    </select>
-                    <p v-if="formErrors.program" class="error-message">{{ formErrors.program }}</p>
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="year">Year of Study<span class="required"> *</span></label>
-                    <select 
-                      id="year" 
-                      v-model="formData.year"
-                      :class="{ 'error': formErrors.year }"
-                    >
-                      <option value="" disabled>Select your year</option>
-                      <option v-for="year in years" :key="year" :value="year">
-                        {{ year }}
-                      </option>
-                    </select>
-                    <p v-if="formErrors.year" class="error-message">{{ formErrors.year }}</p>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Step 3: Interest and Experience -->
-              <div v-if="currentStep === 3" class="form-section">
-                <h3 class="form-section-title">Interest and Experience</h3>
-                
-                <div class="form-group">
-                  <label for="interest">Primary Area of Interest<span class="required"> *</span></label>
-                  <select 
-                    id="interest" 
-                    v-model="formData.interest"
-                    :class="{ 'error': formErrors.interest }"
-                  >
-                    <option value="" disabled>Select your area of interest</option>
-                    <option v-for="area in interestAreas" :key="area" :value="area">
-                      {{ area }}
-                    </option>
-                  </select>
-                  <p v-if="formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="experience">Relevant Experience/Skills<span class="required"> *</span></label>
-                  <textarea 
-                    id="experience" 
-                    v-model="formData.experience"
-                    rows="4"
-                    placeholder="Describe any relevant experience, skills, or projects you've worked on..."
-                    :class="{ 'error': formErrors.experience }"
-                  ></textarea>
-                  <p v-if="formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="resumeLink">Resume Link (Google Drive, OneDrive, etc.)</label>
-                  <input 
-                    type="url" 
-                    id="resumeLink" 
-                    v-model="formData.resumeLink"
-                    placeholder="https://drive.google.com/..."
-                    class="link-input"
-                  >
-                  <div class="instructions-toggle" @click="showResumeInstructions = !showResumeInstructions">
-                    <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      stroke-width="2" 
-                      stroke-linecap="round" 
-                      stroke-linejoin="round"
-                      :class="{ 'rotate-icon': showResumeInstructions }"
-                    >
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </div>
-                  <div v-show="showResumeInstructions" class="link-instructions">
-                    <p class="instruction-title">How to share your resume:</p>
-                    <ol>
-                      <li>Upload your resume to Google Drive or OneDrive</li>
-                      <li>Right-click the file and select "Share" or "Get link"</li> 
-                      <li>Set permissions to "Anyone with the link can view"</li>
-                      <li>Copy the link and paste it above</li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Step 4: Review & Submit -->
-              <div v-if="currentStep === 4" class="form-section">
-                <h3 class="form-section-title">Review & Submit</h3>
-                
-                <div class="review-summary">
-                  <div class="review-section">
-                    <h4>Personal Information</h4>
-                    <div class="review-item">
-                      <span class="review-label">Name:</span>
-                      <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
-                    </div>
-                    <div class="review-item">
-                      <span class="review-label">Email:</span>
-                      <span class="review-value">{{ formData.email }}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="review-section">
-                    <h4>Academic Information</h4>
-                    <div class="review-item">
-                      <span class="review-label">Program:</span>
-                      <span class="review-value">{{ formData.program }}</span>
-                    </div>
-                    <div class="review-item">
-                      <span class="review-label">Year:</span>
-                      <span class="review-value">{{ formData.year }}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="review-section">
-                    <h4>Interest & Experience</h4>
-                    <div class="review-item">
-                      <span class="review-label">Interest Area:</span>
-                      <span class="review-value">{{ formData.interest }}</span>
-                    </div>
-                    <div class="review-item">
-                      <span class="review-label">Resume:</span>
-                      <span class="review-value">
-                        {{ formData.resumeLink ? 'Link provided' : 'No link provided' }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                  <div class="checkbox-container">
-                    <input 
-                      type="checkbox" 
-                      id="agreed" 
-                      v-model="formData.agreed"
-                      :class="{ 'error': formSubmitted && formErrors.agreed }"
-                    >
-                    <span class="checkmark"></span>
-                  </div>
-                  <label for="agreed">
-                    I understand that by submitting this application, I am expressing interest in joining UMATT. 
-                    If selected, I will commit to participating in team activities and contributing to the project. <span class="required">*</span>
-                  </label>
-                </div>
-                <p v-if="formSubmitted && formErrors.agreed" class="error-message">{{ formErrors.agreed }}</p>
-              </div>
-            </div>
-            
-            <!-- Form navigation -->
-            <div class="form-navigation">
-              <button 
-                type="button" 
-                class="nav-button prev-button" 
-                v-if="currentStep > 1"
-                @click="goToPreviousStep"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="19" y1="12" x2="5" y2="12"></line>
-                  <polyline points="12 19 5 12 12 5"></polyline>
+            <button 
+              type="submit" 
+              class="submit-button" 
+              v-if="currentStep === totalSteps"
+              :disabled="isSubmitting"
+            >
+              <span v-if="isSubmitting">
+                <svg class="spinner" viewBox="0 0 50 50">
+                  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
                 </svg>
-                Previous
-              </button>
-              
-              <button 
-                type="button" 
-                class="nav-button next-button" 
-                v-if="currentStep < totalSteps"
-                @click="goToNextStep"
-              >
-                Next
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </button>
-              
-              <button 
-                type="submit" 
-                class="submit-button" 
-                v-if="currentStep === totalSteps"
-                :disabled="isSubmitting"
-              >
-                <span v-if="isSubmitting">
-                  <svg class="spinner" viewBox="0 0 50 50">
-                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                  </svg>
-                  Submitting...
-                </span>
-                <span v-else>Submit Application</span>
-              </button>
-            </div>
+                Submitting...
+              </span>
+              <span v-else>Submit Application</span>
+            </button>
           </div>
-        </form>
-      </div>
-    </section>
-  
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -1560,4 +1474,23 @@ input.error, select.error, textarea.error {
   line-height: 1.4;
   color: #444;
 }
+
+/* Animation classes */
+.animate-pop {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-pop.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+.delay-600 { transition-delay: 0.6s; }
 </style>

@@ -121,9 +121,7 @@ const submitForm = async () => {
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    console.log('Service ID:', serviceId);
-    console.log('Template ID:', templateId);
-    console.log('Public Key:', publicKey);
+  
 
     // Send email using EmailJS
     await emailjs.send(

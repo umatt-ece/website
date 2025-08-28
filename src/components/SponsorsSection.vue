@@ -8,15 +8,15 @@ const isVisible = ref(false);
 const activeTab = ref(0);
 
 // Import sponsor logos with correct file paths
-const asabeLogo = '/sponsors/sponsor-asabe.jpg';
-const vehicleMediaLogo = '/sponsors/sponsor-vehicle-technology-centre.png';
-const macdonLogo = '/sponsors/sponsor-macdon.png';
-const friendsOfEngineeringLogo = '/sponsors/sponsor-friends-of-engineering.png';
-const extremeMachineLogo = '/sponsors/sponsor-extreme-machine-corp.jpg';
-const elmersLogo = '/sponsors/sponsor-elmers.webp';
-const engEndowmentLogo = '/sponsors/sponsor-eng-endowment.png';
-const matexLogo = '/sponsors/sponsor-matex.png';
-const yaktaLogo = '/sponsors/sponsor-yakta.svg';
+const asabeLogo = '/images/sponsors/sponsor-asabe.jpg';
+const vehicleMediaLogo = '/images/sponsors/sponsor-vehicle-technology-centre.png';
+const macdonLogo = '/images/sponsors/sponsor-macdon.png';
+const friendsOfEngineeringLogo = '/images/sponsors/sponsor-friends-of-engineering.png';
+const extremeMachineLogo = '/images/sponsors/sponsor-extreme-machine-corp.jpg';
+const elmersLogo = '/images/sponsors/sponsor-elmers.webp';
+const engEndowmentLogo = '/images/sponsors/sponsor-eng-endowment.png';
+const matexLogo = '/images/sponsors/sponsor-matex.png';
+const yaktaLogo = '/images/sponsors/sponsor-yakta.svg';
 
 // Sponsor data organized by tier - make sure this isn't empty
 const tiers = [

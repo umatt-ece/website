@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 // Add these image imports
-import arikImage from '@/assets/images/headshot-arik.png';
-import kamImage from '@/assets/images/headshot-kam.png';
+import arikImage from '@/assets/images/headshot-arik.jpg';
+import kamImage from '@/assets/images/headshot-kam.jpg';
 
 // Constants for achievements data
 const achievements = [

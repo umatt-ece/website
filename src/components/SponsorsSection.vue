@@ -8,15 +8,15 @@ const isVisible = ref(false);
 const activeTab = ref(0);
 
 // Import sponsor logos with correct file paths
-import asabeLogo from '@/assets/images/sponsors/sponsor-asabe.jpg';
-import vehicleMediaLogo from '@/assets/images/sponsors/sponsor-vehicle-technology-centre.png';
-import macdonLogo from '@/assets/images/sponsors/sponsor-macdon.png';
-import friendsOfEngineeringLogo from '@/assets/images/sponsors/sponsor-friends-of-engineering.png';
-import extremeMachineLogo from '@/assets/images/sponsors/sponsor-extreme-machine-corp.jpg';
-import elmersLogo from '@/assets/images/sponsors/sponsor-elmers.webp';
-import engEndowmentLogo from '@/assets/images/sponsors/sponsor-eng-endowment.png';
-import matexLogo from '@/assets/images/sponsors/sponsor-matex.png';
-import yaktaLogo from '@/assets/images/sponsors/sponsor-yakta.svg';
+const asabeLogo = '/sponsors/sponsor-asabe.jpg';
+const vehicleMediaLogo = '/sponsors/sponsor-vehicle-technology-centre.png';
+const macdonLogo = '/sponsors/sponsor-macdon.png';
+const friendsOfEngineeringLogo = '/sponsors/sponsor-friends-of-engineering.png';
+const extremeMachineLogo = '/sponsors/sponsor-extreme-machine-corp.jpg';
+const elmersLogo = '/sponsors/sponsor-elmers.webp';
+const engEndowmentLogo = '/sponsors/sponsor-eng-endowment.png';
+const matexLogo = '/sponsors/sponsor-matex.png';
+const yaktaLogo = '/sponsors/sponsor-yakta.svg';
 
 // Sponsor data organized by tier - make sure this isn't empty
 const tiers = [

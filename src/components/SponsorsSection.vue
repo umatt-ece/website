@@ -157,20 +157,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="sponsors" class="sponsors-section" aria-labelledby="sponsors-title">
+  <section id="partners" class="partners-section" aria-labelledby="partners-title">
     <!-- Section accent elements -->
     <div class="accent-shape shape-1"></div>
     <div class="accent-shape shape-2"></div>
     
-    <div class="sponsors-container" :class="{ 'is-visible': isVisible }">
+    <div class="partners-container" :class="{ 'is-visible': isVisible }">
       <!-- Section header -->
-      <header class="sponsors-header observe-me">
-        <span class="section-badge">Our Partners</span>
-        <h2 id="sponsors-title" class="sponsors-title">
+      <header class="partners-header observe-me">
+        <span class="section-badge">Our Sponsors</span>
+        <h2 id="partners-title" class="partners-title">
           Driving <span class="text-highlight">Innovation</span> Together
         </h2>
         <div class="title-accent"></div>
-        <p class="sponsors-intro">
+        <p class="partners-intro">
           We're incredibly grateful to our sponsors who make our engineering journey possible. 
           Their support enables our team to design, build, and compete with our tiny tractors 
           while developing the next generation of agricultural innovation.
@@ -195,52 +195,53 @@ onMounted(() => {
       <!-- Active tier display -->
       <div class="tier-content observe-me">
         <div class="tier-description">
-          <p>{{ activeTier?.description || 'Please select a sponsorship tier.' }}</p>
+          <p>{{ activeTier?.description || 'Please select a partnership tier.' }}</p>
         </div>
         
-        <!-- Key issue: Add :key to force re-rendering when activeTab changes -->
         <div 
           :key="`tier-content-${activeTab}`" 
-          class="sponsors-grid" 
+          class="partners-grid" 
           :class="`tier-${activeTab}`" 
           v-if="activeTier && activeTier.sponsors && activeTier.sponsors.length"
         >
           <div 
             v-for="sponsor in activeTier.sponsors" 
-            :key="`sponsor-${sponsor.id}`"
-            class="sponsor-card"
+            :key="`partner-${sponsor.id}`"
+            class="partner-card"
           >
             <a 
               :href="sponsor.link" 
               target="_blank" 
               rel="noopener noreferrer" 
-              class="sponsor-link"
+              class="partner-link"
               :aria-label="`Visit ${sponsor.name} website`"
+              data-nosnippet="true"
+              data-adblockignore="true"
             >
-              <div class="sponsor-logo-container">
+              <div class="partner-logo-container">
                 <img 
                   :src="sponsor.logo" 
                   :alt="`${sponsor.name} logo`" 
-                  class="sponsor-logo" 
+                  class="partner-logo" 
                 />
                 <div class="logo-overlay">
                   <span class="visit-text">Visit Site</span>
                 </div>
               </div>
-              <div class="sponsor-info">
-                <h4 class="sponsor-name">{{ sponsor.name }}</h4>
-                <p class="sponsor-description">{{ sponsor.description }}</p>
+              <div class="partner-info">
+                <h4 class="partner-name">{{ sponsor.name }}</h4>
+                <p class="partner-description">{{ sponsor.description }}</p>
               </div>
             </a>
           </div>
         </div>
-        <div v-else class="empty-sponsors-message">
+        <div v-else class="empty-partners-message">
           No sponsors to display in this tier.
         </div>
       </div>
       
-      <!-- Sponsor showcase -->
-      <div class="sponsor-showcase observe-me">
+      <!-- Partner showcase -->
+      <div class="partner-showcase observe-me">
         <div class="showcase-content">
           <div class="showcase-text">
             <h3 class="showcase-title">Trusted by Industry Leaders</h3>
@@ -270,14 +271,14 @@ onMounted(() => {
                 v-for="sponsor in tier.sponsors" 
                 :key="`cloud-${sponsor.id}`"
                 class="cloud-logo-container"
+                data-nosnippet="true"
+                data-adblockignore="true"
               >
-              
-                
-                  <img
-                    :src="sponsor.logo"
-                    :alt="`${sponsor.name}`"
-                    class="cloud-logo"
-                  />
+                <img
+                  :src="sponsor.logo"
+                  :alt="`${sponsor.name}`"
+                  class="cloud-logo"
+                />
               </a>
             </div>
           </div>
@@ -285,9 +286,9 @@ onMounted(() => {
       </div>
       
       <!-- Call to action -->
-      <div class="sponsors-cta observe-me">
+      <div class="partners-cta observe-me">
         <div class="cta-content">
-          <div class="cta-badge">Partnership Opportunity</div>
+          <div class="cta-badge">Sponsorship Opportunity</div>
           <h3 class="cta-title">Become a Sponsor Today</h3>
           <p class="cta-text">
             Support the next generation of agricultural engineering talent and gain visibility 
@@ -338,7 +339,7 @@ onMounted(() => {
 
 <style scoped>
 /* Main section styling */
-.sponsors-section {
+.partners-section {
   padding: 8rem 1.5rem;
   background: linear-gradient(to bottom, #ffffff, #f8f9fa);
   position: relative;
@@ -386,7 +387,7 @@ onMounted(() => {
   animation: float-slow 25s ease-in-out infinite alternate-reverse;
 }
 
-.sponsors-container {
+.partners-container {
   max-width: 1200px;
   margin: 0 auto;
   opacity: 0;
@@ -396,13 +397,13 @@ onMounted(() => {
   z-index: 1;
 }
 
-.sponsors-container.is-visible {
+.partners-container.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Header styling */
-.sponsors-header {
+.partners-header {
   text-align: center;
   margin-bottom: 4rem;
   max-width: 800px;
@@ -410,7 +411,7 @@ onMounted(() => {
   margin-right: auto;
 }
 
-.sponsors-title {
+.partners-title {
   font-size: clamp(2.25rem, 6vw, 3.5rem);
   font-weight: 800;
   color: #212529;
@@ -435,7 +436,7 @@ onMounted(() => {
   border-radius: 2px;
 }
 
-.sponsors-intro {
+.partners-intro {
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   line-height: 1.7;
   color: #495057;
@@ -494,21 +495,21 @@ onMounted(() => {
   font-size: 1.1rem;
 }
 
-/* Sponsor grid */
-.sponsors-grid {
+/* Partner grid */
+.partners-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2.5rem;
   align-items: stretch;
 }
 
-/* Tier-specific grid adjustments */
+/* Partner-specific grid adjustments */
 .tier-0 {
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
-/* Sponsor card */
-.sponsor-card {
+/* Partner card */
+.partner-card {
   background-color: white;
   border-radius: 16px;
   overflow: hidden;
@@ -521,15 +522,15 @@ onMounted(() => {
   transform: translateY(0);
 }
 
-.sponsor-card:hover {
+.partner-card:hover {
   transform: translateY(-10px);
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.1),
     0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Sponsor link */
-.sponsor-link {
+/* Partner link */
+.partner-link {
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -538,7 +539,7 @@ onMounted(() => {
 }
 
 /* Logo container */
-.sponsor-logo-container {
+.partner-logo-container {
   padding: 2.5rem;
   display: flex;
   justify-content: center;
@@ -565,7 +566,7 @@ onMounted(() => {
   transition: all 0.4s ease;
 }
 
-.sponsor-card:hover .logo-overlay {
+.partner-card:hover .logo-overlay {
   opacity: 1;
 }
 
@@ -580,12 +581,12 @@ onMounted(() => {
   font-size: 0.95rem;
 }
 
-.sponsor-card:hover .visit-text {
+.partner-card:hover .visit-text {
   transform: translateY(0);
 }
 
 /* Logo styling */
-.sponsor-logo {
+.partner-logo {
   max-width: 80%;
   max-height: 80%;
   object-fit: contain;
@@ -593,18 +594,13 @@ onMounted(() => {
   filter: grayscale(20%);
 }
 
-.sponsor-card:hover .sponsor-logo {
+.partner-card:hover .partner-logo {
   transform: scale(1.05);
   filter: grayscale(0%);
 }
 
-/* Premier partners get slightly larger logos */
-.tier-0 .sponsor-logo-container {
-  height: 220px;
-}
-
-/* Sponsor info */
-.sponsor-info {
+/* Partner info */
+.partner-info {
   padding: 1.75rem 2rem;
   text-align: center;
   flex-grow: 1;
@@ -613,22 +609,22 @@ onMounted(() => {
   justify-content: center;
 }
 
-.sponsor-name {
+.partner-name {
   font-weight: 700;
   color: #2d3748;
   font-size: 1.35rem;
   margin: 0 0 0.75rem;
 }
 
-.sponsor-description {
+.partner-description {
   color: #64748b;
   font-size: 0.95rem;
   line-height: 1.6;
   margin: 0;
 }
 
-/* Sponsor showcase */
-.sponsor-showcase {
+/* Partner showcase */
+.partner-showcase {
   margin-bottom: 6rem;
   padding: 4rem 0;
   background: linear-gradient(to right, rgba(56, 94, 157, 0.03), rgba(242, 169, 0, 0.03));
@@ -740,7 +736,7 @@ onMounted(() => {
 }
 
 /* Call to action */
-.sponsors-cta {
+.partners-cta {
   background: linear-gradient(135deg, var(--color-blue-medium, #385E9D), #2a4577);
   border-radius: 20px;
   padding: 0;
@@ -749,7 +745,7 @@ onMounted(() => {
   position: relative;
 }
 
-.sponsors-cta::before {
+.partners-cta::before {
   content: '';
   position: absolute;
   top: 0;
@@ -880,7 +876,7 @@ onMounted(() => {
   transform: translateY(0);
 }
 
-.empty-sponsors-message {
+.empty-partners-message {
   text-align: center;
   padding: 3rem;
   color: #64748b;
@@ -923,21 +919,21 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .sponsors-section {
+  .partners-section {
     padding: 5rem 1.25rem;
   }
   
-  .sponsors-grid {
+  .partners-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
   }
   
-  .sponsor-logo-container {
+  .partner-logo-container {
     height: 180px;
     padding: 1.75rem;
   }
   
-  .tier-0 .sponsor-logo-container {
+  .tier-0 .partner-logo-container {
     height: 200px;
   }
   
@@ -949,13 +945,13 @@ onMounted(() => {
     margin-bottom: 4rem;
   }
   
-  .sponsor-showcase {
+  .partner-showcase {
     margin-bottom: 4rem;
   }
 }
 
 @media (max-width: 640px) {
-  .sponsors-grid {
+  .partners-grid {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
   }
   
@@ -984,16 +980,16 @@ onMounted(() => {
     height: 70px;
   }
   
-  .sponsor-card .sponsor-info {
+  .partner-card .partner-info {
     padding: 1.5rem;
   }
 }
 
 /* Accessibility: reduce motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .sponsors-container,
-  .sponsor-card,
-  .sponsor-logo,
+  .partners-container,
+  .partner-card,
+  .partner-logo,
   .cta-button,
   .observe-me,
   .accent-shape,
@@ -1005,12 +1001,12 @@ onMounted(() => {
     transform: none;
   }
   
-  .sponsors-container,
+  .partners-container,
   .observe-me {
     opacity: 1;
   }
   
-  .sponsor-card {
+  .partner-card {
     opacity: 1;
   }
 }

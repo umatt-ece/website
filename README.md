@@ -1,45 +1,37 @@
 # UMATT Website
 
-This template should help get you started developing with Vue 3 in Vite.
+Welcome to the official repository for the [UMATT Website](https://umatt.org/)!
 
-## Recommended IDE Setup
+This site represents the University of Manitoba Association of Tiny Tractors (UMATT), showcasing our projects and team information. It is built with modern web technologies to ensure speed, maintainability and scalability.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Tech Stack
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- [Vue.js](https://vuejs.org/)
+- [Vite](https://vite.dev/)
 
 ## Project Setup
 
+**Note:** The setup instructions assume that a latest LTS version of [Node.js](https://nodejs.org/en) (which includes `npm`) is already installed.
+
+### Recommended IDE Setup
+[Visual Studio Code](https://code.visualstudio.com/) with [Vue.js extension](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
+### Install dependencies
 ```sh
 npm install
 ```
 
 ### Compile and Hot-Reload for Development
-
 ```sh
 npm run dev
 ```
 
 ### Type-Check, Compile and Minify for Production
-
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Maintainers
 
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- [Ramatjyot Singh](https://github.com/RamatjyotSingh)
+- [Varun Mulchandani](https://github.com/im-varun)

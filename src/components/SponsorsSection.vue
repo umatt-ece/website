@@ -12,7 +12,8 @@ import elmersLogo from '@/assets/images/sponsors/sponsor-elmers.webp';
 import engEndowmentLogo from '@/assets/images/sponsors/sponsor-eng-endowment.png';
 import matexLogo from '@/assets/images/sponsors/sponsor-matex.png';
 import yaktaLogo from '@/assets/images/sponsors/sponsor-yakta.svg';
-
+import danfosysLogo from '@/assets/images/sponsors/danfosys-logo.svg'; 
+import vidirLogo from '@/assets/images/sponsors/Vidir-Logo.svg';  
 const router = useRouter();
 const isVisible = ref(false);
 // Default to 0, but make sure this doesn't exceed array length
@@ -64,6 +65,13 @@ const tiers = [
         logo: engEndowmentLogo,
         link: "https://endowment.eng.umanitoba.ca",
         description: "Engineering scholarship and project funding"
+      },
+      {
+        id: 10,
+        name: "Danfoss",
+        logo: danfosysLogo,
+        link: "https://www.danfoss.com/",
+        description: "Energy-efficient solutions for industry and infrastructure."
       }
     ]
   },
@@ -99,6 +107,13 @@ const tiers = [
         logo: yaktaLogo,
         link: "https://www.yakta.com/",
         description: "Engineering and technical solutions"
+      },
+      {
+        id: 11,
+        name: "Vidir Solutions",
+        logo: vidirLogo,
+        link: "https://www.vidir.com/",
+        description: "Automated vertical storage solutions."
       }
     ]
   }

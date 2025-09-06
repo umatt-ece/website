@@ -15,8 +15,6 @@ const footerData = reactive({
     { text: 'Home', url: '/' },
     { text: 'About Us', url: '/about' },
     { text: 'Team', url: '/team' },
-    { text: 'Contact', url: '/contact' },
-    
   ],
   
   contactInfo: [
@@ -37,7 +35,7 @@ const footerData = reactive({
 </script>
 
 <template>
-  <footer class="footer-container">
+  <footer id="footer" class="footer-container">
     <div class="footer-wrapper">
       <div class="footer-content">
         <section class="footer-section logo-section">

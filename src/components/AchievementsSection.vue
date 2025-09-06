@@ -42,7 +42,7 @@ const testimonials = [
     quote: "UMATT has been an incredible learning experience that has prepared me for my engineering career. The hands-on projects gave me skills I couldn't get in the classroom.",
     author: {
       name: "Arik M.",
-      title: "Mechanical Engineering Student",
+      title: "Team Captain (2025 - 2026)",
       image: arikImage // Use imported image
     }
   },
@@ -51,7 +51,7 @@ const testimonials = [
     quote: "The hands-on experience and teamwork at UMATT are unmatched. It's where theory meets practice, and I've developed leadership skills that employers value highly.",
     author: {
       name: "Kameron Ronald",
-      title: "Team Lead",
+      title: "Team Captain (2024 - 2025)",
       image: kamImage // Use imported image
     }
   }

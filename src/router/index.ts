@@ -41,22 +41,12 @@ export const routes = [
         component: UnderConstruction
       },
       {
-        /* webpackChunkName: "contact" */
-        /* webpackPrefetch: true */
-
-        path: '/contact',
-        name: 'contact',
-        component: UnderConstruction
-
-      },
-      {
         /* webpackChunkName: "sponsor" */
         /* webpackPrefetch: true */
         path: '/sponsor',
         name: 'sponsor',
         component: UnderConstruction
       }
-
     ]
   }
 ]

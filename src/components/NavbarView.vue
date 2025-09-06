@@ -42,7 +42,7 @@ const navItems = [
   { label: 'Home', icon: 'pi pi-home', path: '/' },
   { label: 'About', icon: 'pi pi-info', path: '/about' },
   { label: 'Team', icon: 'pi pi-users', path: '/team' },
-  { label: 'Contact', icon: 'pi pi-envelope', path: '/contact' },
+  { label: 'Contact', icon: 'pi pi-envelope', path: '#footer' },
 ];
 
 const toggleMenu = () => {

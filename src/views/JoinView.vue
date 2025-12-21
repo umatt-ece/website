@@ -1,9 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import emailjs from '@emailjs/browser';
-import BenefitsGrid from '../components/BenefitsGrid.vue';
-import BenefitCard from '../components/BenefitCard.vue';
-import { joinBenefits } from '../constants';
+import { RouterLink } from 'vue-router';
 
 // Form data
 const formData = ref({
@@ -14,7 +12,7 @@ const formData = ref({
   year: '',
   interest: '',
   experience: '',
-  resumeLink: '', // Replace resume file with link
+  resumeLink: '',
   agreed: false
 });
 
@@ -23,11 +21,9 @@ const formErrors = ref({});
 const formSubmitted = ref(false);
 const formSuccess = ref(false);
 const isSubmitting = ref(false);
-
-// Show resume instructions
 const showResumeInstructions = ref(false);
 
-// Available programs and years for select inputs
+// Options
 const programs = [
   'Engineering - Biosystems',
   'Engineering - Mechanical',
@@ -52,15 +48,44 @@ const interestAreas = [
   'Testing'
 ];
 
+// Benefits data
+const benefits = [
+  {
+    icon: 'tools',
+    title: 'Hands-On Experience',
+    description: 'Work on real engineering projects with cutting-edge technology and machinery.'
+  },
+  {
+    icon: 'users',
+    title: 'Networking',
+    description: 'Connect with industry professionals, sponsors, and like-minded engineering students.'
+  },
+  {
+    icon: 'trophy',
+    title: 'Competitions',
+    description: 'Represent UM at national and international quarter-scale tractor competitions.'
+  },
+  {
+    icon: 'book',
+    title: 'Skill Development',
+    description: 'Develop technical and soft skills that complement your classroom education.'
+  },
+  {
+    icon: 'briefcase',
+    title: 'Career Advancement',
+    description: 'Build an impressive portfolio and gain experience valued by employers.'
+  },
+  {
+    icon: 'heart',
+    title: 'Team Community',
+    description: 'Join a supportive community of passionate students working towards shared goals.'
+  }
+];
+
 // Form step navigation
 const currentStep = ref(1);
 const totalSteps = 4;
-const stepTitles = [
-  'Personal Information',
-  'Academic Information',
-  'Interest & Experience',
-  'Review & Submit'
-];
+const stepTitles = ['Personal Info', 'Academic', 'Experience', 'Review'];
 
 const validateForm = () => {
   const errors = {};
@@ -68,7 +93,6 @@ const validateForm = () => {
   if (!formData.value.firstName.trim()) errors.firstName = 'First name is required';
   if (!formData.value.lastName.trim()) errors.lastName = 'Last name is required';
   
-  // Email validation
   if (!formData.value.email.trim()) {
     errors.email = 'Email is required';
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) {
@@ -91,7 +115,6 @@ const submitForm = async () => {
   formSubmitted.value = true;
   
   if (!validateForm()) {
-    // Scroll to first error
     const firstError = document.querySelector('.error-message');
     if (firstError) {
       firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -102,7 +125,6 @@ const submitForm = async () => {
   isSubmitting.value = true;
   
   try {
-    // Prepare data for EmailJS
     const templateParams = {
       title: formData.value.firstName + ' ' + formData.value.lastName,
       firstName: formData.value.firstName,
@@ -112,7 +134,7 @@ const submitForm = async () => {
       year: formData.value.year,
       interest: formData.value.interest,
       experience: formData.value.experience,
-      resumeLink: formData.value.resumeLink, // Send the raw link
+      resumeLink: formData.value.resumeLink,
       hasResumeLink: formData.value.resumeLink ? true : false,
       submissionDate: new Date().toLocaleString(),
       currentYear: new Date().getFullYear()
@@ -121,20 +143,10 @@ const submitForm = async () => {
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-  
 
-    // Send email using EmailJS
-    await emailjs.send(
-      serviceId,
-      templateId,
-      templateParams,
-      publicKey
-    );
+    await emailjs.send(serviceId, templateId, templateParams, publicKey);
     
-    // Success
     formSuccess.value = true;
-    
-    // Reset form
     formData.value = {
       firstName: '',
       lastName: '',
@@ -143,12 +155,11 @@ const submitForm = async () => {
       year: '',
       interest: '',
       experience: '',
-      resumeLink: '', // Updated from resume: null
+      resumeLink: '',
       agreed: false
     };
     formSubmitted.value = false;
     
-    // Scroll to success message
     setTimeout(() => {
       const successMessage = document.querySelector('.success-message');
       if (successMessage) {
@@ -164,9 +175,7 @@ const submitForm = async () => {
   }
 };
 
-// Go to next step with validation
 const goToNextStep = () => {
-  // Validate current step
   const errors = {};
   
   if (currentStep.value === 1) {
@@ -189,41 +198,31 @@ const goToNextStep = () => {
   
   formErrors.value = errors;
   
-  // If no errors, proceed to next step
   if (Object.keys(errors).length === 0) {
     if (currentStep.value < totalSteps) {
       currentStep.value++;
-      // Scroll to top of form
       setTimeout(() => {
-        document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
   }
 };
 
-// Go to previous step
 const goToPreviousStep = () => {
   if (currentStep.value > 1) {
     currentStep.value--;
-    // Scroll to top of form
     setTimeout(() => {
-      document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   }
 };
 
-// Go to specific step (only allow going to previous completed steps)
 const goToStep = (step) => {
   if (step < currentStep.value) {
     currentStep.value = step;
-    // Scroll to top of form
-    setTimeout(() => {
-      document.querySelector('.form-steps-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
   }
 };
 
-// Animation on scroll
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -236,387 +235,431 @@ onMounted(() => {
     { threshold: 0.1 }
   );
   
-  // Select specific text elements for animations
-  document.querySelectorAll('.animate-text, .animate-fade, .animate-slide, .animate-zoom, .animate-pop')
-    .forEach((el) => {
-      observer.observe(el);
-    });
+  document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+    observer.observe(el);
+  });
 });
 </script>
 
 <template>
-  <!-- Hero Section -->
-  <section class="join-hero-section">
-    <div class="hero-background">
-      <div class="overlay"></div>
-    </div>
-    
-    <div class="content-wrapper">
+  <div class="join-page">
+    <!-- Hero Section -->
+    <section class="join-hero">
+      <div class="hero-background">
+        <div class="hero-overlay"></div>
+      </div>
       <div class="hero-content">
+        <div class="hero-badge">
+          <span>🚀 Start Your Journey</span>
+        </div>
         <h1 class="hero-title">Join <span class="highlight">UMATT</span></h1>
-        <p class="hero-subtitle">
-          Become part of our innovative team designing and building quarter-scale tractors
+        <p class="hero-description">
+          Become part of our innovative team designing and building quarter-scale 
+          autonomous tractors. Gain hands-on experience and make lifelong connections.
         </p>
-        <a href="#application-form" class="cta-button primary">
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">25+</span>
+            <span class="stat-label">Active Members</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5</span>
+            <span class="stat-label">Departments</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Learning Growth</span>
+          </div>
+        </div>
+        <a href="#application-form" class="hero-cta">
           Apply Now
-          <span class="button-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
         </a>
       </div>
-    </div>
-    
-  </section>
-  
-  <!-- Why Join Section -->
-  <section id="why-join" class="why-join-section">
-    <div class="container">
-      <header class="section-header">
-        <h2 class="section-title animate-text">Why Join <span class="highlight">UMATT</span>?</h2>
-        <div class="title-underline animate-slide delay-200"></div>
-      </header>
-      
-      <div class="content-columns">
-        <div class="text-column">
-          <p class="lead-text animate-fade delay-300">
-            Joining UMATT provides university students with practical, hands-on learning experience 
-            that complements classroom education and prepares you for your future career.
-          </p>
-          <p class="animate-fade delay-400">
-            As part of UMATT, you'll immerse yourself in a hands-on learning environment, honing 
-            both technical and soft skills in areas of design, manufacturing, and marketing. This 
-            experience fosters growth in teamwork, leadership, and project management which 
-            complement the theoretical concepts taught in classrooms with practical, real-world 
-            application.
-          </p>
-          <p class="animate-fade delay-500">
-            With our small yet growing team of approximately a dozen core students, UMATT 
-            provides members with a diverse and involved experience, enabling a larger variety 
-            of opportunities not possible on some of the larger, more established groups.
+    </section>
+
+    <!-- Why Join Section -->
+    <section class="why-join-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Why Join Us</span>
+          <h2 class="section-title">Why Join <span class="highlight">UMATT?</span></h2>
+          <p class="section-subtitle">
+            UMATT provides university students with practical, hands-on learning 
+            that complements classroom education and prepares you for your career.
           </p>
         </div>
         
-        <div class="image-column">
-          <div class="image-frame animate-zoom delay-300">
-            <img src="@/assets/images/competition-group-photo-2024.jpg" alt="UMATT team working on tractor" class="team-image">
-            
+        <div class="why-join-content">
+          <div class="why-join-text">
+            <p class="lead-text">
+              As part of UMATT, you'll immerse yourself in a hands-on learning environment, 
+              honing both technical and soft skills in design, manufacturing, and marketing.
+            </p>
+            <p>
+              This experience fosters growth in teamwork, leadership, and project management 
+              which complement the theoretical concepts taught in classrooms with practical, 
+              real-world application.
+            </p>
+            <p>
+              With our small yet growing team of approximately a dozen core students, UMATT 
+              provides members with a diverse and involved experience, enabling a larger 
+              variety of opportunities not possible on some of the larger, more established groups.
+            </p>
+            <div class="why-join-cta">
+              <RouterLink to="/about" class="text-link">
+                Learn more about us
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </RouterLink>
+            </div>
+          </div>
+          <div class="why-join-image">
+            <div class="image-wrapper">
+              <img src="@/assets/images/competition-group-photo-2024.jpg" alt="UMATT team at competition" />
+              <div class="image-accent"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  
-  <!-- Benefits Section -->
-  <section id="benefits" class="benefits-section">
-    <div class="container">
-      <header class="section-header">
-        <h2 class="section-title animate-text">Member <span class="highlight">Benefits</span></h2>
-        <div class="title-underline animate-slide delay-200"></div>
-        <p class="section-description animate-fade delay-300">
-          UMATT membership offers numerous advantages that enhance your university experience and career prospects
-        </p>
-      </header>
-      
-      <BenefitsGrid :benefits="joinBenefits">
-        <template #benefit="{ benefit }">
-          <!-- Here we apply animation classes to the vanilla BenefitCard -->
-          <div :class="`animate-pop delay-${(benefit.id * 100)}`">
-            <BenefitCard :benefit="benefit" />
-          </div>
-        </template>
-      </BenefitsGrid>
-    </div>
-  </section>
-  
-  <!-- Application Form Section -->
-  <section id="application-form" class="application-section">
-    <div class="container">
-      <header class="section-header">
-        <h2 class="section-title">Apply to <span class="highlight">Join UMATT</span></h2>
-        <div class="title-underline"></div>
-        <p class="section-description">
-          Fill out the form below to apply to join the University of Manitoba Association of Tiny Tractors
-        </p>
-      </header>
-      
-      <div v-if="formSuccess" class="success-message">
-        <div class="success-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Member Benefits</span>
+          <h2 class="section-title">What You'll <span class="highlight">Gain</span></h2>
+          <p class="section-subtitle">
+            UMATT membership offers numerous advantages that enhance your 
+            university experience and career prospects.
+          </p>
         </div>
-        <h3>Application Submitted Successfully!</h3>
-        <p>Thank you for your interest in joining UMATT. We'll review your application and get back to you soon.</p>
+        
+        <div class="benefits-grid">
+          <div v-for="(benefit, index) in benefits" :key="index" class="benefit-card animate-on-scroll">
+            <div class="benefit-icon" :class="index % 2 === 0 ? 'blue' : 'gold'">
+              <svg v-if="benefit.icon === 'tools'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              </svg>
+              <svg v-else-if="benefit.icon === 'users'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <svg v-else-if="benefit.icon === 'trophy'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+              </svg>
+              <svg v-else-if="benefit.icon === 'book'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <svg v-else-if="benefit.icon === 'briefcase'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <h3 class="benefit-title">{{ benefit.title }}</h3>
+            <p class="benefit-description">{{ benefit.description }}</p>
+          </div>
+        </div>
       </div>
-      
-      <!-- Replace the existing application form with this carousel version -->
-      <form v-else class="application-form" @submit.prevent="submitForm">
-        <div class="form-steps-container">
-          <!-- Breadcrumbs navigation -->
-          <div class="form-breadcrumbs">
+    </section>
+
+    <!-- Application Form Section -->
+    <section id="application-form" class="application-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Apply Now</span>
+          <h2 class="section-title">Join Our <span class="highlight">Team</span></h2>
+          <p class="section-subtitle">
+            Fill out the form below to express your interest in joining UMATT. 
+            We'll review your application and get back to you soon.
+          </p>
+        </div>
+        
+        <!-- Success Message -->
+        <div v-if="formSuccess" class="success-message">
+          <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3>Application Submitted Successfully!</h3>
+          <p>Thank you for your interest in joining UMATT. We'll review your application and get back to you soon.</p>
+          <RouterLink to="/" class="btn btn-primary">Back to Home</RouterLink>
+        </div>
+        
+        <!-- Application Form -->
+        <form v-else class="form-card" @submit.prevent="submitForm">
+          <!-- Step Indicators -->
+          <div class="step-indicators">
             <div 
               v-for="(title, index) in stepTitles" 
               :key="index"
-              class="breadcrumb-step"
+              class="step-indicator"
               :class="{
                 'active': index + 1 === currentStep,
-                'completed': index + 1 < currentStep,
-                'clickable': index + 1 < currentStep
+                'completed': index + 1 < currentStep
               }"
               @click="goToStep(index + 1)"
             >
-              <div class="step-indicator">
-                <span v-if="index + 1 < currentStep" class="step-check">✓</span>
+              <div class="step-number">
+                <span v-if="index + 1 < currentStep" class="check-icon">✓</span>
                 <span v-else>{{ index + 1 }}</span>
               </div>
               <span class="step-title">{{ title }}</span>
             </div>
           </div>
           
-          <!-- Progress bar -->
-          <div class="progress-container">
-            <div class="progress-bar" :style="{width: `${(currentStep - 1) / (totalSteps - 1) * 100}%`}"></div>
+          <!-- Progress Bar -->
+          <div class="progress-bar-container">
+            <div class="progress-bar" :style="{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }"></div>
           </div>
 
-          <!-- Form steps content -->
-          <div class="form-grid">
-            <!-- Step 1: Personal Information -->
-            <div v-if="currentStep === 1" class="form-section">
-              <h3 class="form-section-title">Personal Information</h3>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="firstName">First Name<span class="required"> *</span></label>
-                  <input 
-                    type="text" 
-                    id="firstName" 
-                    v-model="formData.firstName"
-                    :class="{ 'error': formErrors.firstName }"
-                  >
-                  <p v-if="formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="lastName">Last Name<span class="required"> *</span></label>
-                  <input 
-                    type="text" 
-                    id="lastName" 
-                    v-model="formData.lastName"
-                    :class="{ 'error': formErrors.lastName }"
-                  >
-                  <p v-if="formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
-                </div>
-              </div>
-              
+          <!-- Step 1: Personal Information -->
+          <div v-if="currentStep === 1" class="form-step">
+            <h3 class="step-heading">Personal Information</h3>
+            
+            <div class="form-row">
               <div class="form-group">
-                <label for="email">University Email<span class="required"> *</span></label>
+                <label for="firstName">First Name <span class="required">*</span></label>
                 <input 
-                  type="email" 
-                  id="email" 
-                  v-model="formData.email"
-                  placeholder="e.g., john.doe@myumanitoba.ca"
-                  :class="{ 'error': formErrors.email }"
+                  type="text" 
+                  id="firstName" 
+                  v-model="formData.firstName"
+                  :class="{ 'error': formErrors.firstName }"
+                  placeholder="Enter your first name"
                 >
-                <p v-if="formErrors.email" class="error-message">{{ formErrors.email }}</p>
+                <p v-if="formErrors.firstName" class="error-message">{{ formErrors.firstName }}</p>
               </div>
-            </div>
-            
-            <!-- Step 2: Academic Information -->
-            <div v-if="currentStep === 2" class="form-section">
-              <h3 class="form-section-title">Academic Information</h3>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="program">Program/Major<span class="required"> *</span></label>
-                  <select 
-                    id="program" 
-                    v-model="formData.program"
-                    :class="{ 'error': formErrors.program }"
-                  >
-                    <option value="" disabled>Select your program</option>
-                    <option v-for="program in programs" :key="program" :value="program">
-                      {{ program }}
-                    </option>
-                  </select>
-                  <p v-if="formErrors.program" class="error-message">{{ formErrors.program }}</p>
-                </div>
-                
-                <div class="form-group">
-                  <label for="year">Year of Study<span class="required"> *</span></label>
-                  <select 
-                    id="year" 
-                    v-model="formData.year"
-                    :class="{ 'error': formErrors.year }"
-                  >
-                    <option value="" disabled>Select your year</option>
-                    <option v-for="year in years" :key="year" :value="year">
-                      {{ year }}
-                    </option>
-                  </select>
-                  <p v-if="formErrors.year" class="error-message">{{ formErrors.year }}</p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Step 3: Interest and Experience -->
-            <div v-if="currentStep === 3" class="form-section">
-              <h3 class="form-section-title">Interest and Experience</h3>
               
               <div class="form-group">
-                <label for="interest">Primary Area of Interest<span class="required"> *</span></label>
-                <select 
-                  id="interest" 
-                  v-model="formData.interest"
-                  :class="{ 'error': formErrors.interest }"
+                <label for="lastName">Last Name <span class="required">*</span></label>
+                <input 
+                  type="text" 
+                  id="lastName" 
+                  v-model="formData.lastName"
+                  :class="{ 'error': formErrors.lastName }"
+                  placeholder="Enter your last name"
                 >
-                  <option value="" disabled>Select your area of interest</option>
-                  <option v-for="area in interestAreas" :key="area" :value="area">
-                    {{ area }}
+                <p v-if="formErrors.lastName" class="error-message">{{ formErrors.lastName }}</p>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">University Email <span class="required">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                v-model="formData.email"
+                placeholder="yourname@myumanitoba.ca"
+                :class="{ 'error': formErrors.email }"
+              >
+              <p v-if="formErrors.email" class="error-message">{{ formErrors.email }}</p>
+            </div>
+          </div>
+          
+          <!-- Step 2: Academic Information -->
+          <div v-if="currentStep === 2" class="form-step">
+            <h3 class="step-heading">Academic Information</h3>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="program">Program/Major <span class="required">*</span></label>
+                <select 
+                  id="program" 
+                  v-model="formData.program"
+                  :class="{ 'error': formErrors.program }"
+                >
+                  <option value="" disabled>Select your program</option>
+                  <option v-for="program in programs" :key="program" :value="program">
+                    {{ program }}
                   </option>
                 </select>
-                <p v-if="formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
+                <p v-if="formErrors.program" class="error-message">{{ formErrors.program }}</p>
               </div>
               
               <div class="form-group">
-                <label for="experience">Relevant Experience/Skills<span class="required"> *</span></label>
-                <textarea 
-                  id="experience" 
-                  v-model="formData.experience"
-                  rows="4"
-                  placeholder="Describe any relevant experience, skills, or projects you've worked on..."
-                  :class="{ 'error': formErrors.experience }"
-                ></textarea>
-                <p v-if="formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
-              </div>
-              
-              <div class="form-group">
-                <label for="resumeLink">Resume Link (Google Drive, OneDrive, etc.)</label>
-                <input 
-                  type="url" 
-                  id="resumeLink" 
-                  v-model="formData.resumeLink"
-                  placeholder="https://drive.google.com/..."
-                  class="link-input"
+                <label for="year">Year of Study <span class="required">*</span></label>
+                <select 
+                  id="year" 
+                  v-model="formData.year"
+                  :class="{ 'error': formErrors.year }"
                 >
-                <div class="instructions-toggle" @click="showResumeInstructions = !showResumeInstructions">
-                  <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    stroke-width="2" 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round"
-                    :class="{ 'rotate-icon': showResumeInstructions }"
-                  >
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
+                  <option value="" disabled>Select your year</option>
+                  <option v-for="year in years" :key="year" :value="year">
+                    {{ year }}
+                  </option>
+                </select>
+                <p v-if="formErrors.year" class="error-message">{{ formErrors.year }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3: Interest and Experience -->
+          <div v-if="currentStep === 3" class="form-step">
+            <h3 class="step-heading">Interest & Experience</h3>
+            
+            <div class="form-group">
+              <label for="interest">Primary Area of Interest <span class="required">*</span></label>
+              <select 
+                id="interest" 
+                v-model="formData.interest"
+                :class="{ 'error': formErrors.interest }"
+              >
+                <option value="" disabled>Select your area of interest</option>
+                <option v-for="area in interestAreas" :key="area" :value="area">
+                  {{ area }}
+                </option>
+              </select>
+              <p v-if="formErrors.interest" class="error-message">{{ formErrors.interest }}</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="experience">Relevant Experience/Skills <span class="required">*</span></label>
+              <textarea 
+                id="experience" 
+                v-model="formData.experience"
+                rows="4"
+                placeholder="Describe any relevant experience, skills, or projects you've worked on..."
+                :class="{ 'error': formErrors.experience }"
+              ></textarea>
+              <p v-if="formErrors.experience" class="error-message">{{ formErrors.experience }}</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="resumeLink">Resume Link (Optional)</label>
+              <input 
+                type="url" 
+                id="resumeLink" 
+                v-model="formData.resumeLink"
+                placeholder="https://drive.google.com/..."
+              >
+              <button type="button" class="toggle-instructions" @click="showResumeInstructions = !showResumeInstructions">
+                <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  :class="{ 'rotated': showResumeInstructions }"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div v-if="showResumeInstructions" class="instructions-box">
+                <p><strong>How to share your resume:</strong></p>
+                <ol>
+                  <li>Upload your resume to Google Drive or OneDrive</li>
+                  <li>Right-click the file and select "Share" or "Get link"</li>
+                  <li>Set permissions to "Anyone with the link can view"</li>
+                  <li>Copy the link and paste it above</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 4: Review & Submit -->
+          <div v-if="currentStep === 4" class="form-step">
+            <h3 class="step-heading">Review & Submit</h3>
+            
+            <div class="review-card">
+              <div class="review-section">
+                <h4>Personal Information</h4>
+                <div class="review-row">
+                  <span class="review-label">Name:</span>
+                  <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
                 </div>
-                <div v-show="showResumeInstructions" class="link-instructions">
-                  <p class="instruction-title">How to share your resume:</p>
-                  <ol>
-                    <li>Upload your resume to Google Drive or OneDrive</li>
-                    <li>Right-click the file and select "Share" or "Get link"</li> 
-                    <li>Set permissions to "Anyone with the link can view"</li>
-                    <li>Copy the link and paste it above</li>
-                  </ol>
+                <div class="review-row">
+                  <span class="review-label">Email:</span>
+                  <span class="review-value">{{ formData.email }}</span>
+                </div>
+              </div>
+              
+              <div class="review-section">
+                <h4>Academic Information</h4>
+                <div class="review-row">
+                  <span class="review-label">Program:</span>
+                  <span class="review-value">{{ formData.program }}</span>
+                </div>
+                <div class="review-row">
+                  <span class="review-label">Year:</span>
+                  <span class="review-value">{{ formData.year }}</span>
+                </div>
+              </div>
+              
+              <div class="review-section">
+                <h4>Interest & Experience</h4>
+                <div class="review-row">
+                  <span class="review-label">Interest Area:</span>
+                  <span class="review-value">{{ formData.interest }}</span>
+                </div>
+                <div class="review-row">
+                  <span class="review-label">Resume:</span>
+                  <span class="review-value">{{ formData.resumeLink ? 'Link provided' : 'Not provided' }}</span>
                 </div>
               </div>
             </div>
             
-            <!-- Step 4: Review & Submit -->
-            <div v-if="currentStep === 4" class="form-section">
-              <h3 class="form-section-title">Review & Submit</h3>
-              
-              <div class="review-summary">
-                <div class="review-section">
-                  <h4>Personal Information</h4>
-                  <div class="review-item">
-                    <span class="review-label">Name:</span>
-                    <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
-                  </div>
-                  <div class="review-item">
-                    <span class="review-label">Email:</span>
-                    <span class="review-value">{{ formData.email }}</span>
-                  </div>
-                </div>
-                
-                <div class="review-section">
-                  <h4>Academic Information</h4>
-                  <div class="review-item">
-                    <span class="review-label">Program:</span>
-                    <span class="review-value">{{ formData.program }}</span>
-                  </div>
-                  <div class="review-item">
-                    <span class="review-label">Year:</span>
-                    <span class="review-value">{{ formData.year }}</span>
-                  </div>
-                </div>
-                
-                <div class="review-section">
-                  <h4>Interest & Experience</h4>
-                  <div class="review-item">
-                    <span class="review-label">Interest Area:</span>
-                    <span class="review-value">{{ formData.interest }}</span>
-                  </div>
-                  <div class="review-item">
-                    <span class="review-label">Resume:</span>
-                    <span class="review-value">
-                      {{ formData.resumeLink ? 'Link provided' : 'No link provided' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="form-group checkbox-group">
-                <div class="checkbox-container">
-                  <input 
-                    type="checkbox" 
-                    id="agreed" 
-                    v-model="formData.agreed"
-                    :class="{ 'error': formSubmitted && formErrors.agreed }"
-                  >
-                  <span class="checkmark"></span>
-                </div>
-                <label for="agreed">
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  v-model="formData.agreed"
+                  :class="{ 'error': formSubmitted && formErrors.agreed }"
+                >
+                <span class="checkmark"></span>
+                <span class="checkbox-text">
                   I understand that by submitting this application, I am expressing interest in joining UMATT. 
                   If selected, I will commit to participating in team activities and contributing to the project. <span class="required">*</span>
-                </label>
-              </div>
+                </span>
+              </label>
               <p v-if="formSubmitted && formErrors.agreed" class="error-message">{{ formErrors.agreed }}</p>
             </div>
           </div>
           
-          <!-- Form navigation -->
+          <!-- Form Navigation -->
           <div class="form-navigation">
             <button 
               type="button" 
-              class="nav-button prev-button" 
+              class="btn btn-secondary" 
               v-if="currentStep > 1"
               @click="goToPreviousStep"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
               Previous
             </button>
+            <div v-else></div>
             
             <button 
               type="button" 
-              class="nav-button next-button" 
+              class="btn btn-primary" 
               v-if="currentStep < totalSteps"
               @click="goToNextStep"
             >
               Next
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
@@ -624,763 +667,892 @@ onMounted(() => {
             
             <button 
               type="submit" 
-              class="submit-button" 
+              class="btn btn-submit" 
               v-if="currentStep === totalSteps"
               :disabled="isSubmitting"
             >
-              <span v-if="isSubmitting">
-                <svg class="spinner" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                </svg>
-                Submitting...
-              </span>
-              <span v-else>Submit Application</span>
+              <span v-if="isSubmitting" class="spinner"></span>
+              <span>{{ isSubmitting ? 'Submitting...' : 'Submit Application' }}</span>
             </button>
           </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="cta-background">
+        <div class="cta-overlay"></div>
+      </div>
+      <div class="container">
+        <div class="cta-content">
+          <h2 class="cta-title">Have <span class="highlight">Questions?</span></h2>
+          <p class="cta-description">
+            Reach out to us if you have any questions about joining UMATT or our team activities.
+          </p>
+          <div class="cta-actions">
+            <RouterLink to="/about" class="btn btn-primary">About Us</RouterLink>
+            <a href="mailto:umatt@umanitoba.ca" class="btn btn-outline">Contact Us</a>
+          </div>
         </div>
-      </form>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-
-/* Hero section styles */
-.required {
-  color: var(--error-red, #ff0000);
-}
-.join-hero-section {
-  position: relative;
-  height: calc(80vh - var(--navbar-height));
-  min-height: 400px;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--color-white, #ffffff);
+.join-page {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Background elements */
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.join-hero {
+  position: relative;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .hero-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)),
+    url('@/assets/images/competition-team-photo-2024.jpg') no-repeat center center;
+  background-size: cover;
 }
 
-.overlay {
+.hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    linear-gradient(
-      rgba(0, 0, 0, 0.65) 0%,
-      rgba(0, 0, 0, 0.45) 50%,
-      rgba(0, 0, 0, 0.65) 100%
-    ),
-    url('@/assets/images/competition-team-photo-2024.jpg') no-repeat center center;
-  background-size: cover;
-}
-
-/* Content styles */
-.content-wrapper {
-  position: relative;
-  z-index: 5;
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  background: radial-gradient(circle at 70% 30%, rgba(242, 169, 0, 0.2) 0%, transparent 50%);
 }
 
 .hero-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
+  padding: 6rem 2rem 4rem;
   max-width: 800px;
-  opacity: 0;
-  animation: fade-in 1s ease-out forwards 0.3s;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.hero-badge {
+  display: inline-block;
+  background: rgba(242, 169, 0, 0.2);
+  border: 1px solid var(--color-gold);
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gold);
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  color: white;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
 }
 
-.hero-subtitle {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  font-weight: 400;
+.hero-title .highlight {
+  color: var(--color-gold);
+}
+
+.hero-description {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
   margin-bottom: 2rem;
-  max-width: 600px;
-  line-height: 1.5;
 }
 
-.highlight {
-  color: var(--color-gold, #F2A900);
-  position: relative;
-  display: inline-block;
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
 }
 
-/* CTA Button */
-.cta-button {
-  position: relative;
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+.hero-cta {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.75rem;
-  padding: 1rem 1.75rem;
-  border-radius: 50px;
+  background: var(--color-gold);
+  color: var(--color-brown);
+  padding: 1rem 2rem;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  overflow: hidden;
+  font-size: 1.1rem;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: none;
-  z-index: 2;
 }
 
-.cta-button.primary {
-  background: linear-gradient(45deg, #2d4a7d 0%, var(--color-blue-medium, #385E9D) 100%);
-  color: var(--color-white, #ffffff);
-  box-shadow: 
-    0 10px 20px -10px rgba(56, 94, 157, 0.5),
-    0 1px 3px rgba(0, 0, 0, 0.15),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
-}
-
-.cta-button.primary:hover {
-  background: linear-gradient(45deg, #243d68 0%, #2d4a7d 100%);
+.hero-cta:hover {
+  background: var(--color-gold-dark);
   transform: translateY(-3px);
-  box-shadow: 
-    0 14px 24px -8px rgba(56, 94, 157, 0.6),
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.2) inset;
+  box-shadow: 0 10px 30px rgba(242, 169, 0, 0.4);
 }
 
-.button-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-/* Section styles */
+/* ============================================
+   COMMON STYLES
+   ============================================ */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 0 2rem;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.75rem;
 }
 
 .section-title {
-  font-size: clamp(2rem, 2.5vw, 2.5rem);
-  font-weight: 700;
-  color: var(--umatt-c-text-dark, #333);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
-.title-underline {
-  height: 4px;
-  width: 80px;
-  background: var(--color-gold, #F2A900);
+.section-title .highlight {
+  color: var(--color-gold);
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-tertiary);
+  max-width: 600px;
   margin: 0 auto;
+  line-height: 1.7;
 }
 
-.section-description {
-  max-width: 800px;
-  margin: 1.5rem auto 0;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--umatt-c-text-medium, #555);
-}
-
-/* Why Join Section */
+/* ============================================
+   WHY JOIN SECTION
+   ============================================ */
 .why-join-section {
-  background-color: #fff;
-  position: relative;
-  overflow: hidden;
+  padding: 6rem 0;
+  background: var(--bg-primary);
 }
 
-.content-columns {
+.why-join-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
 }
 
-.text-column {
+.why-join-text {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .lead-text {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 500;
-  color: var(--umatt-c-text-dark, #333);
-  line-height: 1.6;
-}
-
-.text-column p {
-  font-size: 1rem;
+  color: var(--text-primary);
   line-height: 1.7;
-  color: var(--umatt-c-text-medium, #555);
 }
 
-.image-column {
+.why-join-text p {
+  font-size: 1rem;
+  color: var(--text-tertiary);
+  line-height: 1.8;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-blue-medium);
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.text-link:hover {
+  color: var(--color-gold);
+  gap: 0.75rem;
+}
+
+.why-join-image {
   position: relative;
 }
 
-.image-frame {
+.image-wrapper {
   position: relative;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  transform: perspective(1000px) rotateY(-5deg) rotateX(3deg);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
 }
 
-.team-image {
+.image-wrapper img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.8s ease;
+  transition: transform 0.5s ease;
 }
 
-.image-frame:hover .team-image {
-  transform: scale(1.05);
+.image-wrapper:hover img {
+  transform: scale(1.03);
 }
 
 .image-accent {
   position: absolute;
-  width: 60px;
-  height: 60px;
-  z-index: 1;
-}
-
-.image-accent.top-right {
-  top: -20px;
-  right: -20px;
-  background-color: var(--color-gold, #F2A900);
-  border-radius: 50%;
-}
-
-.image-accent.bottom-left {
   bottom: -20px;
-  left: -20px;
-  background-color: var(--color-blue-light, #60A3D9);
-  border-radius: 12px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  background: var(--color-gold);
+  border-radius: 16px;
+  z-index: -1;
 }
 
-/* Benefits Section */
+/* ============================================
+   BENEFITS SECTION
+   ============================================ */
 .benefits-section {
-  background-color: var(--umatt-c-background-medium, #f0f0f0);
-  position: relative;
-  overflow: hidden;
+  padding: 6rem 0;
+  background: var(--bg-secondary);
 }
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
 }
 
 .benefit-card {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--card-bg, white);
+  border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-light);
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border-bottom: 4px solid transparent;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.benefit-card.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .benefit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  border-bottom-color: var(--color-gold, #F2A900);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-gold);
 }
 
 .benefit-icon {
-  margin-bottom: 1.5rem;
-  color: var(--color-blue-medium, #385E9D);
-  background: rgba(56, 94, 157, 0.1);
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.benefit-icon.blue {
+  background: var(--color-blue-medium);
+  color: white;
+}
+
+.benefit-icon.gold {
+  background: var(--color-gold);
+  color: var(--color-brown);
 }
 
 .benefit-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--umatt-c-text-dark, #333);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
 }
 
 .benefit-description {
   font-size: 0.95rem;
+  color: var(--text-tertiary);
   line-height: 1.7;
-  color: var(--umatt-c-text-medium, #555);
 }
 
-/* Application Form Section */
+/* ============================================
+   APPLICATION SECTION
+   ============================================ */
 .application-section {
-  background-color: #fafafa;
-  position: relative;
-  padding: 2rem 0;
+  padding: 6rem 0;
+  background: var(--bg-primary);
 }
 
-.application-form {
-  max-width: 900px;
+.success-message {
+  max-width: 600px;
   margin: 0 auto;
-  background: #fff;
-  border-radius: 16px;
+  text-align: center;
   padding: 3rem;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #f0fff4;
+  border: 1px solid #86efac;
+  border-radius: 16px;
 }
 
-.application-form:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+.success-icon {
+  color: #22c55e;
+  margin-bottom: 1.5rem;
 }
 
-.form-steps-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.success-message h3 {
+  font-size: 1.5rem;
+  color: #166534;
+  margin-bottom: 1rem;
 }
 
-.form-breadcrumbs {
+.success-message p {
+  color: var(--text-tertiary);
+  margin-bottom: 2rem;
+}
+
+.form-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--card-bg, white);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-light);
+}
+
+/* Step Indicators */
+.step-indicators {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
-  position: relative;
+  margin-bottom: 1rem;
 }
 
-.breadcrumb-step {
+.step-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  width: 24%;
-  position: relative;
-  z-index: 2;
+  flex: 1;
+  cursor: pointer;
 }
 
-.step-indicator {
-  width: 40px;
-  height: 40px;
+.step-number {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #eee;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-light);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: #777;
-  border: 2px solid #ddd;
+  color: var(--text-tertiary);
   transition: all 0.3s ease;
+}
+
+.step-indicator.active .step-number {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-brown);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px rgba(242, 169, 0, 0.2);
+}
+
+.step-indicator.completed .step-number {
+  background: var(--color-blue-medium);
+  border-color: var(--color-blue-medium);
+  color: white;
 }
 
 .step-title {
   font-size: 0.85rem;
-  color: #777;
+  color: var(--text-tertiary);
   font-weight: 500;
   text-align: center;
-  transition: color 0.3s ease;
 }
 
-/* Active step */
-.breadcrumb-step.active .step-indicator {
-  background-color: var(--color-gold, #F2A900);
-  border-color: var(--color-gold, #F2A900);
-  color: #000;
-  box-shadow: 0 0 0 4px rgba(242, 169, 0, 0.25);
-  transform: scale(1.1);
-}
-
-.breadcrumb-step.active .step-title {
-  color: var(--umatt-c-text-dark, #333);
+.step-indicator.active .step-title {
+  color: var(--text-primary);
   font-weight: 600;
 }
 
-/* Completed step */
-.breadcrumb-step.completed .step-indicator {
-  background-color: var(--color-blue-medium, #385E9D);
-  border-color: var(--color-blue-medium, #385E9D);
-  color: white;
+.step-indicator.completed .step-title {
+  color: var(--color-blue-medium);
 }
 
-.breadcrumb-step.completed .step-title {
-  color: var(--color-blue-medium, #385E9D);
-}
-
-/* Clickable step */
-.breadcrumb-step.clickable {
-  cursor: pointer;
-}
-
-.breadcrumb-step.clickable:hover .step-indicator {
-  transform: scale(1.1);
-}
-
-/* Progress bar */
-.progress-container {
+/* Progress Bar */
+.progress-bar-container {
   height: 6px;
-  background-color: #f0f0f0;
+  background: var(--bg-secondary);
   border-radius: 3px;
-  margin-top: -23px;
-  margin-bottom: 2rem;
-  margin-left: 2%;
-  margin-right: 2%;
-  width: 96%;
+  margin: 0 5% 2.5rem;
   overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(to right, #F2A900, #f5c346, #fad47a);
-  width: 0;
-  transition: width 0.5s ease;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
   border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(255,255,255,0.3) inset;
+  transition: width 0.4s ease;
 }
 
-/* Form styling - Add these rules */
-.form-section {
+/* Form Steps */
+.form-step {
   padding: 2rem;
-  background: #f9f9f9;
-  border-radius: 12px;
-  border-left: 4px solid var(--color-gold, #F2A900);
-  margin-bottom: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  border-left: 4px solid var(--color-gold);
 }
 
-.form-section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--umatt-c-text-dark, #333);
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(242, 169, 0, 0.3);
+.step-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(242, 169, 0, 0.2);
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.25rem;
-  position: relative;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
-  font-weight: 500;
-  margin-bottom: 0.6rem;
+  display: block;
+  font-weight: 600;
   font-size: 0.95rem;
-  color: var(--umatt-c-text-dark, #333);
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
+.required {
+  color: #ef4444;
+}
+
+.form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  color: var(--umatt-c-text-dark, #333);
-  background-color: #fff;
-  transition: all 0.3s;
   width: 100%;
-  box-sizing: border-box;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: white;
+  transition: all 0.3s ease;
 }
 
-/* Fix for autofill blue background */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  -webkit-text-fill-color: #333 !important;
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-blue-medium);
+  box-shadow: 0 0 0 3px rgba(56, 94, 157, 0.1);
 }
 
-/* Error styling */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
 .error-message {
-  color: #d32f2f;
+  color: #ef4444;
   font-size: 0.85rem;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
-input.error, select.error, textarea.error {
-  border-color: #d32f2f;
-  background-color: rgba(211, 47, 47, 0.05);
-}
-
-/* File upload styling */
-.file-upload-label {
+.toggle-instructions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: #f5f5f5;
-  border: 1px dashed #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.95rem;
-  color: #666;
-}
-
-.file-name {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--color-gold, #F2A900);
-  font-weight: 500;
-}
-
-/* Success message */
-.success-message {
-  background: #f1f9f1;
-  border-left: 4px solid #4caf50;
-  padding: 2.5rem;
-  border-radius: 8px;
-  text-align: center;
-  margin: 0 auto 2rem;
-  max-width: 800px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-}
-
-.success-message h3 {
-  color: #2e7d32;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.success-message p {
-  color: #333;
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-
-.success-icon {
-  color: #4caf50;
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.success-icon svg {
-  filter: drop-shadow(0 2px 4px rgba(76, 175, 80, 0.3));
-}
-
-/* Submit button styling */
-.submit-button {
-  background: linear-gradient(45deg, #F2A900 0%, #f5c346 100%);
-  color: #000;
-  font-weight: 600;
-  padding: 0.75rem 2rem;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
   border: none;
   border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--color-blue-medium);
   cursor: pointer;
-  font-size: 1.1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px -8px rgba(242, 169, 0, 0.5);
-  min-width: 200px;
+  transition: background 0.2s ease;
 }
 
-.submit-button:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(45deg, #e69d00 0%, #e5b32a 100%);
-  box-shadow: 0 15px 25px -5px rgba(242, 169, 0, 0.4);
+.toggle-instructions:hover {
+  background: var(--border-light);
 }
 
-.submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
+.toggle-instructions svg {
+  transition: transform 0.3s ease;
 }
 
-.submit-button span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+.toggle-instructions svg.rotated {
+  transform: rotate(180deg);
 }
 
-/* Review section styling improvements */
-.review-summary {
-  background: #fff;
+.instructions-box {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: #f0f7ff;
+  border: 1px solid #bfdbfe;
+  border-left: 3px solid var(--color-blue-medium);
   border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.instructions-box ol {
+  margin: 0.5rem 0 0 1.25rem;
+  padding: 0;
+}
+
+.instructions-box li {
+  margin-bottom: 0.4rem;
+  color: var(--text-tertiary);
+}
+
+/* Review Card */
+.review-card {
+  background: white;
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .review-section {
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .review-section:last-child {
+  padding-bottom: 0;
   margin-bottom: 0;
   border-bottom: none;
-  padding-bottom: 0;
 }
 
 .review-section h4 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--color-blue-medium, #385E9D);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f0f0f0;
+  color: var(--color-blue-medium);
+  margin-bottom: 0.75rem;
 }
 
-.review-item {
+.review-row {
   display: flex;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .review-label {
   font-weight: 600;
   width: 120px;
-  flex-shrink: 0;
-  color: #444;
+  color: var(--text-tertiary);
 }
 
 .review-value {
-  color: #222;
+  color: var(--text-primary);
 }
 
-/* Form navigation buttons */
+/* Checkbox */
+.checkbox-group {
+  margin-top: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.15rem;
+  accent-color: var(--color-blue-medium);
+}
+
+.checkbox-text {
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+}
+
+/* Form Navigation */
 .form-navigation {
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-light);
 }
 
-.nav-button {
-  display: flex;
+.btn {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 500;
+  padding: 0.875rem 1.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid #ddd;
-  background: #fff;
-  color: var(--umatt-c-text-medium, #555);
+  text-decoration: none;
+  border: none;
 }
 
-.prev-button {
-  border-color: #ddd;
+.btn-primary {
+  background: var(--color-gold);
+  color: var(--color-brown);
 }
 
-.prev-button:hover {
-  background: #f5f5f5;
-}
-
-.next-button {
-  background: var(--color-blue-medium, #385E9D);
-  color: white;
-  border-color: var(--color-blue-medium, #385E9D);
-}
-
-.next-button:hover {
-  background: #2d4a7d;
+.btn-primary:hover {
+  background: var(--color-gold-dark);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px -5px rgba(56, 94, 157, 0.4);
+  box-shadow: 0 8px 20px rgba(242, 169, 0, 0.3);
 }
 
-/* Loading spinner */
+.btn-secondary {
+  background: white;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-secondary);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+  color: var(--color-brown);
+  min-width: 200px;
+  justify-content: center;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(242, 169, 0, 0.4);
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .spinner {
-  animation: rotate 2s linear infinite;
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: var(--color-brown);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 0.5rem;
 }
 
-.spinner .path {
-  stroke: #000;
-  stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-@keyframes rotate {
-  100% { transform: rotate(360deg); }
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-@keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
 }
 
-/* Responsive adjustments */
+/* ============================================
+   CTA SECTION
+   ============================================ */
+.cta-section {
+  position: relative;
+  padding: 6rem 0;
+  overflow: hidden;
+}
+
+.cta-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #385E9D 0%, #2D4A7D 100%);
+}
+
+.cta-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 70%, rgba(242, 169, 0, 0.15) 0%, transparent 50%);
+}
+
+.cta-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-content {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.cta-title .highlight {
+  color: var(--color-gold);
+}
+
+.cta-description {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.animate-on-scroll {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
 @media (max-width: 768px) {
+  .join-hero {
+    min-height: 85vh;
+  }
+  
+  .hero-stats {
+    gap: 2rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .why-join-section,
+  .benefits-section,
+  .application-section,
+  .cta-section {
+    padding: 4rem 0;
+  }
+  
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  
+  .why-join-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .why-join-image {
+    order: -1;
+  }
+  
+  .image-accent {
+    width: 80px;
+    height: 80px;
+    bottom: -10px;
+    right: -10px;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-card {
+    padding: 1.5rem;
+  }
+  
   .step-title {
     display: none;
   }
   
-  .form-breadcrumbs {
-    margin-bottom: 2.5rem;
+  .step-indicators {
+    margin-bottom: 1.5rem;
   }
   
-  .progress-container {
-    margin-top: -20px;
+  .progress-bar-container {
+    margin-bottom: 2rem;
   }
   
   .form-row {
     grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .form-step {
+    padding: 1.5rem;
   }
   
   .form-navigation {
@@ -1388,114 +1560,34 @@ input.error, select.error, textarea.error {
     gap: 1rem;
   }
   
-  .nav-button, .submit-button {
+  .form-navigation .btn {
     width: 100%;
     justify-content: center;
   }
-  .application-form{
-    padding-inline:.75rem;
+  
+  .cta-actions {
+    flex-direction: column;
+    padding: 0 1rem;
   }
-  .content-columns{
-    grid-template-columns: 1fr;
-  }
-  .container{
-    padding-inline: 1rem;
-  }
-  .form-steps-container{
-    gap:1rem;
-  }
-  .form-navigation{
-    margin-top: 1rem;
+  
+  .cta-actions .btn {
+    width: 100%;
   }
 }
 
-/* Additional styles */
-.link-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  color: var(--umatt-c-text-dark, #333);
-  background-color: #fff;
-  transition: all 0.3s;
-  width: 100%;
-  box-sizing: border-box;
+@media (max-width: 480px) {
+  .hero-content {
+    padding: 5rem 1.25rem 3rem;
+  }
+  
+  .container {
+    padding: 0 1.25rem;
+  }
+  
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
 }
-
-.instructions-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: var(--color-blue-medium, #385E9D);
-  background-color: #f0f4f9;
-  transition: background-color 0.2s ease;
-}
-
-.instructions-toggle:hover {
-  background-color: #e0eaf5;
-}
-
-.rotate-icon {
-  transform: rotate(180deg);
-  transition: transform 0.3s ease;
-}
-
-.link-instructions {
-  margin-top: 0.75rem;
-  padding: 1rem;
-  background-color: #f8faff;
-  border: 1px solid #e0eaf5;
-  border-left: 3px solid var(--color-blue-medium, #385E9D);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #333;
-  animation: slideDown 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.instruction-title {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--color-blue-medium, #385E9D);
-}
-
-.link-instructions ol {
-  padding-left: 1.5rem;
-  margin: 0.5rem 0 0 0;
-}
-
-.link-instructions li {
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-  color: #444;
-}
-
-/* Animation classes */
-.animate-pop {
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.animate-pop.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.delay-100 { transition-delay: 0.1s; }
-.delay-200 { transition-delay: 0.2s; }
-.delay-300 { transition-delay: 0.3s; }
-.delay-400 { transition-delay: 0.4s; }
-.delay-500 { transition-delay: 0.5s; }
-.delay-600 { transition-delay: 0.6s; }
 </style>

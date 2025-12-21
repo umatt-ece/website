@@ -5,6 +5,8 @@ const HomeView = () => import(/* webpackChunkName: "home" */  /* webpackPrefetch
 const JoinView = () => import(/* webpackChunkName: "join" */ /* webpackPrefetch: true */ '@/views/JoinView.vue')
 const UnderConstruction = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "under-construction" */'@/views/UnderConstruction.vue')
 const SponsorView = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "sponsor" */ '@/views/SponsorView.vue')
+const TeamView = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "team" */ '@/views/TeamView.vue')
+const AboutView = () => import( /* webpackPrefetch: true */ /* webpackChunkName: "about" */ '@/views/AboutView.vue')
 // Define routes for the application
 export const routes = [
   {
@@ -31,21 +33,21 @@ export const routes = [
 
         path: '/about',
         name: 'about',
-        component: UnderConstruction
+        component: AboutView
       },
       {
         /* webpackChunkName: "team" */
         /* webpackPrefetch: true */
         path: '/team',
         name: 'team',
-        component: UnderConstruction
+        component: TeamView
       },
       {
         /* webpackChunkName: "sponsor" */
         /* webpackPrefetch: true */
         path: '/sponsor',
         name: 'sponsor',
-        component: UnderConstruction
+        component: SponsorView
       }
     ]
   }

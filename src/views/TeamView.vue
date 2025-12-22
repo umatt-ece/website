@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const activeFilter = ref('All')
-const filters = ['All', 'Mechanical', 'Electrical', 'Software', 'Business']
+
+// Dynamic filters based on available roles
+const filters = computed(() => {
+  const roles = new Set(teamMembers.map(member => member.role).filter(Boolean))
+  return ['All', ...Array.from(roles).sort()]
+})
 
 // Stats for hero
 const stats = [
@@ -99,19 +104,41 @@ const teamMembers = [
   { name: 'Tom Anderson', role: 'Software', year: '3rd Year', initials: 'TA' },
   { name: 'Kevin Zhang', role: 'Electrical', year: '4th Year', initials: 'KZ' },
   { name: 'Emily Park', role: 'Mechanical', year: '2nd Year', initials: 'EP' },
-  { name: 'Jason Lee', role: 'Software', year: '3rd Year', initials: 'JL' }
+  { name: 'Jason Lee', role: 'Software', year: '3rd Year', initials: 'JL' },
+  { name: 'Rachel Kim', role: 'Design & Media', year: '3rd Year', initials: 'RK' },
+  { name: 'Tyler Johnson', role: 'Design & Media', year: '2nd Year', initials: 'TJ' }
 ]
 
 const filteredMembers = computed(() => {
-  if (activeFilter.value === 'All') {
-    return teamMembers
+  try {
+    if (activeFilter.value === 'All') {
+      return teamMembers
+    }
+
+    // Case-insensitive filtering with fallback
+    const filtered = teamMembers.filter((member) => {
+      if (!member || !member.role) return false
+      return member.role.toLowerCase() === activeFilter.value.toLowerCase()
+    })
+
+    return filtered
+  } catch (error) {
+    console.warn('Error filtering team members:', error)
+    return teamMembers // Fallback to showing all members
   }
-  return teamMembers.filter((m) => m.role === activeFilter.value)
 })
 
 // Animation observer
-onMounted(() => {
-  const observer = new IntersectionObserver(
+let observer: IntersectionObserver | null = null
+
+const setupIntersectionObserver = () => {
+  // Disconnect existing observer
+  if (observer) {
+    observer.disconnect()
+  }
+
+  // Create new observer
+  observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -122,9 +149,39 @@ onMounted(() => {
     { threshold: 0.1 }
   )
 
-  document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-    observer.observe(el)
+  // Observe all animate-on-scroll elements
+  const elements = document.querySelectorAll('.animate-on-scroll')
+  elements.forEach((el) => {
+    if (observer) {
+      observer.observe(el)
+    }
   })
+}
+
+onMounted(() => {
+  setupIntersectionObserver()
+})
+
+// Watch for changes in filtered members and re-setup observer
+watch(filteredMembers, () => {
+  // Reset visibility for smooth transitions
+  const elements = document.querySelectorAll('.animate-on-scroll')
+  elements.forEach((el) => {
+    el.classList.remove('visible')
+  })
+
+  // Small delay for smoother transition
+  setTimeout(() => {
+    nextTick(() => {
+      setupIntersectionObserver()
+    })
+  }, 50)
+}, { immediate: false })
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+  }
 })
 </script>
 
@@ -406,7 +463,14 @@ onMounted(() => {
         </div>
 
         <div v-if="filteredMembers.length === 0" class="no-results">
-          <p>No members found in this department.</p>
+          <p v-if="activeFilter === 'All'">
+            No team members found. Please check back later.
+          </p>
+          <p v-else>
+            No members found in the {{ activeFilter }} department.
+            <br>
+            <small>Try selecting "All" to see all team members.</small>
+          </p>
         </div>
       </div>
     </section>

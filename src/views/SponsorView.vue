@@ -211,23 +211,6 @@ onMounted(() => {
           <a href="#contact-section" class="btn btn-secondary">Get In Touch</a>
         </div>
       </div>
-
-      <div class="hero-scroll-indicator">
-        <span>Scroll to explore</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M12 5v14M19 12l-7 7-7-7" />
-        </svg>
-      </div>
     </section>
 
     <!-- Why Sponsor Section -->
@@ -964,44 +947,6 @@ onMounted(() => {
   animation: fade-in-up 0.8s ease-out 0.6s both;
 }
 
-/* Scroll Indicator */
-.hero-scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  animation: fade-in-up 1s ease-out 0.8s both;
-  z-index: 10;
-}
-
-.hero-scroll-indicator svg {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(6px);
-  }
-  60% {
-    transform: translateY(3px);
-  }
-}
-
 /* ============================================
    COMMON STYLES
    ============================================ */
@@ -1145,20 +1090,22 @@ onMounted(() => {
 .benefit-icon {
   width: 70px;
   height: 70px;
-  background: linear-gradient(135deg, rgba(56, 94, 157, 0.1), rgba(56, 94, 157, 0.05));
+  background: var(--color-blue-medium);
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  color: var(--color-blue-medium);
+  color: white;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(56, 94, 157, 0.2);
 }
 
 .benefit-card:hover .benefit-icon {
-  background: var(--color-blue-medium);
-  color: white;
-  transform: scale(1.1);
+  background: var(--color-gold);
+  color: var(--color-brown);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(242, 169, 0, 0.4), 0 0 30px rgba(242, 169, 0, 0.2);
 }
 
 .benefit-title {

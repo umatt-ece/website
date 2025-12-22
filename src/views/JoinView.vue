@@ -292,23 +292,6 @@ onMounted(() => {
           </svg>
         </a>
       </div>
-
-      <div class="hero-scroll-indicator">
-        <span>Scroll to explore</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M12 5v14M19 12l-7 7-7-7" />
-        </svg>
-      </div>
     </section>
 
     <!-- Why Join Section -->
@@ -1000,46 +983,6 @@ onMounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
-/* Scroll Indicator */
-.hero-scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  animation: fade-in-up 1s ease-out 0.6s both;
-  z-index: 10;
-}
-
-.hero-scroll-indicator svg {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(6px);
-  }
-  60% {
-    transform: translateY(3px);
-  }
-}
-
-/* Keyframe Animations */
 @keyframes fade-in-down {
   from {
     opacity: 0;

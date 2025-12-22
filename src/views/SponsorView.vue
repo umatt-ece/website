@@ -448,6 +448,16 @@ onMounted(() => {
           <p class="section-subtitle">
             Choose the partnership level that aligns with your organization's goals
           </p>
+          <div class="download-cta">
+            <a href="/sponsor-package.pdf" download class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download Full Sponsor Package
+            </a>
+          </div>
         </div>
 
         <div class="tiers-grid">
@@ -959,6 +969,51 @@ onMounted(() => {
 .section-header {
   text-align: center;
   margin-bottom: 4rem;
+}
+
+.download-cta {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.download-cta .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark, #e6a000) 100%);
+  color: var(--color-brown);
+  border: none;
+  box-shadow: 0 4px 15px rgba(242, 169, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.download-cta .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.download-cta .btn:hover::before {
+  left: 100%;
+}
+
+.download-cta .btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(242, 169, 0, 0.4), 0 0 50px rgba(242, 169, 0, 0.3);
+  background: linear-gradient(135deg, var(--color-gold-dark, #e6a000) 0%, var(--color-gold) 100%);
 }
 
 .section-label {

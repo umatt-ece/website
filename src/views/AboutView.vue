@@ -4,8 +4,8 @@ import { RouterLink } from 'vue-router'
 
 // Stats for hero
 const stats = [
-  { number: '2005', label: 'Founded' },
-  { number: '25+', label: 'Members' },
+  { number: '1998', label: 'Founded' },
+  { number: '30+', label: 'Members' },
   { number: '15+', label: 'Competitions' }
 ]
 
@@ -73,7 +73,7 @@ const activities = [
 // Timeline milestones
 const milestones = [
   {
-    year: '2005',
+    year: '1998',
     title: 'Team Founded',
     description:
       'UMATT was established by passionate University of Manitoba engineering students with a vision to compete at the highest level.',
@@ -97,7 +97,7 @@ const milestones = [
 
 // Departments
 const departments = [
-  { title: 'Design', description: 'CAD modeling & strategy', color: 'blue' },
+  { title: 'Software', description: 'Writing & deploying software', color: 'blue' },
   { title: 'Electrical', description: 'Wiring & electronics', color: 'gold' },
   { title: 'Mechanical', description: 'Drivetrain & structure', color: 'blue' },
   { title: 'Fabrication', description: 'Manufacturing & assembly', color: 'gold' }
@@ -166,7 +166,7 @@ onMounted(() => {
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </RouterLink>
-          <RouterLink to="/team" class="btn btn-secondary">Meet the Team</RouterLink>
+          <!-- <RouterLink to="/team" class="btn btn-secondary">Meet the Team</RouterLink> -->
         </div>
       </div>
     </section>
@@ -403,7 +403,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Journey Section -->
+    <!-- Journey Section
     <section class="journey-section">
       <div class="container">
         <div class="section-header">
@@ -429,7 +429,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Team Structure Section -->
     <section class="team-section">
@@ -454,7 +454,7 @@ onMounted(() => {
                 <p class="dept-description">{{ dept.description }}</p>
               </div>
             </div>
-            <RouterLink to="/team" class="text-link">
+            <!-- <RouterLink to="/team" class="text-link">
               View Full Team
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -470,7 +470,7 @@ onMounted(() => {
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
-            </RouterLink>
+            </RouterLink> -->
           </div>
           <div class="team-image-wrapper">
             <div class="team-image">
@@ -485,7 +485,7 @@ onMounted(() => {
     </section>
 
     <!-- Testimonial Banner -->
-    <section class="testimonial-section">
+    <!-- <section class="testimonial-section">
       <div class="container">
         <div class="testimonial-card">
           <svg
@@ -514,7 +514,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- CTA Section - Modern Card Style -->
     <section class="cta-section">
@@ -524,21 +524,34 @@ onMounted(() => {
           <h2 class="cta-title">Ready to Get <span class="text-gold">Involved</span>?</h2>
           <p class="cta-subtitle">Join our mission to revolutionize agricultural technology</p>
         </header>
-        
+
         <div class="cta-cards">
           <div class="cta-card cta-card-join">
             <div class="card-accent"></div>
             <div class="card-body">
               <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="8.5" cy="7" r="4"/>
-                  <line x1="20" y1="8" x2="20" y2="14"/>
-                  <line x1="23" y1="11" x2="17" y2="11"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="8.5" cy="7" r="4" />
+                  <line x1="20" y1="8" x2="20" y2="14" />
+                  <line x1="23" y1="11" x2="17" y2="11" />
                 </svg>
               </div>
               <h3 class="card-title">Join Our Team</h3>
-              <p class="card-text">Be part of our innovative student team. No experience required—just passion and dedication.</p>
+              <p class="card-text">
+                Be part of our innovative student team. No experience required—just passion and
+                dedication.
+              </p>
               <ul class="card-perks">
                 <li>Hands-on engineering experience</li>
                 <li>Build your professional network</li>
@@ -546,21 +559,46 @@ onMounted(() => {
               </ul>
               <RouterLink to="/join" class="card-btn">
                 Apply Now
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M5 12h14" />
+                  <path d="M12 5l7 7-7 7" />
+                </svg>
               </RouterLink>
             </div>
           </div>
-          
+
           <div class="cta-card cta-card-sponsor">
             <div class="card-accent"></div>
             <div class="card-body">
               <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
                 </svg>
               </div>
               <h3 class="card-title">Become a Sponsor</h3>
-              <p class="card-text">Support the next generation of agricultural engineers and make a lasting impact.</p>
+              <p class="card-text">
+                Support the next generation of agricultural engineers and make a lasting impact.
+              </p>
               <ul class="card-perks">
                 <li>Brand visibility at competitions</li>
                 <li>Access to emerging talent</li>
@@ -568,7 +606,18 @@ onMounted(() => {
               </ul>
               <RouterLink to="/sponsor" class="card-btn card-btn-gold">
                 Partner With Us
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M5 12h14" />
+                  <path d="M12 5l7 7-7 7" />
+                </svg>
               </RouterLink>
             </div>
           </div>
@@ -1375,7 +1424,7 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
+  background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
   z-index: 0;
 }
 
@@ -1386,8 +1435,9 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 20% 80%, rgba(242, 169, 0, 0.15) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 20%, rgba(242, 169, 0, 0.1) 0%, transparent 40%);
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(242, 169, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(242, 169, 0, 0.1) 0%, transparent 40%);
 }
 
 .cta-section .container {
@@ -1431,7 +1481,9 @@ onMounted(() => {
   border-radius: 16px;
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .cta-card:hover {
@@ -1445,11 +1497,11 @@ onMounted(() => {
 }
 
 .cta-card-join .card-accent {
-  background: linear-gradient(90deg, #385E9D 0%, #4a7bc4 100%);
+  background: linear-gradient(90deg, #385e9d 0%, #4a7bc4 100%);
 }
 
 .cta-card-sponsor .card-accent {
-  background: linear-gradient(90deg, #F2A900 0%, #FFB81C 100%);
+  background: linear-gradient(90deg, #f2a900 0%, #ffb81c 100%);
 }
 
 .card-body {
@@ -1469,12 +1521,12 @@ onMounted(() => {
 
 .cta-card-join .card-icon {
   background: rgba(33, 61, 107, 0.5);
-  color: #385E9D;
+  color: #385e9d;
 }
 
 .cta-card-sponsor .card-icon {
   background: rgba(242, 169, 0, 0.2);
-  color: #F2A900;
+  color: #f2a900;
 }
 
 .cta-card:hover .card-icon {
@@ -1524,7 +1576,7 @@ onMounted(() => {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #F2A900;
+  background: #f2a900;
   flex-shrink: 0;
 }
 
@@ -1538,7 +1590,7 @@ onMounted(() => {
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  background: #385E9D;
+  background: #385e9d;
   color: #fff;
 }
 
@@ -1556,8 +1608,8 @@ onMounted(() => {
 }
 
 .card-btn-gold {
-  background: #F2A900;
-  color: #4F2C1D;
+  background: #f2a900;
+  color: #4f2c1d;
 }
 
 .card-btn-gold:hover {

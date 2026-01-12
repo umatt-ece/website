@@ -52,7 +52,7 @@ const missionVisionData = [
   {
     id: 'vision',
     title: 'Our Vision',
-    description: 'To nurture future engineers and innovators through interdisciplinary collaboration and creative problem solving.',
+    description: 'Our vision is to provide university students with practical, hands-on learning experience – fostering skills in design, manufacturing, and marketing.',
     icon: {
       width: 68,
       height: 56,

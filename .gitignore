@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 .wrangler
+.dev.vars
+*.vars*

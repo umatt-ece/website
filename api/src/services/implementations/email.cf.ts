@@ -1,14 +1,7 @@
 import { Mailbox, createMimeMessage } from 'mimetext';
+import { EmailMessage } from 'cloudflare:email';
 import { IEmailService, EmailData } from '../interfaces/email.interface';
-import { templates } from '../../templates/emails';
-
-// EmailMessage is available globally in CF Workers runtime
-declare const EmailMessage: {
-  new (from: string, to: string, raw: string): {
-    from: string;
-    to: string;
-  };
-};
+import { templates } from '../../templates';
 
 /**
  * Cloudflare Email Service implementation using CF Workers Email Routing
@@ -53,22 +46,19 @@ export class CFEmailService implements IEmailService {
       return;
     }
 
-    // EmailMessage is only available in CF Workers production runtime
-    // Use dynamic check to avoid ReferenceError in local dev
-    if (typeof EmailMessage === 'undefined') {
-      console.log('[LOCAL DEV] EmailMessage not available, skipping send');
-      console.log(`  To: ${data.to}`);
-      console.log(`  Subject: ${data.subject}`);
-      return;
+    try {
+      const message = new EmailMessage(
+        data.from || this.fromAddress,
+        data.to,
+        msg.asRaw()
+      );
+
+      await this.sendEmail.send(message);
+      console.log(`Email sent successfully to ${data.to}`);
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      throw error;
     }
-
-    const message = new EmailMessage(
-      data.from || this.fromAddress,
-      data.to,
-      msg.asRaw()
-    );
-
-    await this.sendEmail.send(message);
   }
 
   async sendSponsorWelcome(data: {

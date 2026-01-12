@@ -8,9 +8,9 @@
 	],
 	// Environment variables
 	"vars": {
-		"FROM_EMAIL": "noreply@umatt.ca",
+		"FROM_EMAIL": "noreply@umatt.org",
 		"TEAM_EMAIL": "umattinfo@gmail.com",
-		"ALLOWED_ORIGINS": "https://umatt.ca,http://localhost:5173"
+		"ALLOWED_ORIGINS": "https://umatt.ca,https://umatt.org,https://www.umatt.org,http://localhost:5173"
 	},
 	// R2 buckets for storage
 	"r2_buckets": [
@@ -23,14 +23,6 @@
 			"binding": "ASSETS_BUCKET",
 			"bucket_name": "umatt-assets",
 			"preview_bucket_name": "umatt-assets-dev"
-		},
-		{
-			"bucket_name": "umatt-assets",
-			"binding": "umatt_assets"
-		},
-		{
-			"bucket_name": "resumes",
-			"binding": "resumes"
 		}
 	],
 	// Email bindings - requires Email Routing to be configured on your domain

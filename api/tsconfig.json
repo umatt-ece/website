@@ -11,6 +11,7 @@
     "noEmit": true,
     "lib": ["ES2022"],
     "types": ["@cloudflare/workers-types"],
+    "jsx": "react",
     "paths": {
       "@/*": ["./src/*"]
     },

@@ -86,16 +86,6 @@ onUnmounted(() => {
           </button>
         </div>
       </div>
-       
-       <!-- Improved scroll indicator -->
-       <div class="scroll-indicator">
-          <div class="scroll-arrow">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div class="scroll-text">Explore More</div>
-        </div>
     </div>
     
     <!-- Enhanced visual decorations -->

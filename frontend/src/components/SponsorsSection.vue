@@ -69,12 +69,12 @@ const tiers = [
         description: "Engineering scholarship and project funding"
       },
       {
-        id: 10,
-        name: "Danfoss",
-        logo: danfosysLogo,
-        link: "https://www.danfoss.com/",
-        description: "Energy-efficient solutions for industry and infrastructure."
-      }
+        id: 6,
+        name: "Vehicle Technology Centre",
+        logo: vehicleMediaLogo, 
+        link: "https://vtci.ca/",
+        description: "Specialized automotive industry solutions"
+      },
     ]
   },
   // Add the third tier if not already there
@@ -83,25 +83,11 @@ const tiers = [
     description: "Organizations that provide essential support and resources.",
     sponsors: [
       {
-        id: 6,
-        name: "Vehicle Technology Centre",
-        logo: vehicleMediaLogo, 
-        link: "https://vtci.ca/",
-        description: "Specialized automotive industry solutions"
-      },
-      {
         id: 7,
         name: "ASABE",
         logo: asabeLogo,
         link: "https://www.asabe.org/",
         description: "American Society of Agricultural and Biological Engineers"
-      },
-      {
-        id: 8,
-        name: "Matex",
-        logo: matexLogo,
-        link: "https://www.matexgears.com/",
-        description: "Materials and manufacturing solutions"
       },
       {
         id: 9,
@@ -123,6 +109,13 @@ const tiers = [
         logo: solidworksLogo,
         link: "https://www.solidworks.com/",
         description: "Solution for 3D CAD, design and product development"
+      },
+      {
+        id: 10,
+        name: "Danfoss",
+        logo: danfosysLogo,
+        link: "https://www.danfoss.com/",
+        description: "Energy-efficient solutions for industry and infrastructure."
       }
     ]
   }

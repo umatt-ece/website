@@ -10,7 +10,8 @@
 	"vars": {
 		"FROM_EMAIL": "noreply@umatt.org",
 		"TEAM_EMAIL": "umattinfo@gmail.com",
-		"ALLOWED_ORIGINS": "https://umatt.ca,https://umatt.org,https://www.umatt.org,http://localhost:5173"
+		"ALLOWED_ORIGINS": "https://umatt.org,https://www.umatt.org,http://localhost:5173",
+		"EMAIL_PROVIDER": "resend"
 	},
 	// R2 buckets for storage
 	"r2_buckets": [

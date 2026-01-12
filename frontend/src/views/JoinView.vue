@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import emailjs from '@emailjs/browser'
+import { api } from '@/api'
 import { RouterLink } from 'vue-router'
 
 // Form data
@@ -12,7 +12,7 @@ const formData = ref({
   year: '',
   interest: '',
   experience: '',
-  resumeLink: '',
+  resumeFile: null,
   agreed: false
 })
 
@@ -21,7 +21,7 @@ const formErrors = ref({})
 const formSubmitted = ref(false)
 const formSuccess = ref(false)
 const isSubmitting = ref(false)
-const showResumeInstructions = ref(false)
+const errorMessage = ref('')
 
 // Options
 const programs = [
@@ -114,6 +114,7 @@ const validateForm = () => {
 
 const submitForm = async () => {
   formSubmitted.value = true
+  errorMessage.value = ''
 
   if (!validateForm()) {
     const firstError = document.querySelector('.error-message')
@@ -126,26 +127,18 @@ const submitForm = async () => {
   isSubmitting.value = true
 
   try {
-    const templateParams = {
-      title: formData.value.firstName + ' ' + formData.value.lastName,
-      firstName: formData.value.firstName,
-      lastName: formData.value.lastName,
+    const fullName = `${formData.value.firstName} ${formData.value.lastName}`
+    
+    // Call backend API via HTTP request
+    const response = await api.submitMemberJoin({
+      name: fullName,
       email: formData.value.email,
-      program: formData.value.program,
-      year: formData.value.year,
-      interest: formData.value.interest,
-      experience: formData.value.experience,
-      resumeLink: formData.value.resumeLink,
-      hasResumeLink: formData.value.resumeLink ? true : false,
-      submissionDate: new Date().toLocaleString(),
-      currentYear: new Date().getFullYear()
+      resume: formData.value.resumeFile || undefined
+    })
+
+    if (!response.success) {
+      throw new Error(response.error || 'Failed to submit application')
     }
-
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-    await emailjs.send(serviceId, templateId, templateParams, publicKey)
 
     formSuccess.value = true
     formData.value = {
@@ -156,7 +149,7 @@ const submitForm = async () => {
       year: '',
       interest: '',
       experience: '',
-      resumeLink: '',
+      resumeFile: null,
       agreed: false
     }
     formSubmitted.value = false
@@ -169,7 +162,7 @@ const submitForm = async () => {
     }, 100)
   } catch (error) {
     console.error('Form submission error:', error)
-    alert('There was an error submitting your application. Please try again.')
+    errorMessage.value = error.message || 'There was an error submitting your application. Please try again.'
   } finally {
     isSubmitting.value = false
   }
@@ -221,6 +214,29 @@ const goToPreviousStep = () => {
 const goToStep = (step) => {
   if (step < currentStep.value) {
     currentStep.value = step
+  }
+}
+
+const handleResumeUpload = (event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      errorMessage.value = 'File too large. Maximum size is 5MB.'
+      event.target.value = ''
+      return
+    }
+    
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+    if (!allowedTypes.includes(file.type)) {
+      errorMessage.value = 'Invalid file type. Please upload a PDF or Word document.'
+      event.target.value = ''
+      return
+    }
+    
+    formData.value.resumeFile = file
+    errorMessage.value = ''
   }
 }
 
@@ -661,41 +677,17 @@ onMounted(() => {
             </div>
 
             <div class="form-group">
-              <label for="resumeLink">Resume Link (Optional)</label>
+              <label for="resumeFile">Resume (Optional)</label>
               <input
-                type="url"
-                id="resumeLink"
-                v-model="formData.resumeLink"
-                placeholder="https://drive.google.com/..."
+                type="file"
+                id="resumeFile"
+                accept=".pdf,.doc,.docx"
+                @change="handleResumeUpload"
               />
-              <button
-                type="button"
-                class="toggle-instructions"
-                @click="showResumeInstructions = !showResumeInstructions"
-              >
-                <span>{{ showResumeInstructions ? 'Hide' : 'Show' }} sharing instructions</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  :class="{ rotated: showResumeInstructions }"
-                >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
-              <div v-if="showResumeInstructions" class="instructions-box">
-                <p><strong>How to share your resume:</strong></p>
-                <ol>
-                  <li>Upload your resume to Google Drive or OneDrive</li>
-                  <li>Right-click the file and select "Share" or "Get link"</li>
-                  <li>Set permissions to "Anyone with the link can view"</li>
-                  <li>Copy the link and paste it above</li>
-                </ol>
-              </div>
+              <p class="field-hint">Accepted formats: PDF, DOC, DOCX (max 5MB)</p>
+              <p v-if="formData.resumeFile" class="file-selected">
+                ✓ {{ formData.resumeFile.name }}
+              </p>
             </div>
           </div>
 
@@ -737,7 +729,7 @@ onMounted(() => {
                 <div class="review-row">
                   <span class="review-label">Resume:</span>
                   <span class="review-value">{{
-                    formData.resumeLink ? 'Link provided' : 'Not provided'
+                    formData.resumeFile ? formData.resumeFile.name : 'Not provided'
                   }}</span>
                 </div>
               </div>
@@ -821,6 +813,10 @@ onMounted(() => {
               <span v-if="isSubmitting" class="spinner"></span>
               <span>{{ isSubmitting ? 'Submitting...' : 'Submit Application' }}</span>
             </button>
+          </div>
+
+          <div v-if="errorMessage" class="api-error-message">
+            {{ errorMessage }}
           </div>
         </form>
       </div>
@@ -1604,6 +1600,28 @@ onMounted(() => {
   to {
     transform: rotate(360deg);
   }
+}
+
+.api-error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.field-hint {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.file-selected {
+  font-size: 0.875rem;
+  color: #059669;
+  margin-top: 0.5rem;
 }
 
 .btn-outline {

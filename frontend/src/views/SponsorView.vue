@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { api } from '@/api'
 
 // FAQ state
 const faqs = ref([
@@ -50,14 +51,39 @@ const form = ref({
 })
 
 const submitted = ref(false)
+const isSubmitting = ref(false)
+const errorMessage = ref('')
 
-function handleSubmit() {
-  submitted.value = true
-  form.value = { name: '', company: '', email: '', phone: '', tier: '', message: '' }
+async function handleSubmit() {
+  isSubmitting.value = true
+  errorMessage.value = ''
+
+  try {
+    // Call backend API via HTTP request
+    const response = await api.submitSponsorInquiry({
+      companyName: form.value.company,
+      contactName: form.value.name,
+      email: form.value.email,
+      message: form.value.message || undefined
+    })
+
+    if (!response.success) {
+      throw new Error(response.error || 'Failed to submit inquiry')
+    }
+
+    submitted.value = true
+    form.value = { name: '', company: '', email: '', phone: '', tier: '', message: '' }
+  } catch (error) {
+    console.error('Sponsor form submission error:', error)
+    errorMessage.value = error instanceof Error ? error.message : 'There was an error submitting your inquiry. Please try again.'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 function resetForm() {
   submitted.value = false
+  errorMessage.value = ''
 }
 
 // Sponsorship tiers
@@ -741,9 +767,11 @@ onMounted(() => {
                 ></textarea>
               </div>
 
-              <button type="submit" class="submit-btn">
-                Send Inquiry
+              <button type="submit" class="submit-btn" :disabled="isSubmitting">
+                <span v-if="isSubmitting" class="spinner"></span>
+                {{ isSubmitting ? 'Sending...' : 'Send Inquiry' }}
                 <svg
+                  v-if="!isSubmitting"
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -758,6 +786,10 @@ onMounted(() => {
                   <polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
               </button>
+
+              <div v-if="errorMessage" class="api-error-message">
+                {{ errorMessage }}
+              </div>
             </form>
 
             <div v-else class="success-state">
@@ -1816,6 +1848,37 @@ a.method-value:hover {
   background: var(--color-gold-dark);
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(242, 169, 0, 0.35);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn .spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: var(--color-brown);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.api-error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  color: #dc2626;
+  text-align: center;
 }
 
 /* Success State */

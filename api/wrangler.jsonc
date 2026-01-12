@@ -1,0 +1,45 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "umatt-api",
+	"main": "src/index.ts",
+	"compatibility_date": "2024-09-23",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	// Environment variables
+	"vars": {
+		"FROM_EMAIL": "noreply@umatt.ca",
+		"TEAM_EMAIL": "umattinfo@gmail.com",
+		"ALLOWED_ORIGINS": "https://umatt.ca,http://localhost:5173"
+	},
+	// R2 buckets for storage
+	"r2_buckets": [
+		{
+			"binding": "RESUME_BUCKET",
+			"bucket_name": "umatt-resumes",
+			"preview_bucket_name": "umatt-resumes-dev"
+		},
+		{
+			"binding": "ASSETS_BUCKET",
+			"bucket_name": "umatt-assets",
+			"preview_bucket_name": "umatt-assets-dev"
+		},
+		{
+			"bucket_name": "umatt-assets",
+			"binding": "umatt_assets"
+		},
+		{
+			"bucket_name": "resumes",
+			"binding": "resumes"
+		}
+	],
+	// Email bindings - requires Email Routing to be configured on your domain
+	"send_email": [
+		{
+			"name": "SEND_EMAIL"
+			// No restrictions - can send to any verified address
+		}
+	]
+	// Secret for API authentication (set via wrangler secret put API_SECRET)
+	// Do NOT commit actual secrets here
+}

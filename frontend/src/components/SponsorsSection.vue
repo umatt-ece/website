@@ -1,176 +1,185 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 // Import sponsor logos properly from assets
-import asabeLogo from '@/assets/images/sponsors/sponsor-asabe.jpg';
-import vehicleMediaLogo from '@/assets/images/sponsors/sponsor-vehicle-technology-centre.png';
-import macdonLogo from '@/assets/images/sponsors/sponsor-macdon.png';
-import friendsOfEngineeringLogo from '@/assets/images/sponsors/sponsor-friends-of-engineering.png';
-import extremeMachineLogo from '@/assets/images/sponsors/sponsor-extreme-machine-corp.jpg';
-import elmersLogo from '@/assets/images/sponsors/sponsor-elmers.webp';
-import engEndowmentLogo from '@/assets/images/sponsors/sponsor-eng-endowment.png';
-import matexLogo from '@/assets/images/sponsors/sponsor-matex.png';
-import yaktaLogo from '@/assets/images/sponsors/sponsor-yakta.svg';
-import danfosysLogo from '@/assets/images/sponsors/danfosys-logo.svg'; 
-import vidirLogo from '@/assets/images/sponsors/Vidir-Logo.svg';
-import solidworksLogo from '@/assets/images/sponsors/sponsor-solidworks.png';
+import asabeLogo from '@/assets/images/sponsors/sponsor-asabe.jpg'
+import vehicleMediaLogo from '@/assets/images/sponsors/sponsor-vehicle-technology-centre.png'
+import macdonLogo from '@/assets/images/sponsors/sponsor-macdon.png'
+import friendsOfEngineeringLogo from '@/assets/images/sponsors/sponsor-friends-of-engineering.png'
+import extremeMachineLogo from '@/assets/images/sponsors/sponsor-extreme-machine-corp.jpg'
+import elmersLogo from '@/assets/images/sponsors/sponsor-elmers.webp'
+import engEndowmentLogo from '@/assets/images/sponsors/sponsor-eng-endowment.png'
+import matexLogo from '@/assets/images/sponsors/sponsor-matex.png'
+import yaktaLogo from '@/assets/images/sponsors/sponsor-yakta.svg'
+import danfosysLogo from '@/assets/images/sponsors/danfosys-logo.svg'
+import vidirLogo from '@/assets/images/sponsors/Vidir-Logo.svg'
+import solidworksLogo from '@/assets/images/sponsors/sponsor-solidworks.png'
+import toddAndSargentLogo from '@/assets/images/sponsors/logo_toddandsargent.png'
 
-const router = useRouter();
-const isVisible = ref(false);
+const router = useRouter()
+const isVisible = ref(false)
 // Default to 0, but make sure this doesn't exceed array length
-const activeTab = ref(0);
+const activeTab = ref(0)
 
 // Sponsor data organized by tier - make sure this isn't empty
 const tiers = [
   {
-    name: "Premier Partners",
-    description: "Our highest level of sponsorship, these partners make our competitions possible.",
+    name: 'Premier Partners',
+    description: 'Our highest level of sponsorship, these partners make our competitions possible.',
     sponsors: [
       {
         id: 1,
-        name: "MacDon",
+        name: 'MacDon',
         logo: macdonLogo,
-        link: "https://www.macdon.com/",
-        description: "Agricultural harvesting equipment manufacturer"
+        link: 'https://www.macdon.com/',
+        description: 'Agricultural harvesting equipment manufacturer'
       },
       {
         id: 2,
-        name: "Elmers Manufacturing",
+        name: 'Elmers Manufacturing',
         logo: elmersLogo,
-        link: "https://elmersmfg.com/",
-        description: "Agricultural equipment manufacturer"
+        link: 'https://elmersmfg.com/',
+        description: 'Agricultural equipment manufacturer'
       }
     ]
   },
   {
-    name: "Gold Supporters",
-    description: "Major contributors to our design and build process.",
+    name: 'Gold Supporters',
+    description: 'Major contributors to our design and build process.',
     sponsors: [
       {
         id: 3,
-        name: "Friends of Engineering",
+        name: 'Friends of Engineering',
         logo: friendsOfEngineeringLogo,
-        link: "https://www.friendsofengineering.ca/",
-        description: "Supporting engineering education and initiatives"
+        link: 'https://www.friendsofengineering.ca/',
+        description: 'Supporting engineering education and initiatives'
       },
       {
         id: 4,
-        name: "Extreme Machine Corp",
+        name: 'Extreme Machine Corp',
         logo: extremeMachineLogo,
-        link: "http://extrememachinecorp.com/",
-        description: "Precision machining and manufacturing"
+        link: 'http://extrememachinecorp.com/',
+        description: 'Precision machining and manufacturing'
       },
       {
         id: 5,
-        name: "Engineering Endowment",
+        name: 'Engineering Endowment',
         logo: engEndowmentLogo,
-        link: "https://endowment.eng.umanitoba.ca",
-        description: "Engineering scholarship and project funding"
+        link: 'https://endowment.eng.umanitoba.ca',
+        description: 'Engineering scholarship and project funding'
       },
       {
         id: 6,
-        name: "Vehicle Technology Centre",
-        logo: vehicleMediaLogo, 
-        link: "https://vtci.ca/",
-        description: "Specialized automotive industry solutions"
+        name: 'Vehicle Technology Centre',
+        logo: vehicleMediaLogo,
+        link: 'https://vtci.ca/',
+        description: 'Specialized automotive industry solutions'
       },
+      {
+        id: 13,
+        name: 'Todd & Sargent',
+        logo: toddAndSargentLogo,
+        link: 'https://tsargent.com/',
+        description:
+          'Industrial design-build firm delivering custom engineered facilities for ag-industrial sectors.'
+      }
     ]
   },
   // Add the third tier if not already there
   {
-    name: "Supporting Organizations",
-    description: "Organizations that provide essential support and resources.",
+    name: 'Supporting Organizations',
+    description: 'Organizations that provide essential support and resources.',
     sponsors: [
       {
         id: 7,
-        name: "ASABE",
+        name: 'ASABE',
         logo: asabeLogo,
-        link: "https://www.asabe.org/",
-        description: "American Society of Agricultural and Biological Engineers"
+        link: 'https://www.asabe.org/',
+        description: 'American Society of Agricultural and Biological Engineers'
       },
       {
         id: 9,
-        name: "Yakta",
+        name: 'Yakta',
         logo: yaktaLogo,
-        link: "https://www.yakta.com/",
-        description: "Engineering and technical solutions"
+        link: 'https://www.yakta.com/',
+        description: 'Engineering and technical solutions'
       },
       {
         id: 11,
-        name: "Vidir Solutions",
+        name: 'Vidir Solutions',
         logo: vidirLogo,
-        link: "https://www.vidir.com/",
-        description: "Automated vertical storage solutions."
+        link: 'https://www.vidir.com/',
+        description: 'Automated vertical storage solutions.'
       },
       {
         id: 12,
-        name: "SolidWorks",
+        name: 'SolidWorks',
         logo: solidworksLogo,
-        link: "https://www.solidworks.com/",
-        description: "Solution for 3D CAD, design and product development"
+        link: 'https://www.solidworks.com/',
+        description: 'Solution for 3D CAD, design and product development'
       },
       {
         id: 10,
-        name: "Danfoss",
+        name: 'Danfoss',
         logo: danfosysLogo,
-        link: "https://www.danfoss.com/",
-        description: "Energy-efficient solutions for industry and infrastructure."
+        link: 'https://www.danfoss.com/',
+        description: 'Energy-efficient solutions for industry and infrastructure.'
       }
     ]
   }
-];
+]
 
 // Fix: Add safety check to the computed property
 const activeTier = computed(() => {
   // Make sure we have tiers and the index is valid
   if (tiers.length === 0 || activeTab.value >= tiers.length) {
     return {
-      name: "No sponsors available",
-      description: "Please check back later for our sponsors.",
+      name: 'No sponsors available',
+      description: 'Please check back later for our sponsors.',
       sponsors: []
-    };
+    }
   }
-  return tiers[activeTab.value];
-});
+  return tiers[activeTab.value]
+})
 
 function handleSponsorClick() {
-  router.push('/sponsor');
+  router.push('/sponsor')
 }
 
 function handleContactClick() {
-  router.push('/contact');
+  router.push('/contact')
 }
 
 // Observer for scroll-based animations
 onMounted(() => {
   // Make sure activeTab is valid
   if (activeTab.value >= tiers.length) {
-    activeTab.value = 0;
+    activeTab.value = 0
   }
-  
+
   // Initial visibility
   setTimeout(() => {
-    isVisible.value = true;
-  }, 300);
+    isVisible.value = true
+  }, 300)
 
   // Set up intersection observer for scroll animations
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
+          entry.target.classList.add('animate-in')
         }
-      });
+      })
     },
     { threshold: 0.1 }
-  );
+  )
 
   // Observe elements
   document.querySelectorAll('.observe-me').forEach((el) => {
-    observer.observe(el);
-  });
-});
+    observer.observe(el)
+  })
+})
 </script>
 
 <template>
@@ -178,7 +187,7 @@ onMounted(() => {
     <!-- Section accent elements -->
     <div class="accent-shape shape-1"></div>
     <div class="accent-shape shape-2"></div>
-    
+
     <div class="partners-container" :class="{ 'is-visible': isVisible }">
       <!-- Section header -->
       <header class="partners-header observe-me">
@@ -188,19 +197,19 @@ onMounted(() => {
         </h2>
         <div class="title-accent"></div>
         <p class="partners-intro">
-          We're incredibly grateful to our sponsors who make our engineering journey possible. 
-          Their support enables our team to design, build, and compete with our tiny tractors 
-          while developing the next generation of agricultural innovation.
+          We're incredibly grateful to our sponsors who make our engineering journey possible. Their
+          support enables our team to design, build, and compete with our tiny tractors while
+          developing the next generation of agricultural innovation.
         </p>
       </header>
-      
+
       <!-- Tabbed tier navigation -->
       <div class="tier-tabs observe-me">
-        <button 
-          v-for="(tier, index) in tiers" 
+        <button
+          v-for="(tier, index) in tiers"
           :key="`tab-${index}`"
-          class="tier-tab" 
-          :class="{ 'active': activeTab === index }"
+          class="tier-tab"
+          :class="{ active: activeTab === index }"
           @click="activeTab = index"
           :aria-selected="activeTab === index"
           role="tab"
@@ -208,39 +217,35 @@ onMounted(() => {
           <span class="tab-text">{{ tier.name }}</span>
         </button>
       </div>
-      
+
       <!-- Active tier display -->
       <div class="tier-content observe-me">
         <div class="tier-description">
           <p>{{ activeTier?.description || 'Please select a partnership tier.' }}</p>
         </div>
-        
-        <div 
-          :key="`tier-content-${activeTab}`" 
-          class="partners-grid" 
-          :class="`tier-${activeTab}`" 
+
+        <div
+          :key="`tier-content-${activeTab}`"
+          class="partners-grid"
+          :class="`tier-${activeTab}`"
           v-if="activeTier && activeTier.sponsors && activeTier.sponsors.length"
         >
-          <div 
-            v-for="sponsor in activeTier.sponsors" 
+          <div
+            v-for="sponsor in activeTier.sponsors"
             :key="`partner-${sponsor.id}`"
             class="partner-card"
           >
-            <a 
-              :href="sponsor.link" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              :href="sponsor.link"
+              target="_blank"
+              rel="noopener noreferrer"
               class="partner-link"
               :aria-label="`Visit ${sponsor.name} website`"
               data-nosnippet="true"
               data-adblockignore="true"
             >
               <div class="partner-logo-container">
-                <img 
-                  :src="sponsor.logo" 
-                  :alt="`${sponsor.name} logo`" 
-                  class="partner-logo" 
-                />
+                <img :src="sponsor.logo" :alt="`${sponsor.name} logo`" class="partner-logo" />
                 <div class="logo-overlay">
                   <span class="visit-text">Visit Site</span>
                 </div>
@@ -252,24 +257,24 @@ onMounted(() => {
             </a>
           </div>
         </div>
-        <div v-else class="empty-partners-message">
-          No sponsors to display in this tier.
-        </div>
+        <div v-else class="empty-partners-message">No sponsors to display in this tier.</div>
       </div>
-      
+
       <!-- Partner showcase -->
       <div class="partner-showcase observe-me">
         <div class="showcase-content">
           <div class="showcase-text">
             <h3 class="showcase-title">Trusted by Industry Leaders</h3>
             <p class="showcase-description">
-              Our sponsors represent the best in agricultural engineering and manufacturing, 
-              providing mentorship, resources, and industry connections that prepare our team members 
-              for successful careers in engineering.
+              Our sponsors represent the best in agricultural engineering and manufacturing,
+              providing mentorship, resources, and industry connections that prepare our team
+              members for successful careers in engineering.
             </p>
             <div class="showcase-stats">
               <div class="stat-item">
-                <span class="stat-number">{{ tiers.reduce((acc, tier) => acc + tier.sponsors.length, 0) }}</span>
+                <span class="stat-number">{{
+                  tiers.reduce((acc, tier) => acc + tier.sponsors.length, 0)
+                }}</span>
                 <span class="stat-label">Total Sponsors</span>
               </div>
               <div class="stat-item">
@@ -279,42 +284,49 @@ onMounted(() => {
             </div>
           </div>
           <div class="logo-cloud">
-            <div 
-              v-for="(tier, tierIndex) in tiers" 
+            <div
+              v-for="(tier, tierIndex) in tiers"
               :key="`tier-cloud-${tierIndex}`"
               class="logo-cloud-tier"
             >
-            <a v-bind = "{ href: sponsor.link, target: '_blank', rel: 'noopener noreferrer' }"
-                v-for="sponsor in tier.sponsors" 
+              <a
+                v-bind="{ href: sponsor.link, target: '_blank', rel: 'noopener noreferrer' }"
+                v-for="sponsor in tier.sponsors"
                 :key="`cloud-${sponsor.id}`"
                 class="cloud-logo-container"
                 data-nosnippet="true"
                 data-adblockignore="true"
               >
-                <img
-                  :src="sponsor.logo"
-                  :alt="`${sponsor.name}`"
-                  class="cloud-logo"
-                />
+                <img :src="sponsor.logo" :alt="`${sponsor.name}`" class="cloud-logo" />
               </a>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- Call to action -->
       <div class="partners-cta observe-me">
         <div class="cta-content">
           <div class="cta-badge">Sponsorship Opportunity</div>
           <h3 class="cta-title">Become a Sponsor Today</h3>
           <p class="cta-text">
-            Support the next generation of agricultural engineering talent and gain visibility 
-            in the industry while connecting with top engineering students.
+            Support the next generation of agricultural engineering talent and gain visibility in
+            the industry while connecting with top engineering students.
           </p>
           <div class="benefits-list">
             <div class="benefit-item">
               <div class="benefit-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
@@ -323,7 +335,17 @@ onMounted(() => {
             </div>
             <div class="benefit-item">
               <div class="benefit-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
@@ -332,7 +354,17 @@ onMounted(() => {
             </div>
             <div class="benefit-item">
               <div class="benefit-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
@@ -344,9 +376,7 @@ onMounted(() => {
             <button @click="handleSponsorClick" class="cta-button primary">
               Sponsorship Packages
             </button>
-            <button @click="handleContactClick" class="cta-button secondary">
-              Contact Us
-            </button>
+            <button @click="handleContactClick" class="cta-button secondary">Contact Us</button>
           </div>
         </div>
       </div>
@@ -366,7 +396,7 @@ onMounted(() => {
 
 .section-badge {
   display: inline-block;
-  background: linear-gradient(to right, var(--color-gold, #F2A900), #e19500);
+  background: linear-gradient(to right, var(--color-gold, #f2a900), #e19500);
   color: #000;
   font-size: 0.875rem;
   font-weight: 600;
@@ -389,7 +419,7 @@ onMounted(() => {
 .shape-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, var(--color-gold, #F2A900) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-gold, #f2a900) 0%, transparent 70%);
   top: -100px;
   right: -200px;
   animation: float-slow 30s ease-in-out infinite alternate;
@@ -398,7 +428,7 @@ onMounted(() => {
 .shape-2 {
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, var(--color-blue-medium, #385E9D) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-blue-medium, #385e9d) 0%, transparent 70%);
   bottom: -300px;
   left: -250px;
   animation: float-slow 25s ease-in-out infinite alternate-reverse;
@@ -409,7 +439,9 @@ onMounted(() => {
   margin: 0 auto;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 1s ease, transform 1s ease;
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
   position: relative;
   z-index: 1;
 }
@@ -438,7 +470,7 @@ onMounted(() => {
 }
 
 .text-highlight {
-  background: linear-gradient(104deg, var(--color-gold, #F2A900), var(--color-brown, #4F2C1D));
+  background: linear-gradient(104deg, var(--color-gold, #f2a900), var(--color-brown, #4f2c1d));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -448,7 +480,7 @@ onMounted(() => {
 .title-accent {
   width: 80px;
   height: 4px;
-  background: var(--color-gold, #F2A900);
+  background: var(--color-gold, #f2a900);
   margin: 1.5rem auto 2rem;
   border-radius: 2px;
 }
@@ -481,16 +513,16 @@ onMounted(() => {
 }
 
 .tier-tab:hover {
-  border-color: var(--color-blue-medium, #385E9D);
-  color: var(--color-blue-medium, #385E9D);
+  border-color: var(--color-blue-medium, #385e9d);
+  color: var(--color-blue-medium, #385e9d);
   background-color: rgba(56, 94, 157, 0.05);
   transform: translateY(-2px);
 }
 
 .tier-tab.active {
-  background-color: var(--color-blue-medium, #385E9D);
+  background-color: var(--color-blue-medium, #385e9d);
   color: white;
-  border-color: var(--color-blue-medium, #385E9D);
+  border-color: var(--color-blue-medium, #385e9d);
   box-shadow: 0 6px 16px rgba(56, 94, 157, 0.25);
 }
 
@@ -530,7 +562,7 @@ onMounted(() => {
   background-color: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.05),
     0 5px 10px rgba(0, 0, 0, 0.03);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -541,7 +573,7 @@ onMounted(() => {
 
 .partner-card:hover {
   transform: translateY(-10px);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.1),
     0 5px 15px rgba(0, 0, 0, 0.05);
 }
@@ -691,7 +723,7 @@ onMounted(() => {
 .stat-number {
   font-size: 3rem;
   font-weight: 700;
-  color: var(--color-gold, #F2A900);
+  color: var(--color-gold, #f2a900);
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -754,7 +786,7 @@ onMounted(() => {
 
 /* Call to action */
 .partners-cta {
-  background: linear-gradient(135deg, var(--color-blue-medium, #385E9D), #2a4577);
+  background: linear-gradient(135deg, var(--color-blue-medium, #385e9d), #2a4577);
   border-radius: 20px;
   padding: 0;
   color: white;
@@ -824,7 +856,7 @@ onMounted(() => {
 }
 
 .benefit-icon {
-  color: var(--color-gold, #F2A900);
+  color: var(--color-gold, #f2a900);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -859,7 +891,7 @@ onMounted(() => {
 }
 
 .cta-button.primary {
-  background-color: var(--color-gold, #F2A900);
+  background-color: var(--color-gold, #f2a900);
   color: #000;
   box-shadow: 0 8px 20px rgba(242, 169, 0, 0.25);
 }
@@ -903,9 +935,15 @@ onMounted(() => {
 }
 
 @keyframes float-slow {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-30px, 30px); }
-  100% { transform: translate(30px, -30px); }
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-30px, 30px);
+  }
+  100% {
+    transform: translate(30px, -30px);
+  }
 }
 
 /* Responsive adjustments */
@@ -915,21 +953,21 @@ onMounted(() => {
     align-items: center;
     gap: 2rem;
   }
-  
+
   .showcase-text {
     flex: 1;
     text-align: left;
     padding-left: 3rem;
   }
-  
+
   .logo-cloud {
     flex: 1;
   }
-  
+
   .showcase-stats {
     justify-content: flex-start;
   }
-  
+
   .showcase-description {
     margin: 0 0 2.5rem;
   }
@@ -939,29 +977,29 @@ onMounted(() => {
   .partners-section {
     padding: 5rem 1.25rem;
   }
-  
+
   .partners-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
   }
-  
+
   .partner-logo-container {
     height: 180px;
     padding: 1.75rem;
   }
-  
+
   .tier-0 .partner-logo-container {
     height: 200px;
   }
-  
+
   .cta-content {
     padding: 3rem 2rem;
   }
-  
+
   .tier-content {
     margin-bottom: 4rem;
   }
-  
+
   .partner-showcase {
     margin-bottom: 4rem;
   }
@@ -971,15 +1009,15 @@ onMounted(() => {
   .partners-grid {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
   }
-  
+
   .cta-content {
     padding: 2.5rem 1.5rem;
   }
-  
+
   .benefit-item {
     font-size: 1rem;
   }
-  
+
   .tier-tabs {
     flex-direction: column;
     gap: 0.75rem;
@@ -987,16 +1025,16 @@ onMounted(() => {
     margin-left: auto;
     margin-right: auto;
   }
-  
+
   .tier-tab {
     width: 100%;
   }
-  
+
   .cloud-logo-container {
     width: 100px;
     height: 70px;
   }
-  
+
   .partner-card .partner-info {
     padding: 1.5rem;
   }
@@ -1017,12 +1055,12 @@ onMounted(() => {
     animation: none;
     transform: none;
   }
-  
+
   .partners-container,
   .observe-me {
     opacity: 1;
   }
-  
+
   .partner-card {
     opacity: 1;
   }
